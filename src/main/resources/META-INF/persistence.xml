@@ -7,7 +7,7 @@
       <property name="jakarta.persistence.jdbc.user" value="postgres"/>
       <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
       <!--<property name="jakarta.persistence.jdbc.password" value=""/>
-      LA CONTRASEÑA DEL ADMIN DE BASE DE DATOS VA EN db.properties POR SEGURIDAD
+      LA CONTRASEÑA DEL ADMIN DE BASE DE DATOS VA EN db.properties POR SEGURIDAD 
       -->
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
       <!--

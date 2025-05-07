@@ -3,8 +3,6 @@ package GUI;
 import GUI.dialogs.JDialogAgregarRepuesto;
 import GUI.dialogs.JDialogEditarRepuesto;
 import entities.Repuesto;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
