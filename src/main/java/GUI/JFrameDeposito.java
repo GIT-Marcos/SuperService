@@ -111,6 +111,7 @@ public class JFrameDeposito extends javax.swing.JFrame {
 
         jButNotaRetiro.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButNotaRetiro.setText("Nueva Nota de Retiro");
+        jButNotaRetiro.setEnabled(false);
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
