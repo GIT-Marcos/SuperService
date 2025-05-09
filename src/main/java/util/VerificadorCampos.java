@@ -1,18 +1,23 @@
 package util;
 
-import java.util.List;
 
 /**
  *
  * @author Usuario
  */
-public class VerificadorCamposVacios {
+public class VerificadorCampos {
 
-    public void verificarVacios(List<String> lista) {
-        for (String campo : lista) {
-            if (campo.isBlank() || campo.isEmpty() || campo == null) {
-                throw new IllegalArgumentException("Hay campos obligatirios vacíos.");
-            }
+    public void verificarVacio(String paraVerificar, String nombreCampo) {
+        if (paraVerificar.isBlank() || paraVerificar.isEmpty() || paraVerificar == null) {
+            throw new IllegalArgumentException("El campo '" + nombreCampo
+                    + "' no puede quedar vacío.");
+        }
+    }
+
+    public void verificaLargo(String paraVerificar, int largo, String nombreCampo) {
+        if (paraVerificar.length() > largo || paraVerificar.length() < 0) {
+            throw new IllegalArgumentException("El campo '" + nombreCampo
+                    + "' no puede tener más de " + largo + " caracteres.");
         }
     }
 
@@ -45,10 +50,11 @@ public class VerificadorCamposVacios {
             throw new NumberFormatException("El " + nombreCampo + " está en formato incorrecto.");
         }
     }
-    
+
     /**
-     * usado para verificar que los códigos de barras ingresados no tengan letras ni
-     * símbolos.
+     * LOS CÓDIGOS DE BARRAS PUEDEN TENER LETRAS ADEMÁS DE NÚMERO, O SEA QUE EL
+     * MÉTODO NO ES NECESARIO. usado para verificar que los códigos de barras
+     * ingresados no tengan letras ni símbolos.
      *
      * @param valorCampo
      * @param nombreCampo

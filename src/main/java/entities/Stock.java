@@ -17,10 +17,10 @@ public class Stock implements Serializable{
     @Column(name = "pk_stock")
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private Integer cantidad;
 
-    @Column
+    @Column(nullable = false)
     private String ubicacion;
 
     @Column

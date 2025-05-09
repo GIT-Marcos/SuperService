@@ -6,12 +6,10 @@ package GUI.dialogs;
 
 import entities.Repuesto;
 import entities.Stock;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
 import services.RepuestoServ;
-import util.VerificadorCamposVacios;
+import util.VerificadorCampos;
 
 /**
  *
@@ -19,7 +17,7 @@ import util.VerificadorCamposVacios;
  */
 public class JDialogEditarRepuesto extends javax.swing.JDialog {
 
-    private final VerificadorCamposVacios verificadorCamposVacios = new VerificadorCamposVacios();
+    private final VerificadorCampos verificadorCampos = new VerificadorCampos();
 
     private final RepuestoServ repuestoServ = new RepuestoServ();
 
@@ -66,8 +64,8 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
         jtfUbicacion = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jtfLote = new javax.swing.JTextField();
-        jtfObservaciones = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
+        jtfObservaciones = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jButtonGuardar = new javax.swing.JButton();
 
@@ -190,29 +188,44 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
-        List<String> camposList = new ArrayList<>();
-        camposList.add(jtfCodBarra.getText().trim());
-        camposList.add(jtfMarca.getText().trim());
-        camposList.add(jtfDetalle.getText().trim());
-        camposList.add(jtfPrecio.getText().trim());
-        camposList.add(jtfCantidadStock.getText().trim());
-        camposList.add(jtfUbicacion.getText().trim());
+        //CONTROL DE VACÍOS
         try {
-            verificadorCamposVacios.verificarVacios(camposList);
+            verificadorCampos.verificarVacio(jtfCodBarra.getText().trim(),jLabel1.getText());
+            verificadorCampos.verificarVacio(jtfMarca.getText().trim(),jLabel2.getText());
+            verificadorCampos.verificarVacio(jtfDetalle.getText().trim(),jLabel3.getText());
+            verificadorCampos.verificarVacio(jtfPrecio.getText().trim(),jLabel4.getText());
+            verificadorCampos.verificarVacio(jtfCantidadStock.getText().trim(),jLabel5.getText());
+            verificadorCampos.verificarVacio(jtfUbicacion.getText().trim(),jLabel6.getText());
         } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "HAY CAMPOS OBLIGATORIOS",
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "HAY CAMPOS OBLIGATORIOS VACÍOS",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
+        //CONTROL DE LARGOS
         try {
-            verificadorCamposVacios.verificaFormatoDouble(jtfPrecio.getText().trim(), jLabel4.getText());
-            verificadorCamposVacios.verificaFormatoInteger(jtfCantidadStock.getText().trim(), jLabel5.getText());
+            verificadorCampos.verificaLargo(jtfCodBarra.getText().trim(), 25, jLabel1.getText());
+            verificadorCampos.verificaLargo(jtfMarca.getText().trim(), 100, jLabel2.getText());
+            verificadorCampos.verificaLargo(jtfDetalle.getText().trim(), 100, jLabel3.getText());
+            verificadorCampos.verificaLargo(jtfPrecio.getText().trim(), 15, jLabel4.getText());
+            verificadorCampos.verificaLargo(jtfCantidadStock.getText().trim(), 11, jLabel5.getText());
+            verificadorCampos.verificaLargo(jtfUbicacion.getText().trim(), 100, jLabel6.getText());
+            verificadorCampos.verificaLargo(jtfLote.getText().trim(), 100, jLabel7.getText());
+            verificadorCampos.verificaLargo(jtfObservaciones.getText().trim(), 200, jLabel8.getText());
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(),
+                     "CAMPOS MUY LARGOS", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        //CONTROL DE FORMATOS
+        try {
+            verificadorCampos.verificaFormatoDouble(jtfPrecio.getText().trim(), jLabel4.getText());
+            verificadorCampos.verificaFormatoInteger(jtfCantidadStock.getText().trim(), jLabel5.getText());
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "HAY CAMPOS NUMÉRICOS EN MAL FORMATO",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        //FALTA GESTIONAR LARGO DE INPUTS
+        
         String codBarra = jtfCodBarra.getText().trim();
         String marca = jtfMarca.getText().trim();
         String detalle = jtfDetalle.getText().trim();
