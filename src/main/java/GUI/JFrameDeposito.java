@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import services.RepuestoServ;
-import util.VerificadorCamposVacios;
+import util.VerificadorCampos;
 
 public class JFrameDeposito extends javax.swing.JFrame {
 
@@ -23,7 +23,7 @@ public class JFrameDeposito extends javax.swing.JFrame {
     private final Integer CB_COD_BARRA = 0;
     private final Integer CB_DETALLE = 1;
 
-    private final VerificadorCamposVacios verificadorCamposVacios = new VerificadorCamposVacios();
+    private final VerificadorCampos verificadorCampos = new VerificadorCampos();
 
     private final DefaultTableModel tabla = new DefaultTableModel(new Object[]{
         COL_COD_BARRA, COL_DETALLE, COL_MARCA, COL_PRECIO, COL_CANTI_STOCK}, 0) {
@@ -222,9 +222,9 @@ public class JFrameDeposito extends javax.swing.JFrame {
     private void jButBuscarRepuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButBuscarRepuestoActionPerformed
         String input = jtfBuscar.getText().trim();
         try {
-            verificadorCamposVacios.verificarVacios(List.of(input));
+            verificadorCampos.verificarVacio(input, "Búsqueda");
         } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "HAY CAMPOS OBLIGATORIOS",
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "HAY CAMPOS OBLIGATORIOS VACÍOS",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }

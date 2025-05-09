@@ -168,12 +168,12 @@
     </Component>
     <Component class="javax.swing.JTextField" name="jtfLote">
     </Component>
-    <Component class="javax.swing.JTextField" name="jtfObservaciones">
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
       <Properties>
         <Property name="text" type="java.lang.String" value="Observaciones"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jtfObservaciones">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">
       <Properties>
