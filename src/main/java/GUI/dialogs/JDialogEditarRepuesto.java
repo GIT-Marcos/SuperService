@@ -6,6 +6,8 @@ package GUI.dialogs;
 
 import entities.Repuesto;
 import entities.Stock;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
 import services.RepuestoServ;
@@ -229,7 +231,7 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
         String codBarra = jtfCodBarra.getText().trim();
         String marca = jtfMarca.getText().trim();
         String detalle = jtfDetalle.getText().trim();
-        Double precio = Double.valueOf(jtfPrecio.getText().trim());
+        BigDecimal precio = BigDecimal.valueOf(Double.parseDouble(jtfPrecio.getText().trim())).setScale(2,RoundingMode.HALF_UP);
         Integer cantidad = Integer.valueOf(jtfCantidadStock.getText().trim());
         String ubicacion = jtfUbicacion.getText().trim();
         String lote = jtfLote.getText().trim();
