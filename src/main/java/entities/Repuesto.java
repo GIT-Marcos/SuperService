@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "repuestos")
@@ -28,8 +29,8 @@ public class Repuesto implements Serializable{
     @Column(nullable = false)
     private String detalle;
 
-    @Column(precision = 2, nullable = false)
-    private Double precio;
+    @Column(precision = 16, scale = 2, nullable = false)
+    private BigDecimal precio;
 
     //RELACIÓN HACIA STOCK 1-1
     @OneToOne(cascade = CascadeType.ALL, optional = false, orphanRemoval = true)
@@ -38,7 +39,7 @@ public class Repuesto implements Serializable{
     public Repuesto() {
     }
 
-    public Repuesto(Long id, String codBarra, String marca, String detalle, Double precio, Stock stock) {
+    public Repuesto(Long id, String codBarra, String marca, String detalle, BigDecimal precio, Stock stock) {
         this.id = id;
         this.codBarra = codBarra;
         this.marca = marca;
@@ -79,11 +80,11 @@ public class Repuesto implements Serializable{
         this.detalle = detalle;
     }
 
-    public Double getPrecio() {
+    public BigDecimal getPrecio() {
         return precio;
     }
 
-    public void setPrecio(Double precio) {
+    public void setPrecio(BigDecimal precio) {
         this.precio = precio;
     }
 
