@@ -73,31 +73,57 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("MODIFICANDO UN REPUESTO");
+        setResizable(false);
+        setSize(new java.awt.Dimension(0, 0));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel1.setText("Código de Barras");
 
+        jtfCodBarra.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel2.setText("Marca");
 
+        jtfMarca.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+
+        jLabel3.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel3.setText("Detalle");
 
+        jtfDetalle.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+
+        jLabel4.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel4.setText("Precio");
 
+        jtfPrecio.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+
+        jLabel5.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel5.setText("Cantidad de Stock");
 
+        jtfCantidadStock.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+
+        jLabel6.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel6.setText("Ubicación");
 
+        jtfUbicacion.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+
+        jLabel7.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel7.setText("Lote");
 
+        jtfLote.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+
+        jLabel8.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel8.setText("Observaciones");
+
+        jtfObservaciones.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
 
         jLabel9.setText("*Los campos \"lote\" y \"observaciones\" pueden quedar vacíos.");
 
-        jButtonGuardar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButtonGuardar.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jButtonGuardar.setText("GUARDAR CAMBIOS");
         jButtonGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -110,7 +136,7 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,26 +148,23 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
                         .addGap(354, 354, 354))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel9))
-                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jtfMarca)
                             .addComponent(jtfCodBarra)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jtfPrecio)
                             .addComponent(jtfDetalle)
                             .addComponent(jtfCantidadStock)
                             .addComponent(jtfUbicacion)
                             .addComponent(jtfLote)
-                            .addComponent(jtfObservaciones))
-                        .addContainerGap())))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(139, 139, 139)
-                .addComponent(jButtonGuardar)
-                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jtfObservaciones)
+                            .addComponent(jButtonGuardar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel1))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(15, 15, 15))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,9 +203,9 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
                 .addComponent(jtfObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(jButtonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();

@@ -6,6 +6,8 @@ import entities.Repuesto;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import services.RepuestoServ;
 import util.VerificadorCampos;
@@ -74,33 +76,38 @@ public class JFrameDeposito extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Depósito");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jButActualizar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButActualizar.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jButActualizar.setText("Actualizar Tabla");
+        jButActualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButActualizarActionPerformed(evt);
             }
         });
 
-        jButAgregarRepuesto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButAgregarRepuesto.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jButAgregarRepuesto.setText("Agregar Repuesto");
+        jButAgregarRepuesto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButAgregarRepuesto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButAgregarRepuestoActionPerformed(evt);
             }
         });
 
-        jButModificar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButModificar.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jButModificar.setText("Modificar Repuesto");
+        jButModificar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButModificarActionPerformed(evt);
             }
         });
 
-        jButEliminar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButEliminar.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jButEliminar.setText("Borrar Repuesto");
+        jButEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButEliminarActionPerformed(evt);
@@ -114,20 +121,28 @@ public class JFrameDeposito extends javax.swing.JFrame {
         jButNotaRetiro.setEnabled(false);
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator1.setPreferredSize(new java.awt.Dimension(5, 0));
 
-        jButBuscarRepuesto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButBuscarRepuesto.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jButBuscarRepuesto.setText("Buscar Repuesto");
+        jButBuscarRepuesto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButBuscarRepuesto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButBuscarRepuestoActionPerformed(evt);
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jtfBuscar.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel2.setText("Buscar por:");
 
+        jComboBoxBuscar.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
         jComboBoxBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Código de barras", "Detalle" }));
+        jComboBoxBuscar.setBorder(null);
+        jComboBoxBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
+        jTableRepuestos.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
         jTableRepuestos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -139,7 +154,13 @@ public class JFrameDeposito extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTableRepuestos.setToolTipText("Tabla de Repuestos");
+        jTableRepuestos.setShowHorizontalLines(true);
+        jTableRepuestos.setShowVerticalLines(true);
         jScrollPane1.setViewportView(jTableRepuestos);
+
+        jMenuBar1.setBorder(null);
+        jMenuBar1.setName(""); // NOI18N
 
         jMenu1.setText("Ventana");
         jMenuBar1.add(jMenu1);
@@ -151,62 +172,58 @@ public class JFrameDeposito extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButNotaRetiro, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButActualizar)
                     .addComponent(jButAgregarRepuesto)
                     .addComponent(jButModificar)
                     .addComponent(jButEliminar)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jButNotaRetiro, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel1))
+                .addGap(5, 5, 5)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jtfBuscar, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButBuscarRepuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(155, 155, 155)))
-                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButBuscarRepuesto, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+                            .addComponent(jtfBuscar))
+                        .addGap(34, 34, 34)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBoxBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jComboBoxBuscar, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addGap(5, 5, 5))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jtfBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel2)
-                                .addComponent(jComboBoxBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jLabel2)
+                            .addComponent(jComboBoxBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
                         .addComponent(jButBuscarRepuesto)
-                        .addGap(12, 12, 12)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(10, 10, 10)
                         .addComponent(jButAgregarRepuesto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(10, 10, 10)
                         .addComponent(jButModificar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(10, 10, 10)
                         .addComponent(jButEliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 266, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButNotaRetiro)))
-                .addContainerGap())
+                        .addComponent(jButNotaRetiro))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(5, 5, 5))
         );
 
         pack();
@@ -302,6 +319,16 @@ public class JFrameDeposito extends javax.swing.JFrame {
                 repuesto.getStock().getCantidad()
             });
         });
+        
+        //PARA CENTRAR DATOS DE TABLA
+        // Crear renderer que centra el contenido
+        DefaultTableCellRenderer centrado = new DefaultTableCellRenderer();
+        centrado.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Aplicar el renderer a todas las columnas
+        for (int i = 0; i < jTableRepuestos.getColumnCount(); i++) {
+            jTableRepuestos.getColumnModel().getColumn(i).setCellRenderer(centrado);
+        }
     }
 
     /**
