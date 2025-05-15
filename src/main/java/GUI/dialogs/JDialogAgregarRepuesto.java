@@ -61,26 +61,54 @@ public class JDialogAgregarRepuesto extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nuevo Repuesto");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setIconImage(null);
+        setMinimumSize(new java.awt.Dimension(487, 600));
+        setResizable(false);
+        setSize(new java.awt.Dimension(0, 0));
 
+        jLabel1.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel1.setText("Código de barras");
 
+        jtfCodBarra.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel2.setText("Marca");
 
+        jtfMarca.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+
+        jLabel3.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel3.setText("Detalle");
 
+        jtfDetalle.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
         jtfDetalle.setToolTipText("Información detallada del nombre del producto");
 
+        jLabel4.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel4.setText("Precio");
 
+        jtfPrecio.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+
+        jLabel5.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel5.setText("Cantidad de Stock");
 
+        jtfCantidadStock.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+
+        jLabel6.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel6.setText("Ubicación");
 
+        jtfUbicacion.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+
+        jLabel7.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel7.setText("Lote");
 
+        jtfLote.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+
+        jLabel8.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel8.setText("Observaciones");
 
-        jButtonAgregar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jtfObservaciones.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+
+        jButtonAgregar.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jButtonAgregar.setText("AGREGAR");
         jButtonAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,32 +116,15 @@ public class JDialogAgregarRepuesto extends javax.swing.JDialog {
             }
         });
 
-        jLabel9.setText("*Los campos \"lote\" y \"observaciones\" pueden quedar vacíos.");
+        jLabel9.setText("*Los campos \"lote\" y \"observaciones\" no son obligatorios.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfMarca)
-                            .addComponent(jtfCodBarra)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jtfPrecio)
-                            .addComponent(jtfDetalle)
-                            .addComponent(jtfCantidadStock)
-                            .addComponent(jtfUbicacion)
-                            .addComponent(jtfLote)
-                            .addComponent(jtfObservaciones))
-                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
@@ -121,16 +132,28 @@ public class JDialogAgregarRepuesto extends javax.swing.JDialog {
                             .addComponent(jLabel6)
                             .addComponent(jLabel7)
                             .addComponent(jLabel8))
-                        .addGap(352, 352, 352))))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(346, 346, 346))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel9))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(171, 171, 171)
-                        .addComponent(jButtonAgregar)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jLabel9)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButtonAgregar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jtfMarca, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfCodBarra, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfPrecio, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfDetalle, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfCantidadStock, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfUbicacion, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfLote, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfObservaciones, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(15, 15, 15))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,8 +192,8 @@ public class JDialogAgregarRepuesto extends javax.swing.JDialog {
                 .addComponent(jtfObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
