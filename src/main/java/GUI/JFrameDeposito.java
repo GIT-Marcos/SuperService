@@ -3,6 +3,7 @@ package GUI;
 import GUI.dialogs.JDialogAgregarRepuesto;
 import GUI.dialogs.JDialogEditarRepuesto;
 import entities.Repuesto;
+import java.awt.Color;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -10,25 +11,29 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import services.RepuestoServ;
+import util.ColorRenderTables;
 import util.VerificadorCampos;
 
 public class JFrameDeposito extends javax.swing.JFrame {
 
     private final RepuestoServ repuestoServ = new RepuestoServ();
 
+    //constantes para tabla
     private final String COL_COD_BARRA = "COD BARRA";
     private final String COL_DETALLE = "DETALLE";
     private final String COL_MARCA = "MARCA";
     private final String COL_PRECIO = "PRECIO";
     private final String COL_CANTI_STOCK = "CANTIDAD STOCK";
+    private final String COL_STOCK_MIN = "STOCK MÍNIMO";
 
+    //constantes para combo box
     private final Integer CB_COD_BARRA = 0;
     private final Integer CB_DETALLE = 1;
 
     private final VerificadorCampos verificadorCampos = new VerificadorCampos();
 
     private final DefaultTableModel tabla = new DefaultTableModel(new Object[]{
-        COL_COD_BARRA, COL_DETALLE, COL_MARCA, COL_PRECIO, COL_CANTI_STOCK}, 0) {
+        COL_COD_BARRA, COL_DETALLE, COL_MARCA, COL_PRECIO, COL_CANTI_STOCK, COL_STOCK_MIN}, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false; // ninguna celda editable
@@ -47,6 +52,7 @@ public class JFrameDeposito extends javax.swing.JFrame {
         setTabla();
         listaParaTabla = repuestoServ.todosRepuestos();
         llenaTabla(listaParaTabla);
+        gestionaAvisoStock();
     }
 
     /**
@@ -71,6 +77,7 @@ public class JFrameDeposito extends javax.swing.JFrame {
         jComboBoxBuscar = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableRepuestos = new javax.swing.JTable();
+        jLabelExistenciaStock = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
 
@@ -159,6 +166,9 @@ public class JFrameDeposito extends javax.swing.JFrame {
         jTableRepuestos.setShowVerticalLines(true);
         jScrollPane1.setViewportView(jTableRepuestos);
 
+        jLabelExistenciaStock.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
+        jLabelExistenciaStock.setText("*Existen productos con stock debajo del mínimo.");
+
         jMenuBar1.setBorder(null);
         jMenuBar1.setName(""); // NOI18N
 
@@ -184,16 +194,21 @@ public class JFrameDeposito extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButBuscarRepuesto, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                             .addComponent(jtfBuscar))
                         .addGap(34, 34, 34)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBoxBuscar, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxBuscar, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabelExistenciaStock)
+                                .addGap(448, 448, 448)))))
                 .addGap(5, 5, 5))
         );
         layout.setVerticalGroup(
@@ -207,7 +222,9 @@ public class JFrameDeposito extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(jComboBoxBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(10, 10, 10)
-                        .addComponent(jButBuscarRepuesto)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButBuscarRepuesto)
+                            .addComponent(jLabelExistenciaStock))
                         .addGap(10, 10, 10)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
@@ -264,6 +281,7 @@ public class JFrameDeposito extends javax.swing.JFrame {
         tabla.setRowCount(0);
         listaParaTabla = repuestoServ.todosRepuestos();
         llenaTabla(listaParaTabla);
+        gestionaAvisoStock();
     }//GEN-LAST:event_jButActualizarActionPerformed
 
     private void jButModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButModificarActionPerformed
@@ -304,6 +322,14 @@ public class JFrameDeposito extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButEliminarActionPerformed
 
+    private void gestionaAvisoStock(){
+        if (repuestoServ.cuentaRespBajoStock() > 0) {
+            jLabelExistenciaStock.setVisible(true);
+        } else {
+            jLabelExistenciaStock.setVisible(false);
+        }
+    }
+    
     private void setTabla() {
         jTableRepuestos = new JTable(tabla);
         jScrollPane1.setViewportView(jTableRepuestos);
@@ -316,19 +342,38 @@ public class JFrameDeposito extends javax.swing.JFrame {
                 repuesto.getDetalle(),
                 repuesto.getMarca(),
                 "$ " + repuesto.getPrecio(),
-                repuesto.getStock().getCantidad()
+                repuesto.getStock().getCantidad(),
+                repuesto.getStock().getCantMinima()
             });
         });
-        
+
+        //aplica render para colorear filas según condición
+        ColorRenderTables renderer = new ColorRenderTables((table, row) -> {
+            Object stocActu = table.getValueAt(row, 4);
+            Object stockMin = table.getValueAt(row, 5);
+            if (stocActu instanceof Integer && stockMin instanceof Integer) {
+                int actual = (int) stocActu;
+                int minimo = (int) stockMin;
+                return actual <= minimo;
+            }
+            return false;
+        },
+                new Color(255, 170, 170));
+        for (int col = 0; col < tabla.getColumnCount(); col++) {
+            jTableRepuestos.getColumnModel().getColumn(col).setCellRenderer(renderer);
+        }
+
         //PARA CENTRAR DATOS DE TABLA
+        //TO DO: MIGRAR PARA LA CLASE DEL RENDER
         // Crear renderer que centra el contenido
+        /*
         DefaultTableCellRenderer centrado = new DefaultTableCellRenderer();
         centrado.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Aplicar el renderer a todas las columnas
         for (int i = 0; i < jTableRepuestos.getColumnCount(); i++) {
             jTableRepuestos.getColumnModel().getColumn(i).setCellRenderer(centrado);
-        }
+        }*/
     }
 
     /**
@@ -376,6 +421,7 @@ public class JFrameDeposito extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBoxBuscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelExistenciaStock;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;

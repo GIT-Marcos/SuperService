@@ -62,6 +62,8 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
         jtfPrecio = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jtfCantidadStock = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jtfStockMinimo = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jtfUbicacion = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -106,6 +108,11 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
 
         jtfCantidadStock.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
 
+        jLabel10.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jLabel10.setText("Cantidad de Stock Mínimo");
+
+        jtfStockMinimo.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+
         jLabel6.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel6.setText("Ubicación");
 
@@ -121,7 +128,7 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
 
         jtfObservaciones.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
 
-        jLabel9.setText("*Los campos \"lote\" y \"observaciones\" pueden quedar vacíos.");
+        jLabel9.setText("*Los campos \"lote\" y \"observaciones\" no son obligatorios.");
 
         jButtonGuardar.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jButtonGuardar.setText("GUARDAR CAMBIOS");
@@ -141,29 +148,35 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
-                            .addComponent(jLabel5)
                             .addComponent(jLabel6)
                             .addComponent(jLabel7)
                             .addComponent(jLabel8))
                         .addGap(354, 354, 354))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfMarca)
-                            .addComponent(jtfCodBarra)
-                            .addComponent(jtfPrecio)
-                            .addComponent(jtfDetalle)
-                            .addComponent(jtfCantidadStock)
-                            .addComponent(jtfUbicacion)
-                            .addComponent(jtfLote)
-                            .addComponent(jtfObservaciones)
-                            .addComponent(jButtonGuardar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel10))
+                            .addComponent(jtfMarca, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfCodBarra, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfPrecio, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfDetalle, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfUbicacion, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfLote, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfObservaciones, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel9)
                                     .addComponent(jLabel1))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jtfCantidadStock, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(145, 145, 145)
+                                .addComponent(jtfStockMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(15, 15, 15))))
         );
         layout.setVerticalGroup(
@@ -171,40 +184,44 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(jtfCodBarra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(jtfMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(jtfDetalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(jtfPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jtfCantidadStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel10))
+                .addGap(0, 0, 0)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfCantidadStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfStockMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(jtfUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(jtfLote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addComponent(jtfObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jButtonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(jButtonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -220,6 +237,7 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
             verificadorCampos.verificarVacio(jtfDetalle.getText().trim(),jLabel3.getText());
             verificadorCampos.verificarVacio(jtfPrecio.getText().trim(),jLabel4.getText());
             verificadorCampos.verificarVacio(jtfCantidadStock.getText().trim(),jLabel5.getText());
+            verificadorCampos.verificarVacio(jtfStockMinimo.getText().trim(), jLabel10.getText());
             verificadorCampos.verificarVacio(jtfUbicacion.getText().trim(),jLabel6.getText());
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "HAY CAMPOS OBLIGATORIOS VACÍOS",
@@ -233,6 +251,7 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
             verificadorCampos.verificaLargo(jtfDetalle.getText().trim(), 100, jLabel3.getText());
             verificadorCampos.verificaLargo(jtfPrecio.getText().trim(), 15, jLabel4.getText());
             verificadorCampos.verificaLargo(jtfCantidadStock.getText().trim(), 11, jLabel5.getText());
+            verificadorCampos.verificaLargo(jtfStockMinimo.getText().trim(), 11, jLabel10.getText());
             verificadorCampos.verificaLargo(jtfUbicacion.getText().trim(), 100, jLabel6.getText());
             verificadorCampos.verificaLargo(jtfLote.getText().trim(), 100, jLabel7.getText());
             verificadorCampos.verificaLargo(jtfObservaciones.getText().trim(), 200, jLabel8.getText());
@@ -245,6 +264,7 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
         try {
             verificadorCampos.verificaFormatoDouble(jtfPrecio.getText().trim(), jLabel4.getText());
             verificadorCampos.verificaFormatoInteger(jtfCantidadStock.getText().trim(), jLabel5.getText());
+            verificadorCampos.verificaFormatoInteger(jtfStockMinimo.getText().trim(), jLabel10.getText());
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "HAY CAMPOS NUMÉRICOS EN MAL FORMATO",
                     JOptionPane.WARNING_MESSAGE);
@@ -256,11 +276,12 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
         String detalle = jtfDetalle.getText().trim();
         BigDecimal precio = BigDecimal.valueOf(Double.parseDouble(jtfPrecio.getText().trim())).setScale(2,RoundingMode.HALF_UP);
         Integer cantidad = Integer.valueOf(jtfCantidadStock.getText().trim());
+        Integer cantMinima = Integer.valueOf(jtfStockMinimo.getText().trim());
         String ubicacion = jtfUbicacion.getText().trim();
         String lote = jtfLote.getText().trim();
         String observaciones = jtfObservaciones.getText().trim();
 
-        Stock stock = new Stock(repuestoCargaPantalla.getStock().getId(), cantidad, ubicacion, lote, observaciones);
+        Stock stock = new Stock(repuestoCargaPantalla.getStock().getId(), cantidad, cantMinima, ubicacion, lote, observaciones);
         Repuesto repuesto = new Repuesto(repuestoCargaPantalla.getId(), codBarra, marca, detalle, precio, stock);
 
         //INICIO CONFIRMACIÓN
@@ -297,6 +318,7 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
         jtfDetalle.setText(repuestoCargaPantalla.getDetalle());
         jtfPrecio.setText(repuestoCargaPantalla.getPrecio().toString());
         jtfCantidadStock.setText(repuestoCargaPantalla.getStock().getCantidad().toString());
+        jtfStockMinimo.setText(repuestoCargaPantalla.getStock().getCantMinima().toString());
         jtfUbicacion.setText(repuestoCargaPantalla.getStock().getUbicacion());
         jtfLote.setText(repuestoCargaPantalla.getStock().getLote());
     }//GEN-LAST:event_formWindowOpened
@@ -346,6 +368,7 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonGuardar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -361,6 +384,7 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
     private javax.swing.JTextField jtfMarca;
     private javax.swing.JTextField jtfObservaciones;
     private javax.swing.JTextField jtfPrecio;
+    private javax.swing.JTextField jtfStockMinimo;
     private javax.swing.JTextField jtfUbicacion;
     // End of variables declaration//GEN-END:variables
 }

@@ -27,6 +27,12 @@ public interface RepuestoDAO {
      * @return
      */
     Boolean existeCodBarra(Repuesto repuesto);
+    
+    /**
+     * Cuenta los repuestos que tienen menor stock existente que stock mínimo.
+     * @return cantidad que contó
+     */
+    Long cuentaRespBajoStock();
 
     Repuesto buscarPorCodBarraExacto(String codBarra);
 

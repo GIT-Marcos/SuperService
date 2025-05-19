@@ -19,6 +19,9 @@ public class Stock implements Serializable{
 
     @Column(nullable = false)
     private Integer cantidad;
+    
+    @Column(name = "cantidad_minima")
+    private Integer cantMinima;
 
     @Column(nullable = false)
     private String ubicacion;
@@ -32,9 +35,10 @@ public class Stock implements Serializable{
     public Stock() {
     }
 
-    public Stock(Long id, Integer cantidad, String ubicacion, String lote, String observaciones) {
+    public Stock(Long id, Integer cantidad, Integer cantMinima, String ubicacion, String lote, String observaciones) {
         this.id = id;
         this.cantidad = cantidad;
+        this.cantMinima = cantMinima;
         this.ubicacion = ubicacion;
         this.lote = lote;
         this.observaciones = observaciones;
@@ -54,6 +58,14 @@ public class Stock implements Serializable{
 
     public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Integer getCantMinima() {
+        return cantMinima;
+    }
+
+    public void setCantMinima(Integer cantMinima) {
+        this.cantMinima = cantMinima;
     }
 
     public String getUbicacion() {
@@ -82,7 +94,7 @@ public class Stock implements Serializable{
 
     @Override
     public String toString() {
-        return "Stock{" + "id=" + id + ", cantidad=" + cantidad + ", ubicacion=" + ubicacion + ", lote=" + lote + ", observaciones=" + observaciones + '}';
+        return "Stock{" + "id=" + id + ", cantidad=" + cantidad + ", cantMinima=" + cantMinima + ", ubicacion=" + ubicacion + ", lote=" + lote + ", observaciones=" + observaciones + '}';
     }
 
 }
