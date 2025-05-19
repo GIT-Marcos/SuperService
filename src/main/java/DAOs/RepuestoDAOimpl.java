@@ -46,7 +46,20 @@ public class RepuestoDAOimpl implements RepuestoDAO {
             return false;
         }
     }
-
+    
+    @Override
+    public Long cuentaRespBajoStock() {
+        session = Util.getHibernateSession();
+        Long cantidad = session.createQuery("SELECT DISTINCT COUNT(r) FROM Repuesto r "
+                + "WHERE r.stock.cantidad <= r.stock.cantMinima",
+                Long.class)
+                .getSingleResult();
+                
+        
+        session.close();
+        return cantidad;
+    }
+    
     @Override
     public Repuesto buscarPorCodBarraExacto(String codBarra
     ) {
@@ -118,6 +131,7 @@ public class RepuestoDAOimpl implements RepuestoDAO {
     @Override
     public Boolean borrarRepuesto(Repuesto repuesto
     ) {
+        //TO DO: MEJORAR ESTO
         //ESTO ES VILLERO PERO ANDA
         session = Util.getHibernateSession();
         Repuesto aBorrar = session.find(Repuesto.class, repuesto.getId());
@@ -150,5 +164,5 @@ public class RepuestoDAOimpl implements RepuestoDAO {
             session.close();
         }*/
     }
-
+    
 }

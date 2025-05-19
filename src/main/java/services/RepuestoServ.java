@@ -51,5 +51,9 @@ public class RepuestoServ {
     public Boolean borrarRepuesto(Repuesto repuesto) {
         return dao.borrarRepuesto(repuesto);
     }
+    
+    public Long cuentaRespBajoStock(){
+        return dao.cuentaRespBajoStock();
+    }
 
 }
