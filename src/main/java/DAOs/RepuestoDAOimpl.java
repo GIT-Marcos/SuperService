@@ -1,6 +1,13 @@
 package DAOs;
 
 import entities.Repuesto;
+import entities.Stock;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Session;
 import util.Util;
@@ -29,7 +36,7 @@ public class RepuestoDAOimpl implements RepuestoDAO {
     /**
      * Verifica si existen varios repuestos con un mismo código de barras. Sirve
      * para la carga de nuevos y para la modificación.
-     * 
+     *
      */
     @Override
     public Boolean existeCodBarra(Repuesto repuesto) {
@@ -46,7 +53,7 @@ public class RepuestoDAOimpl implements RepuestoDAO {
             return false;
         }
     }
-    
+
     @Override
     public Long cuentaRespBajoStock() {
         session = Util.getHibernateSession();
@@ -54,12 +61,11 @@ public class RepuestoDAOimpl implements RepuestoDAO {
                 + "WHERE r.stock.cantidad <= r.stock.cantMinima",
                 Long.class)
                 .getSingleResult();
-                
-        
+
         session.close();
         return cantidad;
     }
-    
+
     @Override
     public Repuesto buscarPorCodBarraExacto(String codBarra
     ) {
@@ -94,6 +100,40 @@ public class RepuestoDAOimpl implements RepuestoDAO {
                 Repuesto.class).setParameter("detalle", "%" + detalle.toLowerCase() + "%").list();
         session.close();
         return lista;
+    }
+
+    @Override
+    public List<Repuesto> buscarConFiltros(String inputParaBuscar, Integer opcionBusqueda, Boolean stockNormal, Boolean stockBajo) {
+        session = Util.getHibernateSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Repuesto> query = cb.createQuery(Repuesto.class);
+        Root<Repuesto> root = query.from(Repuesto.class);
+        Join<Repuesto, Stock> joinStock = root.join("stock");
+        List<Predicate> filtros = new ArrayList<>();
+
+        //SI SE QUIERE BUSCAR ALGO...
+        if (inputParaBuscar != null) {
+            switch (opcionBusqueda) {
+                case 0: //se eligió cod barra
+                    filtros.add(cb.like(cb.lower(root.get("codBarra")), "%" + inputParaBuscar.toLowerCase() + "%"));
+                    break;
+                case 1: //se eligió detalle
+                    filtros.add(cb.like(cb.lower(root.get("detalle")), "%" + inputParaBuscar.toLowerCase() + "%"));
+                    break;
+                default:
+                    throw new AssertionError();
+            }
+        }
+        //SI LOS 2 VIENEN VERDADEROS, O SEA QUIERE VER CUALQUIERA, NO ENTRA EN NINGÚN IF
+        if (stockNormal && !stockBajo) {
+            filtros.add(cb.greaterThan(joinStock.get("cantidad"), joinStock.get("cantMinima")));
+        } else if (stockBajo && !stockNormal) {
+            filtros.add(cb.lessThanOrEqualTo(joinStock.get("cantidad"), joinStock.get("cantMinima")));
+        }
+        query.where(cb.and(filtros.toArray(new Predicate[0])));
+        List<Repuesto> repuestos = session.createQuery(query).setMaxResults(50).getResultList();
+        session.close();
+        return repuestos;
     }
 
     @Override
@@ -164,5 +204,5 @@ public class RepuestoDAOimpl implements RepuestoDAO {
             session.close();
         }*/
     }
-    
+
 }
