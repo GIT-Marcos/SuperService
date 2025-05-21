@@ -39,6 +39,16 @@ public interface RepuestoDAO {
     List<Repuesto> buscarPorCodBarra(String codBarra);
 
     List<Repuesto> buscarPorDetalle(String detalle);
+    
+    /**
+     * 
+     * @param inputParaBuscar
+     * @param opcionBusqueda
+     * @param stockNormal si el stock existente es MAYOR q el mínimo
+     * @param stockBajo si el stock existente es MENOR q el mínimo
+     * @return 
+     */
+    List<Repuesto> buscarConFiltros(String inputParaBuscar, Integer opcionBusqueda, Boolean stockNormal, Boolean stockBajo);
 
     //////////////////////ESCRITURA
     

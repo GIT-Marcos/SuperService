@@ -30,6 +30,10 @@ public class RepuestoServ {
     public List<Repuesto> buscarPorDetalle(String detalle) {
         return dao.buscarPorDetalle(detalle);
     }
+    
+    public List<Repuesto> buscarConFiltros(String inputParaBuscar, Integer opcionBusqueda, Boolean stockNormal, Boolean stockBajo){
+        return dao.buscarConFiltros(inputParaBuscar, opcionBusqueda, stockNormal, stockBajo);
+    }
 
     public Repuesto cargarRepuesto(Repuesto repuesto) {
         if (repuesto.getStock() == null) {

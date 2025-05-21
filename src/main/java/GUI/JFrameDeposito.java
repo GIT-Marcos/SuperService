@@ -26,10 +26,6 @@ public class JFrameDeposito extends javax.swing.JFrame {
     private final String COL_CANTI_STOCK = "CANTIDAD STOCK";
     private final String COL_STOCK_MIN = "STOCK MÍNIMO";
 
-    //constantes para combo box
-    private final Integer CB_COD_BARRA = 0;
-    private final Integer CB_DETALLE = 1;
-
     private final VerificadorCampos verificadorCampos = new VerificadorCampos();
 
     private final DefaultTableModel tabla = new DefaultTableModel(new Object[]{
@@ -53,6 +49,8 @@ public class JFrameDeposito extends javax.swing.JFrame {
         listaParaTabla = repuestoServ.todosRepuestos();
         llenaTabla(listaParaTabla);
         gestionaAvisoStock();
+        jcbStockNormal.setSelected(true);
+        jcbStockBajo.setSelected(true);
     }
 
     /**
@@ -78,6 +76,8 @@ public class JFrameDeposito extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableRepuestos = new javax.swing.JTable();
         jLabelExistenciaStock = new javax.swing.JLabel();
+        jcbStockBajo = new javax.swing.JCheckBox();
+        jcbStockNormal = new javax.swing.JCheckBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
 
@@ -169,6 +169,10 @@ public class JFrameDeposito extends javax.swing.JFrame {
         jLabelExistenciaStock.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
         jLabelExistenciaStock.setText("*Existen productos con stock debajo del mínimo.");
 
+        jcbStockBajo.setText("Buscar stock bajo.");
+
+        jcbStockNormal.setText("Buscar stock normal.");
+
         jMenuBar1.setBorder(null);
         jMenuBar1.setName(""); // NOI18N
 
@@ -194,21 +198,23 @@ public class JFrameDeposito extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1003, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButBuscarRepuesto, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                             .addComponent(jtfBuscar))
-                        .addGap(34, 34, 34)
+                        .addGap(25, 25, 25)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelExistenciaStock)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBoxBuscar, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabelExistenciaStock)
-                                .addGap(448, 448, 448)))))
+                                .addComponent(jComboBoxBuscar, 0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jcbStockNormal)
+                            .addComponent(jcbStockBajo))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(5, 5, 5))
         );
         layout.setVerticalGroup(
@@ -217,14 +223,18 @@ public class JFrameDeposito extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jtfBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
-                            .addComponent(jComboBoxBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jtfBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jComboBoxBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(10, 10, 10))
+                            .addComponent(jcbStockNormal, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButBuscarRepuesto)
-                            .addComponent(jLabelExistenciaStock))
+                            .addComponent(jLabelExistenciaStock)
+                            .addComponent(jcbStockBajo))
                         .addGap(10, 10, 10)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
@@ -255,6 +265,7 @@ public class JFrameDeposito extends javax.swing.JFrame {
 
     private void jButBuscarRepuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButBuscarRepuestoActionPerformed
         String input = jtfBuscar.getText().trim();
+        int seleccion = jComboBoxBuscar.getSelectedIndex();
         try {
             verificadorCampos.verificarVacio(input, "Búsqueda");
         } catch (IllegalArgumentException ex) {
@@ -262,24 +273,25 @@ public class JFrameDeposito extends javax.swing.JFrame {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (jComboBoxBuscar.getSelectedIndex() == CB_COD_BARRA) {
-            listaParaTabla = repuestoServ.buscarPorCodBarra(input);
-            tabla.setRowCount(0);
-            llenaTabla(listaParaTabla);
-            return;
+        boolean stockNormal = jcbStockNormal.isSelected();
+        boolean stockBajo = jcbStockBajo.isSelected();
+        if (stockNormal || stockBajo) {
+            listaParaTabla = repuestoServ.buscarConFiltros(input, seleccion, stockNormal, stockBajo);
         }
-        if (jComboBoxBuscar.getSelectedIndex() == CB_DETALLE) {
-            listaParaTabla = repuestoServ.buscarPorDetalle(input);
-            tabla.setRowCount(0);
-            llenaTabla(listaParaTabla);
-        }
-
+        tabla.setRowCount(0);
+        llenaTabla(listaParaTabla);
     }//GEN-LAST:event_jButBuscarRepuestoActionPerformed
 
     private void jButActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButActualizarActionPerformed
+        boolean stockNormal = jcbStockNormal.isSelected();
+        boolean stockBajo = jcbStockBajo.isSelected();
+        if (stockNormal || stockBajo) {
+            listaParaTabla = repuestoServ.buscarConFiltros(null, null, stockNormal, stockBajo);
+        } else {
+            listaParaTabla.clear();
+        }
         jtfBuscar.setText("");
         tabla.setRowCount(0);
-        listaParaTabla = repuestoServ.todosRepuestos();
         llenaTabla(listaParaTabla);
         gestionaAvisoStock();
     }//GEN-LAST:event_jButActualizarActionPerformed
@@ -322,14 +334,14 @@ public class JFrameDeposito extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButEliminarActionPerformed
 
-    private void gestionaAvisoStock(){
+    private void gestionaAvisoStock() {
         if (repuestoServ.cuentaRespBajoStock() > 0) {
             jLabelExistenciaStock.setVisible(true);
         } else {
             jLabelExistenciaStock.setVisible(false);
         }
     }
-    
+
     private void setTabla() {
         jTableRepuestos = new JTable(tabla);
         jScrollPane1.setViewportView(jTableRepuestos);
@@ -427,6 +439,8 @@ public class JFrameDeposito extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTableRepuestos;
+    private javax.swing.JCheckBox jcbStockBajo;
+    private javax.swing.JCheckBox jcbStockNormal;
     private javax.swing.JTextField jtfBuscar;
     // End of variables declaration//GEN-END:variables
 }
