@@ -289,16 +289,7 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
                 "CONFIRMACIÓN DE EDICIÓN", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (opcionElegida == JOptionPane.YES_OPTION) {
             try {
-                //SI EL COD BARRA CAMBIÓ HAY Q VERIFICAR QUE NO EXISTA YA UNO CON ESE COD
-                if (!codBarraCargaPantalla.equals(codBarra)) {
-                    //SI YA EXISTE...
-                    if (repuestoServ.existeCodBarra(repuesto)) {
-                        JOptionPane.showMessageDialog(null, "Ya existe un producto con ese código de barras",
-                                "ERROR DE GUARDADO", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                }
-                repuestoServ.modificarRepuesto(repuesto);
+                repuestoServ.modificarRepuesto(repuesto, codBarraCargaPantalla);
                 this.dispose();
             } catch (NullPointerException | HibernateException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR DE GUARDADO",

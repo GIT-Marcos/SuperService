@@ -376,7 +376,7 @@ public class JFrameDeposito extends javax.swing.JFrame {
         }
 
         //PARA CENTRAR DATOS DE TABLA
-        //TO DO: MIGRAR PARA LA CLASE DEL RENDER
+        //TO-DO: MIGRAR PARA LA CLASE DEL RENDER
         // Crear renderer que centra el contenido
         /*
         DefaultTableCellRenderer centrado = new DefaultTableCellRenderer();

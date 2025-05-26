@@ -7,7 +7,8 @@ public interface RepuestoDAO {
 
     /////////////////////LECTURA
     /**
-     * 
+     * Trae todos los repuestos para la tabla principal.
+     * TO-DO: paginar resultados
      * @return 
      */
     List<Repuesto> todosRepuestos();
@@ -18,22 +19,28 @@ public interface RepuestoDAO {
      * @return
      */
     Repuesto buscarRepuesto(Long id);
-
-    /**
-     * Verifica si existen varios repuestos con un mismo código de barras.Sirve
-     * para la carga de nuevos y para la modificación.
-     *
-     * @param repuesto para verificarle al cod de barra
-     * @return
-     */
-    Boolean existeCodBarra(Repuesto repuesto);
     
     /**
-     * Cuenta los repuestos que tienen menor stock existente que stock mínimo.
+     * Cuenta los repuestos que tienen menor stock existente que stock mínimo para
+     * avisos en GUI.
      * @return cantidad que contó
      */
     Long cuentaRespBajoStock();
+    
+    /**
+     * Para saber como proceder en la carga o modificación de un producto.
+     * @param codBarra a consultar.
+     * @return null: si el producto que se quiere cargar no existe ya; true: si
+     * el producto ya existe y está activo; false: si el producto ya existe pero con
+     * borrado lógico.
+     */
+    Boolean consultaEstado(String codBarra);
 
+    /**
+     * Trae un repuesto para cargar la GUI de modificación.
+     * @param codBarra
+     * @return 
+     */
     Repuesto buscarPorCodBarraExacto(String codBarra);
 
     List<Repuesto> buscarPorCodBarra(String codBarra);
@@ -65,6 +72,14 @@ public interface RepuestoDAO {
      * @return
      */
     Repuesto modificarRepuesto(Repuesto repuesto);
+    
+    /**
+     * Usado cuando un repuesto se tiene que cargar o modificar y ya existe uno
+     * CON BORRADO LÓGICO y con su mismo código de barras que es único.
+     * @param repuesto con datos que sobreescriben los que ya están en db.
+     * @return 
+     */
+    Repuesto reviveRepuestoInactivo(Repuesto repuesto); 
 
     /**
      *

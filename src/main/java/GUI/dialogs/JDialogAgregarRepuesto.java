@@ -280,8 +280,6 @@ public class JDialogAgregarRepuesto extends javax.swing.JDialog {
                 "CONFIRMACIÓN DE CREACIÓN", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (opcionElegida == JOptionPane.YES_OPTION) {
             try {
-                //LA VERIFICACIÓN DE LA EXISTENCIA DE UN MISMO COD DE BARRAS EN ESTE CASO
-                //ESTÁ EN LA CAPA DE SERV.
                 repuestoServ.cargarRepuesto(repuesto);
                 this.dispose();
             } catch (NullPointerException | HibernateException ex) {
