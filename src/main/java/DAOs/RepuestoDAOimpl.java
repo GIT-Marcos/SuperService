@@ -33,27 +33,6 @@ public class RepuestoDAOimpl implements RepuestoDAO {
         return repuesto;
     }
 
-    /**
-     * Verifica si existen varios repuestos con un mismo código de barras. Sirve
-     * para la carga de nuevos y para la modificación.
-     *
-     */
-    @Override
-    public Boolean existeCodBarra(Repuesto repuesto) {
-        session = Util.getHibernateSession();
-        Long cantidad = session.createQuery("SELECT COUNT(r) FROM Repuesto r "
-                + "WHERE r.codBarra = :codBarra",
-                Long.class)
-                .setParameter("codBarra", repuesto.getCodBarra())
-                .getSingleResult();
-        session.close();
-        if (cantidad > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     @Override
     public Long cuentaRespBajoStock() {
         session = Util.getHibernateSession();
@@ -64,6 +43,18 @@ public class RepuestoDAOimpl implements RepuestoDAO {
 
         session.close();
         return cantidad;
+    }
+
+    @Override
+    public Boolean consultaEstado(String codBarra) {
+        Boolean resultado;
+        session = Util.getHibernateSession();
+        resultado = session.createNativeQuery("SELECT r.activo FROM repuestos r WHERE r.codigo_barra = :codBarra",
+                Boolean.class)
+                .setParameter("codBarra", codBarra)
+                .getSingleResultOrNull();
+        session.close();
+        return resultado;
     }
 
     @Override
@@ -169,9 +160,52 @@ public class RepuestoDAOimpl implements RepuestoDAO {
     }
 
     @Override
+    public Repuesto reviveRepuestoInactivo(Repuesto repuesto) {
+        session = Util.getHibernateSession();
+        //El que viene tiene la id nula pq se la genera el orm, hay que buscarla
+        Long idInactivo = session.createNativeQuery("SELECT r.pk_repuesto FROM repuestos r "
+                + "WHERE r.codigo_barra = :codigo_barra",
+                Long.class)
+                .setParameter("codigo_barra", repuesto.getCodBarra())
+                .getSingleResultOrNull();
+        try {
+            session.beginTransaction();
+            session.createNativeQuery("UPDATE stock SET cantidad_minima= :cantidad_minima, "
+                    + "cantidad= :cantidad, lote= :lote, observaciones= :obser, ubicacion= :ubic, "
+                    + "activo = true "
+                    + "WHERE pk_stock= :pk",
+                    Integer.class)
+                    .setParameter("cantidad_minima", repuesto.getStock().getCantMinima())
+                    .setParameter("cantidad", repuesto.getStock().getCantidad())
+                    .setParameter("lote", repuesto.getStock().getLote())
+                    .setParameter("obser", repuesto.getStock().getObservaciones())
+                    .setParameter("ubic", repuesto.getStock().getUbicacion())
+                    .setParameter("pk", idInactivo)
+                    .executeUpdate();
+            session.createNativeQuery("UPDATE repuestos SET detalle= :detalle, "
+                    + "marca= :marca, precio= :precio, "
+                    + "activo = true "
+                    + "WHERE pk_repuesto= :pk",
+                    Integer.class)
+                    .setParameter("detalle", repuesto.getDetalle())
+                    .setParameter("marca", repuesto.getMarca())
+                    .setParameter("precio", repuesto.getPrecio())
+                    .setParameter("pk", idInactivo)
+                    .executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+        return repuesto;
+    }
+
+    @Override
     public Boolean borrarRepuesto(Repuesto repuesto
     ) {
-        //TO DO: MEJORAR ESTO
+        //TO-DO: MEJORAR ESTO
         //ESTO ES VILLERO PERO ANDA
         session = Util.getHibernateSession();
         Repuesto aBorrar = session.find(Repuesto.class, repuesto.getId());

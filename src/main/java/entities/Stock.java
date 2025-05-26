@@ -7,8 +7,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.io.Serializable;
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.SoftDeleteType;
 
 @Entity
+@SoftDelete(strategy = SoftDeleteType.ACTIVE, columnName = "activo")
 @Table(name = "stock")
 public class Stock implements Serializable{
 

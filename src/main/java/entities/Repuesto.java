@@ -10,8 +10,11 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.SoftDeleteType;
 
 @Entity
+@SoftDelete(strategy = SoftDeleteType.ACTIVE, columnName = "activo")
 @Table(name = "repuestos")
 public class Repuesto implements Serializable{
 
@@ -31,7 +34,7 @@ public class Repuesto implements Serializable{
 
     @Column(precision = 16, scale = 2, nullable = false)
     private BigDecimal precio;
-
+    
     //RELACIÓN HACIA STOCK 1-1
     @OneToOne(cascade = CascadeType.ALL, optional = false, orphanRemoval = true)
     private Stock stock;
@@ -87,7 +90,7 @@ public class Repuesto implements Serializable{
     public void setPrecio(BigDecimal precio) {
         this.precio = precio;
     }
-
+    
     public Stock getStock() {
         return stock;
     }

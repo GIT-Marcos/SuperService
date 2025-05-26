@@ -9,14 +9,9 @@ import org.hibernate.HibernateException;
 public class RepuestoServ {
 
     private final RepuestoDAO dao = new RepuestoDAOimpl();
-    
 
     public List<Repuesto> todosRepuestos() {
         return dao.todosRepuestos();
-    }
-
-    public Boolean existeCodBarra(Repuesto repuesto) {
-        return dao.existeCodBarra(repuesto);
     }
 
     public Repuesto buscarPorCodBarraExacto(String codBarra) {
@@ -30,8 +25,8 @@ public class RepuestoServ {
     public List<Repuesto> buscarPorDetalle(String detalle) {
         return dao.buscarPorDetalle(detalle);
     }
-    
-    public List<Repuesto> buscarConFiltros(String inputParaBuscar, Integer opcionBusqueda, Boolean stockNormal, Boolean stockBajo){
+
+    public List<Repuesto> buscarConFiltros(String inputParaBuscar, Integer opcionBusqueda, Boolean stockNormal, Boolean stockBajo) {
         return dao.buscarConFiltros(inputParaBuscar, opcionBusqueda, stockNormal, stockBajo);
     }
 
@@ -39,24 +34,40 @@ public class RepuestoServ {
         if (repuesto.getStock() == null) {
             throw new NullPointerException("Error: el stock es nulo.");
         }
-        if (existeCodBarra(repuesto)) {
-            throw new HibernateException("Error: ya existe un repuesto con ese código de barras.");
+
+        Boolean estado = dao.consultaEstado(repuesto.getCodBarra());
+        if (estado == null) {
+            return dao.cargarRepuesto(repuesto);
         }
-        return dao.cargarRepuesto(repuesto);
+        if (estado) {
+            throw new HibernateException("Ya existe un repuesto con el código de barras: " + repuesto.getCodBarra());
+        } else {
+            return dao.reviveRepuestoInactivo(repuesto);
+        }
     }
 
-    public Repuesto modificarRepuesto(Repuesto repuesto) {
+    public Repuesto modificarRepuesto(Repuesto repuesto, String codBarraOriginal) {
         if (repuesto.getStock() == null) {
             throw new NullPointerException("Error: el stock es nulo.");
         }
-        return dao.modificarRepuesto(repuesto);
+        Boolean estado = dao.consultaEstado(repuesto.getCodBarra());
+        //verifica si el codigo de barras no cambió
+        if (repuesto.getCodBarra().equals(codBarraOriginal)) {
+            return dao.modificarRepuesto(repuesto);
+        } else {
+            if (estado) {
+                throw new HibernateException("Ya existe un repuesto con el código de barras: " + repuesto.getCodBarra());
+            } else {
+                return dao.reviveRepuestoInactivo(repuesto);
+            }
+        }
     }
 
     public Boolean borrarRepuesto(Repuesto repuesto) {
         return dao.borrarRepuesto(repuesto);
     }
-    
-    public Long cuentaRespBajoStock(){
+
+    public Long cuentaRespBajoStock() {
         return dao.cuentaRespBajoStock();
     }
 
