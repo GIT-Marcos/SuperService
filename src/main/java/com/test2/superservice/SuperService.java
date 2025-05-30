@@ -1,6 +1,6 @@
 package com.test2.superservice;
 
-import GUI.JFrameDeposito;
+import GUI.Inicio;
 import java.awt.Dimension;
 
 /**
@@ -10,9 +10,8 @@ public class SuperService {
 
     public static void main(String[] args) {
 
-        JFrameDeposito jFrameDeposito = new JFrameDeposito();
-        //jFrameDeposito.setExtendedState(JFrameDeposito.MAXIMIZED_BOTH);
-        jFrameDeposito.setMinimumSize(new Dimension(900, 590));
-        jFrameDeposito.setVisible(true);
+          Inicio ini = new Inicio();
+          ini.setResizable(false);
+          ini.setVisible(true);
     }
 }

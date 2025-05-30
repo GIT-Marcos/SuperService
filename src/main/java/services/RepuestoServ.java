@@ -55,6 +55,9 @@ public class RepuestoServ {
         if (repuesto.getCodBarra().equals(codBarraOriginal)) {
             return dao.modificarRepuesto(repuesto);
         } else {
+            if (estado == null) {
+                return dao.modificarRepuesto(repuesto);
+            }
             if (estado) {
                 throw new HibernateException("Ya existe un repuesto con el código de barras: " + repuesto.getCodBarra());
             } else {
