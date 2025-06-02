@@ -1,0 +1,14 @@
+package enums;
+
+
+public enum PrivilegioUsuario {
+    GERENCIAL,
+    OPERATIVO_TALLER,
+    JEFE_TALLER,
+    OPERATIVO_VENTAS,
+    JEFE_VENTAS,
+    OPERATIVO_RECEPCION,
+    JEFE_RECEPCION,
+    OPERATIVO_DEPOSITO,
+    JEFE_DEPOSITO
+}
