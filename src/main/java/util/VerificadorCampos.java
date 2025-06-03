@@ -1,6 +1,5 @@
 package util;
 
-
 /**
  *
  * @author Usuario
@@ -64,6 +63,23 @@ public class VerificadorCampos {
             Long.valueOf(valorCampo);
         } catch (NumberFormatException ex) {
             throw new NumberFormatException("El " + nombreCampo + " está en formato incorrecto.");
+        }
+    }
+
+    public void verificaPassword(char[] password) {
+        if (password == null) {
+            throw new NullPointerException("La contraseña es nula.");
+        }
+        if (password.length == 0) {
+            throw new NullPointerException("La contraseña no puede quedar vacía.");
+        }
+        if (password.length > 20 && password.length < 6) {
+            throw new IllegalArgumentException("La contraseña no puede tener menos de 6 y más de 20 caracteres.");
+        }
+        for (char c : password) {
+            if (Character.isWhitespace(c)) {
+                throw new IllegalArgumentException("La contraseña no puede tener espacios en blanco.");
+            }
         }
     }
 }
