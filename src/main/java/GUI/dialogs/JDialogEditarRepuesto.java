@@ -290,6 +290,8 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
         if (opcionElegida == JOptionPane.YES_OPTION) {
             try {
                 repuestoServ.modificarRepuesto(repuesto, codBarraCargaPantalla);
+                JOptionPane.showMessageDialog(null, "Repuesto modificado correctamente.",
+                        "MODIFICACIÓN DE REPUESTO", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
             } catch (NullPointerException | HibernateException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR DE GUARDADO",

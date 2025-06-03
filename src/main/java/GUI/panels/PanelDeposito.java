@@ -402,6 +402,8 @@ public class PanelDeposito extends javax.swing.JPanel {
                     "CONFIRMACIÓN DE BORRADO", JOptionPane.WARNING_MESSAGE);
             if (respuesta2 == JOptionPane.YES_OPTION) {
                 repuestoServ.borrarRepuesto(repuestoBorrar);
+                JOptionPane.showMessageDialog(null, "Repuesto eliminado correctamente.",
+                        "ELIMINACIÓN DE REPUESTO", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_jButEliminarActionPerformed
