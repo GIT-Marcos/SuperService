@@ -281,6 +281,8 @@ public class JDialogAgregarRepuesto extends javax.swing.JDialog {
         if (opcionElegida == JOptionPane.YES_OPTION) {
             try {
                 repuestoServ.cargarRepuesto(repuesto);
+                JOptionPane.showMessageDialog(null, "Repuesto cargado correctamente.",
+                        "CARGA DE REPUESTO", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
             } catch (NullPointerException | HibernateException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR DE STOCK",
