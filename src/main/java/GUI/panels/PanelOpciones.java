@@ -14,7 +14,6 @@ import GUI.dialogs.JDialogNuevaVenta;
 public class PanelOpciones extends javax.swing.JPanel {
 
     private JFrameHome home;
-    private PanelNuevaVenta panelNuevaVenta;
     
     public PanelOpciones() {
         initComponents();
@@ -35,28 +34,38 @@ public class PanelOpciones extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jButNuevaVenta = new javax.swing.JButton();
+        jButVerVentas = new javax.swing.JButton();
+        jButRepuestos = new javax.swing.JButton();
+        jButClientes = new javax.swing.JButton();
 
-        jButton1.setText("nueva venta");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButNuevaVenta.setText("NUEVA VENTA");
+        jButNuevaVenta.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButNuevaVenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButNuevaVentaActionPerformed(evt);
             }
         });
 
-        jButton2.setText("ver ventas");
-
-        jButton3.setText("repuestos");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jButVerVentas.setText("VER VENTAS");
+        jButVerVentas.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButVerVentas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jButVerVentasActionPerformed(evt);
             }
         });
 
-        jButton4.setText("clientes");
+        jButRepuestos.setText("REPUESTOS");
+        jButRepuestos.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButRepuestos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButRepuestosActionPerformed(evt);
+            }
+        });
+
+        jButClientes.setText("CLIENTES");
+        jButClientes.setEnabled(false);
+        jButClientes.setMargin(new java.awt.Insets(2, 2, 2, 2));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -64,42 +73,46 @@ public class PanelOpciones extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
+                .addComponent(jButNuevaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addComponent(jButVerVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addGap(18, 18, 18)
-                .addComponent(jButton4)
-                .addContainerGap(303, Short.MAX_VALUE))
+                .addComponent(jButRepuestos, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 248, Short.MAX_VALUE)
+                .addComponent(jButClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
-                .addContainerGap(371, Short.MAX_VALUE))
+                    .addComponent(jButNuevaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButVerVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButRepuestos, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(372, 372, 372))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButNuevaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButNuevaVentaActionPerformed
         JDialogNuevaVenta jDialogNuevaVenta = new JDialogNuevaVenta(home, false);
         jDialogNuevaVenta.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButNuevaVentaActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButRepuestosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButRepuestosActionPerformed
         home.mostrarPanel("panelDeposito");
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jButRepuestosActionPerformed
+
+    private void jButVerVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButVerVentasActionPerformed
+        home.mostrarPanel("panelVentas");
+    }//GEN-LAST:event_jButVerVentasActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButClientes;
+    private javax.swing.JButton jButNuevaVenta;
+    private javax.swing.JButton jButRepuestos;
+    private javax.swing.JButton jButVerVentas;
     // End of variables declaration//GEN-END:variables
 }

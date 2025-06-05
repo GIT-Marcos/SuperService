@@ -115,6 +115,7 @@ public class jDialogAgregarRepuestoVenta extends javax.swing.JDialog {
         jcbMostrarStockBajo = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Agregar un repuesto a la venta");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
