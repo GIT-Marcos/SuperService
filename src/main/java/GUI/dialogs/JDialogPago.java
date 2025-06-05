@@ -8,7 +8,6 @@ import enums.MetodosPago;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
-import services.RepuestoServ;
 import services.StockServ;
 import services.VentaRepuestoServ;
 
@@ -24,7 +23,7 @@ public class JDialogPago extends javax.swing.JDialog {
 
     private BigDecimal monto;
 
-    private VentaRepuestoServ ventaServicio = new VentaRepuestoServ();
+    private VentaRepuestoServ ventaServ = new VentaRepuestoServ();
 
     private StockServ stockServ = new StockServ();
 
@@ -72,6 +71,7 @@ public class JDialogPago extends javax.swing.JDialog {
         jButConfirmarPago = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Registrar pago");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -282,14 +282,14 @@ public class JDialogPago extends javax.swing.JDialog {
         if (resultado == 1) {
             return;
         }
+        venta.setEstadoVenta(EstadoVentaRepuesto.PAGADO);
         //TO-DO: GESTIONAR EXEPCIONES
-        ventaServicio.cargarVenta(venta);
+        ventaServ.cargarVenta(venta);
         //TO-DO: HACER BIEN ESTO
         for (int i = 0; i < nota.getDetallesRetiro().size(); i++) {
             Stock s = nota.getDetallesRetiro().get(i).getRepuesto().getStock();
             stockServ.actualizarStock(s);
         }
-        this.venta.setEstadoVenta(EstadoVentaRepuesto.PAGADO);
         JOptionPane.showMessageDialog(null, "Pago guardado correctamente.", "PAGO",
                 JOptionPane.INFORMATION_MESSAGE);
         this.dispose();

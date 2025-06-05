@@ -42,23 +42,23 @@ public class JFrameHome extends javax.swing.JFrame {
         panelDeposito1 = new GUI.panels.PanelDeposito(this);
         panelNuevaVenta1 = new GUI.panels.PanelNuevaVenta();
         panelNuevaVenta1 = new GUI.panels.PanelNuevaVenta(this);
+        panelVentas1 = new GUI.panels.PanelVentas();
+        panelVentas1 = new GUI.panels.PanelVentas(this);
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Inicio");
 
         jPanelCardLayout.setBackground(new java.awt.Color(255, 255, 255));
         jPanelCardLayout.setLayout(new java.awt.CardLayout());
         jPanelCardLayout.add(panelOpciones1, "panelOpciones");
         jPanelCardLayout.add(panelDeposito1, "panelDeposito");
         jPanelCardLayout.add(panelNuevaVenta1, "panelNuevaVenta");
+        jPanelCardLayout.add(panelVentas1, "panelVentas");
 
-        jMenu1.setText("File");
+        jMenu1.setText("Ventana");
         jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -114,11 +114,11 @@ public class JFrameHome extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanelCardLayout;
     private GUI.panels.PanelDeposito panelDeposito1;
     private GUI.panels.PanelNuevaVenta panelNuevaVenta1;
     private GUI.panels.PanelOpciones panelOpciones1;
+    private GUI.panels.PanelVentas panelVentas1;
     // End of variables declaration//GEN-END:variables
 }

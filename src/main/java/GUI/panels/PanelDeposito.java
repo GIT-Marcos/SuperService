@@ -139,6 +139,7 @@ public class PanelDeposito extends javax.swing.JPanel {
         jButEliminar = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jButIngresarStock = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(51, 51, 51));
 
@@ -224,7 +225,7 @@ public class PanelDeposito extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1)))
-                .addGap(14, 14, 14))
+                .addGap(10, 10, 10))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -249,7 +250,7 @@ public class PanelDeposito extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jPanel2.setBackground(new java.awt.Color(51, 153, 0));
+        jPanel2.setBackground(new java.awt.Color(153, 255, 153));
 
         jButActualizar.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jButActualizar.setText("Todos los repuestos");
@@ -294,6 +295,14 @@ public class PanelDeposito extends javax.swing.JPanel {
             }
         });
 
+        jButIngresarStock.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jButIngresarStock.setText("Ingresar Stock");
+        jButIngresarStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButIngresarStockActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -306,7 +315,8 @@ public class PanelDeposito extends javax.swing.JPanel {
                     .addComponent(jButEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButAgregarRepuesto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButIngresarStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -320,7 +330,9 @@ public class PanelDeposito extends javax.swing.JPanel {
                 .addComponent(jButModificar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButEliminar)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButIngresarStock)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5)
@@ -432,6 +444,12 @@ public class PanelDeposito extends javax.swing.JPanel {
         home.mostrarPanel("panelOpciones");
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButIngresarStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButIngresarStockActionPerformed
+        
+        
+        
+    }//GEN-LAST:event_jButIngresarStockActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.Box.Filler filler1;
@@ -439,6 +457,7 @@ public class PanelDeposito extends javax.swing.JPanel {
     private javax.swing.JButton jButAgregarRepuesto;
     private javax.swing.JButton jButBuscarRepuesto;
     private javax.swing.JButton jButEliminar;
+    private javax.swing.JButton jButIngresarStock;
     private javax.swing.JButton jButModificar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton5;

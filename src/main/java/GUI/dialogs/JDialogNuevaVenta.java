@@ -3,6 +3,7 @@ package GUI.dialogs;
 import entities.DetalleRetiro;
 import entities.NotaRetiro;
 import entities.Repuesto;
+import entities.VentaRepuesto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -40,6 +41,8 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
     private List<Long> idsRepuestosAgregados = new ArrayList<>();
 
     private NotaRetiro nota = new NotaRetiro();
+    
+    private VentaRepuesto ventaParaTotal = new VentaRepuesto();
 
     private List<DetalleRetiro> detalles = new ArrayList<>();
 
@@ -50,6 +53,9 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
         ////MÉTODOS CUANDO SE INICIA LA VENTANA
         setTabla();
         nota.setDetallesRetiro(detalles);
+        jLabFecha.setText("FECHA: "+LocalDate.now());
+        
+        ventaParaTotal.setNotaRetiro(nota);
     }
 
     private void setTabla() {
@@ -80,6 +86,8 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
         //TO-DO:HACER EL MÉTODO PARA ESTO EN LA CLASE NOTA
         detalles.add(d);
         jButPagar.setEnabled(false);
+        BigDecimal bd = ventaParaTotal.calculaMonto();
+        jLabTotal.setText("TOTAL: $ "+ String.valueOf(bd));
     }
 
     public List<Long> getAgregados() {
@@ -96,12 +104,13 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        jLabFecha = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableRepuestos = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
+        jLabTotal = new javax.swing.JLabel();
         jButPagar = new javax.swing.JButton();
         jButEmitirNota = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButAgregarRepuesto = new javax.swing.JButton();
         jButQuitarRepuesto = new javax.swing.JButton();
@@ -111,11 +120,12 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
         jButModificarCantidad = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("cargar nueva venta");
 
         jPanel1.setBackground(new java.awt.Color(255, 204, 204));
 
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel3.setText("FECHA:");
+        jLabFecha.setForeground(new java.awt.Color(0, 0, 0));
+        jLabFecha.setText("FECHA:");
 
         jTableRepuestos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -131,8 +141,8 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
         jTableRepuestos.setShowGrid(true);
         jScrollPane1.setViewportView(jTableRepuestos);
 
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("TOTAL:");
+        jLabTotal.setForeground(new java.awt.Color(0, 0, 0));
+        jLabTotal.setText("TOTAL:");
 
         jButPagar.setText("PAGAR");
         jButPagar.setEnabled(false);
@@ -149,6 +159,9 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
             }
         });
 
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("Debe emitir una nota de retiro para poder continuar con el pago");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -157,27 +170,31 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 634, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jButEmitirNota)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3)
+                .addComponent(jLabFecha)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabTotal)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButPagar)
@@ -292,6 +309,7 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
         idsRepuestosAgregados.clear();
         tabla.setRowCount(0);
         jButPagar.setEnabled(false);
+        jLabTotal.setText("TOTAL: $ ");
     }//GEN-LAST:event_jButLimpiarTablaActionPerformed
 
     private void jButQuitarRepuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButQuitarRepuestoActionPerformed
@@ -389,8 +407,9 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
     private javax.swing.JButton jButPagar;
     private javax.swing.JButton jButQuitarRepuesto;
     private javax.swing.JButton jButton5;
+    private javax.swing.JLabel jLabFecha;
+    private javax.swing.JLabel jLabTotal;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
