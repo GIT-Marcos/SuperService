@@ -31,7 +31,7 @@ public class VerificadorCampos {
         try {
             Integer.valueOf(valorCampo);
         } catch (NumberFormatException ex) {
-            throw new NumberFormatException("El " + nombreCampo + " está en formato incorrecto.");
+            throw new NumberFormatException("El campo '" + nombreCampo + "' está en formato incorrecto.");
         }
     }
 

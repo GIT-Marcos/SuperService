@@ -5,7 +5,8 @@ package enums;
  * @author Usuario
  */
 public enum EstadoVentaRepuesto {
-    PAGO_PENDIENTE,
+    PRESUPUESTANDO,
+    ACEPTADO,
     PAGADO,
-    ESPERA
+    CANCELADO
 }
