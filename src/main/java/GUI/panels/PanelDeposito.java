@@ -1,11 +1,11 @@
 package GUI.panels;
 
 import GUI.JFrameHome;
-import GUI.dialogs.JDialogAgregarRepuesto;
+import GUI.dialogs.JDialogCrearRepuesto;
 import GUI.dialogs.JDialogEditarRepuesto;
 import entities.Repuesto;
 import java.awt.Color;
-import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -28,8 +28,6 @@ public class PanelDeposito extends javax.swing.JPanel {
     private final String COL_CANTI_STOCK = "CANTIDAD STOCK";
     private final String COL_STOCK_MIN = "STOCK MÍNIMO";
 
-    private final VerificadorCampos verificadorCampos = new VerificadorCampos();
-
     private final DefaultTableModel tabla = new DefaultTableModel(new Object[]{
         COL_COD_BARRA, COL_DETALLE, COL_MARCA, COL_PRECIO, COL_CANTI_STOCK, COL_STOCK_MIN}, 0) {
         @Override
@@ -38,7 +36,9 @@ public class PanelDeposito extends javax.swing.JPanel {
         }
     };
 
-    private List<Repuesto> listaParaTabla;
+    private final VerificadorCampos verificadorCampos = new VerificadorCampos();
+
+    private List<Repuesto> listaParaTabla = new ArrayList<>();
 
     public PanelDeposito() {
         initComponents();
@@ -55,8 +55,7 @@ public class PanelDeposito extends javax.swing.JPanel {
         gestionaAvisoStock();
         jcbStockNormal.setSelected(true);
         jcbStockBajo.setSelected(true);
-        
-        home.setMinimumSize(new Dimension(900, 590));
+
     }
 
     private void setTabla() {
@@ -366,14 +365,15 @@ public class PanelDeposito extends javax.swing.JPanel {
     }//GEN-LAST:event_jButActualizarActionPerformed
 
     private void jButAgregarRepuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButAgregarRepuestoActionPerformed
-        JDialogAgregarRepuesto jdiaRep = new JDialogAgregarRepuesto(home, true);
+        JDialogCrearRepuesto jdiaRep = new JDialogCrearRepuesto(home, true);
         jdiaRep.setVisible(true);
     }//GEN-LAST:event_jButAgregarRepuestoActionPerformed
 
     private void jButModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButModificarActionPerformed
         int filaParaModificar = jTableRepuestos.getSelectedRow();
         if (filaParaModificar == -1) {
-            JOptionPane.showMessageDialog(null, "No ha seleccionado un repuesto.", "DEBE SELECCIONAR UN REPUESTO",
+            JOptionPane.showMessageDialog(null, "No ha seleccionado un repuesto de la tabla.",
+                    "DEBE SELECCIONAR UN REPUESTO",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -410,7 +410,7 @@ public class PanelDeposito extends javax.swing.JPanel {
 
     private void jButBuscarRepuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButBuscarRepuestoActionPerformed
         String input = jtfBuscar.getText().trim();
-        int seleccion = jComboBoxBuscar.getSelectedIndex();
+        int seleccionComboBox = jComboBoxBuscar.getSelectedIndex();
         try {
             verificadorCampos.verificarVacio(input, "Búsqueda");
         } catch (IllegalArgumentException ex) {
@@ -418,10 +418,11 @@ public class PanelDeposito extends javax.swing.JPanel {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        boolean stockNormal = jcbStockNormal.isSelected();
-        boolean stockBajo = jcbStockBajo.isSelected();
-        if (stockNormal || stockBajo) {
-            listaParaTabla = repuestoServ.buscarConFiltros(input, seleccion, stockNormal, stockBajo);
+        boolean stockNormalCheckBox = jcbStockNormal.isSelected();
+        boolean stockBajoCheckBox = jcbStockBajo.isSelected();
+        if (stockNormalCheckBox || stockBajoCheckBox) {
+            listaParaTabla = repuestoServ.buscarConFiltros(input,
+                    seleccionComboBox, stockNormalCheckBox, stockBajoCheckBox);
         }
         tabla.setRowCount(0);
         llenaTabla(listaParaTabla);
