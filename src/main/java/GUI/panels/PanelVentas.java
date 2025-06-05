@@ -23,7 +23,7 @@ import util.VerificadorCampos;
  * @author Usuario
  */
 public class PanelVentas extends javax.swing.JPanel {
-
+    
     private JFrameHome home;
 
     //constantes para tabla
@@ -31,7 +31,7 @@ public class PanelVentas extends javax.swing.JPanel {
     private final String ESTADO = "ESTADO";
     private final String FECHA = "FECHA";
     private final String MONTO = "MONTO";
-
+    
     private final DefaultTableModel tabla = new DefaultTableModel(new Object[]{
         COD_VENTA, ESTADO, FECHA, MONTO}, 0) {
         @Override
@@ -39,32 +39,31 @@ public class PanelVentas extends javax.swing.JPanel {
             return false; // ninguna celda editable
         }
     };
-
+    
     private VerificadorCampos verificadorCampos = new VerificadorCampos();
-
+    
     private VentaRepuestoServ ventaServ = new VentaRepuestoServ();
-
+    
     private List<VentaRepuesto> listaParaTabla = new ArrayList<>();
-
+    
     public PanelVentas() {
         initComponents();
     }
-
+    
     public PanelVentas(JFrameHome home) {
         initComponents();
-
+        
         this.home = home;
         setTabla();
 //        listaParaTabla = ventaServ.todasVentas();
         llenaTabla(listaParaTabla);
-        jLabMostrando.setText("Mostrando: Todas las ventas");
     }
-
+    
     private void setTabla() {
         jTableVentas = new JTable(tabla);
         jScrollPane1.setViewportView(jTableVentas);
     }
-
+    
     private void llenaTabla(List<VentaRepuesto> listaParaLlenar) {
         listaParaLlenar.forEach(venta -> {
             tabla.addRow(new Object[]{
@@ -103,10 +102,10 @@ public class PanelVentas extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableVentas = new javax.swing.JTable();
-        jLabMostrando = new javax.swing.JLabel();
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 
@@ -206,6 +205,8 @@ public class PanelVentas extends javax.swing.JPanel {
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("---------");
 
+        jLabel6.setText("*Proximamente buscar por fecha");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -221,8 +222,11 @@ public class PanelVentas extends javax.swing.JPanel {
                         .addComponent(jtfBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32)
                         .addComponent(jLabel5))
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel6)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -245,7 +249,8 @@ public class PanelVentas extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel6))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
@@ -285,28 +290,21 @@ public class PanelVentas extends javax.swing.JPanel {
         jTableVentas.setShowGrid(true);
         jScrollPane1.setViewportView(jTableVentas);
 
-        jLabMostrando.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
-        jLabMostrando.setForeground(new java.awt.Color(0, 0, 0));
-        jLabMostrando.setText("Mostrando:");
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 870, Short.MAX_VALUE)
-                    .addComponent(jLabMostrando, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 870, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addComponent(jLabMostrando)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -338,7 +336,6 @@ public class PanelVentas extends javax.swing.JPanel {
         tabla.setRowCount(0);
         listaParaTabla = ventaServ.todasVentas();
         llenaTabla(listaParaTabla);
-        jLabMostrando.setText("Mostrando: Todas las ventas");
     }//GEN-LAST:event_jButTodasVentasActionPerformed
 
     private void jButVerDetallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButVerDetallesActionPerformed
@@ -426,12 +423,12 @@ public class PanelVentas extends javax.swing.JPanel {
     private javax.swing.JButton jButVerHoy;
     private javax.swing.JButton jButVolver;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabMostrando;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
