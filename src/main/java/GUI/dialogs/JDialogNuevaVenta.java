@@ -41,8 +41,8 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
     private List<Long> idsRepuestosAgregados = new ArrayList<>();
 
     private NotaRetiro nota = new NotaRetiro();
-    
-    private VentaRepuesto ventaParaTotal = new VentaRepuesto();
+
+    private VentaRepuesto ventaParaTotalJlabel = new VentaRepuesto();
 
     private List<DetalleRetiro> detalles = new ArrayList<>();
 
@@ -52,10 +52,11 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
 
         ////MÉTODOS CUANDO SE INICIA LA VENTANA
         setTabla();
-        nota.setDetallesRetiro(detalles);
-        jLabFecha.setText("FECHA: "+LocalDate.now());
-        
-        ventaParaTotal.setNotaRetiro(nota);
+        this.nota.setId(null);
+        this.nota.setDetallesRetiro(this.detalles);
+        jLabFecha.setText("FECHA: " + LocalDate.now());
+
+        this.ventaParaTotalJlabel.setNotaRetiro(nota);
     }
 
     private void setTabla() {
@@ -80,14 +81,14 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
         int nuevaCantidadStock = repuesto.getStock().getCantidad() - cantidad;
         repuesto.getStock().setCantidad(nuevaCantidadStock);
 
-        idsRepuestosAgregados.add(repuesto.getId());
+        this.idsRepuestosAgregados.add(repuesto.getId());
         agregaRepuestoTabla(repuesto, cantidad);
         DetalleRetiro d = new DetalleRetiro(null, cantidad, repuesto);
         //TO-DO:HACER EL MÉTODO PARA ESTO EN LA CLASE NOTA
-        detalles.add(d);
+        this.detalles.add(d);
         jButPagar.setEnabled(false);
-        BigDecimal bd = ventaParaTotal.calculaMonto();
-        jLabTotal.setText("TOTAL: $ "+ String.valueOf(bd));
+        BigDecimal bd = this.ventaParaTotalJlabel.calculaMontoTotal();
+        jLabTotal.setText("TOTAL: $ " + String.valueOf(bd));
     }
 
     public List<Long> getAgregados() {
@@ -305,8 +306,8 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
     }//GEN-LAST:event_jButCancelarVentaActionPerformed
 
     private void jButLimpiarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButLimpiarTablaActionPerformed
-        detalles.clear();
-        idsRepuestosAgregados.clear();
+        this.detalles.clear();
+        this.idsRepuestosAgregados.clear();
         tabla.setRowCount(0);
         jButPagar.setEnabled(false);
         jLabTotal.setText("TOTAL: $ ");
@@ -324,7 +325,7 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
         tabla.removeRow(filaParaModificar);
         //TO-DO: MEJORAR FORMA DE QUITAR ID DE LA LISTA
         Repuesto repuesto = repuestoServ.buscarPorCodBarraExacto(codBarraSeleccionTabla);
-        idsRepuestosAgregados.remove(repuesto.getId());
+        this.idsRepuestosAgregados.remove(repuesto.getId());
 //        for (){
 //            
 //        }
@@ -339,7 +340,7 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
     }//GEN-LAST:event_jButPagarActionPerformed
 
     private void jButEmitirNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButEmitirNotaActionPerformed
-        if (detalles.isEmpty() || detalles == null) {
+        if (this.detalles.isEmpty() || this.detalles == null) {
             JOptionPane.showMessageDialog(null, "No hay repuestos agregados para la venta.",
                     "DEBE AGREGAR REPUESTOS",
                     JOptionPane.WARNING_MESSAGE);

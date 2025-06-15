@@ -56,13 +56,11 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                       <Component id="jLabel3" pref="221" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="jLabMontoTotal" max="32767" attributes="0"/>
-                          <Component id="jLabel1" alignment="0" pref="221" max="32767" attributes="0"/>
-                          <Component id="jLabel2" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jLabCodVenta" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jLabFechaVenta" alignment="0" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="jLabMontoTotal" max="32767" attributes="0"/>
+                      <Component id="jLabel1" alignment="0" pref="221" max="32767" attributes="0"/>
+                      <Component id="jLabel2" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jLabCodVenta" alignment="1" max="32767" attributes="0"/>
+                      <Component id="jLabFechaVenta" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">

@@ -7,6 +7,7 @@ package enums;
 public enum EstadoVentaRepuesto {
     PRESUPUESTANDO,
     ACEPTADO,
+    PENDIENTE_PAGO,
     PAGADO,
     CANCELADO
 }

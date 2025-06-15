@@ -52,10 +52,10 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
 
         this.venta = venta;
         jLabCodVenta.setText(String.valueOf(venta.getId()));
-        jLabFechaVenta.setText(String.valueOf(venta.getFecha()));
-        jLabMontoTotal.setText("$ " + String.valueOf(venta.getMonto()));
+        jLabFechaVenta.setText(String.valueOf(venta.getFechaVenta()));
+        jLabMontoTotal.setText("$ " + String.valueOf(venta.getMontoTotal()));
         jLabEstadoVenta.setText(String.valueOf(venta.getEstadoVenta()));
-        jLabMetodoPago.setText(String.valueOf(venta.getMetodosPago()));
+//        jLabMetodoPago.setText(String.valueOf(venta.getgetMetodosPago()));
 
         setTabla();
         listaParaLlenar = venta.getNotaRetiro().getDetallesRetiro();

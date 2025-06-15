@@ -140,6 +140,7 @@ public class PanelDeposito extends javax.swing.JPanel {
         jButton5 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButIngresarStock = new javax.swing.JButton();
+        jButGenerarcsv = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(51, 51, 51));
 
@@ -163,7 +164,7 @@ public class PanelDeposito extends javax.swing.JPanel {
 
         jComboBoxBuscar.setBackground(new java.awt.Color(255, 255, 255));
         jComboBoxBuscar.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
-        jComboBoxBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Código de barras", "Detalle" }));
+        jComboBoxBuscar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Código de barras", "Detalle", "Marca" }));
 
         jLabelExistenciaStock.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabelExistenciaStock.setForeground(new java.awt.Color(0, 0, 0));
@@ -296,10 +297,18 @@ public class PanelDeposito extends javax.swing.JPanel {
         });
 
         jButIngresarStock.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
-        jButIngresarStock.setText("Ingresar Stock");
+        jButIngresarStock.setText("Ingresar stock");
         jButIngresarStock.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButIngresarStockActionPerformed(evt);
+            }
+        });
+
+        jButGenerarcsv.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jButGenerarcsv.setText("Imprimir lista");
+        jButGenerarcsv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButGenerarcsvActionPerformed(evt);
             }
         });
 
@@ -316,7 +325,8 @@ public class PanelDeposito extends javax.swing.JPanel {
                     .addComponent(jButModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButAgregarRepuesto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButIngresarStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButIngresarStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButGenerarcsv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -332,6 +342,8 @@ public class PanelDeposito extends javax.swing.JPanel {
                 .addComponent(jButEliminar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButIngresarStock)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButGenerarcsv)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -450,6 +462,10 @@ public class PanelDeposito extends javax.swing.JPanel {
         
     }//GEN-LAST:event_jButIngresarStockActionPerformed
 
+    private void jButGenerarcsvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButGenerarcsvActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButGenerarcsvActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.Box.Filler filler1;
@@ -457,6 +473,7 @@ public class PanelDeposito extends javax.swing.JPanel {
     private javax.swing.JButton jButAgregarRepuesto;
     private javax.swing.JButton jButBuscarRepuesto;
     private javax.swing.JButton jButEliminar;
+    private javax.swing.JButton jButGenerarcsv;
     private javax.swing.JButton jButIngresarStock;
     private javax.swing.JButton jButModificar;
     private javax.swing.JButton jButton1;

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package GUI.panels;
 
 import GUI.JFrameHome;
@@ -23,7 +19,7 @@ import util.VerificadorCampos;
  * @author Usuario
  */
 public class PanelVentas extends javax.swing.JPanel {
-    
+
     private JFrameHome home;
 
     //constantes para tabla
@@ -31,7 +27,7 @@ public class PanelVentas extends javax.swing.JPanel {
     private final String ESTADO = "ESTADO";
     private final String FECHA = "FECHA";
     private final String MONTO = "MONTO";
-    
+
     private final DefaultTableModel tabla = new DefaultTableModel(new Object[]{
         COD_VENTA, ESTADO, FECHA, MONTO}, 0) {
         @Override
@@ -39,38 +35,38 @@ public class PanelVentas extends javax.swing.JPanel {
             return false; // ninguna celda editable
         }
     };
-    
+
     private VerificadorCampos verificadorCampos = new VerificadorCampos();
-    
+
     private VentaRepuestoServ ventaServ = new VentaRepuestoServ();
-    
+
     private List<VentaRepuesto> listaParaTabla = new ArrayList<>();
-    
+
     public PanelVentas() {
         initComponents();
     }
-    
+
     public PanelVentas(JFrameHome home) {
         initComponents();
-        
+
         this.home = home;
         setTabla();
 //        listaParaTabla = ventaServ.todasVentas();
         llenaTabla(listaParaTabla);
     }
-    
+
     private void setTabla() {
         jTableVentas = new JTable(tabla);
         jScrollPane1.setViewportView(jTableVentas);
     }
-    
+
     private void llenaTabla(List<VentaRepuesto> listaParaLlenar) {
         listaParaLlenar.forEach(venta -> {
             tabla.addRow(new Object[]{
                 venta.getId(),
                 venta.getEstadoVenta(),
-                venta.getFecha(),
-                "$ " + venta.getMonto()
+                venta.getFechaVenta(),
+                "$ " + venta.getMontoTotal()
             });
         });
     }
