@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
@@ -16,19 +17,19 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "detalles_retiros")
-public class DetalleRetiro implements Serializable{
-    
+public class DetalleRetiro implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pk_detalles_retiros")
     private Long id;
-    
+
     @Column(length = 10, nullable = false)
     private Integer cantidad;
-    
-    //RELACIÓN 1 A 1 CON REPUESTO
-    @OneToOne(optional = false)
-    @JoinColumn(name = "fk_repuesto")
+
+    //RELACIÓN * A 1 CON REPUESTO
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_repuesto", nullable = false)
     private Repuesto repuesto;
 
     public DetalleRetiro() {

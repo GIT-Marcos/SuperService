@@ -177,9 +177,10 @@
               <Font name="Malgun Gothic" size="14" style="0"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="2">
+              <StringArray count="3">
                 <StringItem index="0" value="C&#xf3;digo de barras"/>
                 <StringItem index="1" value="Detalle"/>
+                <StringItem index="2" value="Marca"/>
               </StringArray>
             </Property>
           </Properties>
@@ -282,6 +283,7 @@
                       <Component id="jButAgregarRepuesto" max="32767" attributes="0"/>
                       <Component id="jButActualizar" max="32767" attributes="0"/>
                       <Component id="jButIngresarStock" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jButGenerarcsv" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -300,6 +302,8 @@
                   <Component id="jButEliminar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jButIngresarStock" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="jButGenerarcsv" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="jButton1" min="-2" pref="27" max="-2" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -376,10 +380,21 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Malgun Gothic" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Ingresar Stock"/>
+            <Property name="text" type="java.lang.String" value="Ingresar stock"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButIngresarStockActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButGenerarcsv">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Malgun Gothic" size="14" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Imprimir lista"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButGenerarcsvActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
