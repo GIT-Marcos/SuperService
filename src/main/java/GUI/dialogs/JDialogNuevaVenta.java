@@ -12,6 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import services.RepuestoServ;
+import util.GeneradorNotaRetiroTXT;
+import util.Impresor;
 
 /**
  *
@@ -340,6 +342,7 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
     }//GEN-LAST:event_jButPagarActionPerformed
 
     private void jButEmitirNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButEmitirNotaActionPerformed
+        String rutaArchivo = "C:\\Users\\Usuario\\Desktop\\nota_retiro.txt";
         if (this.detalles.isEmpty() || this.detalles == null) {
             JOptionPane.showMessageDialog(null, "No hay repuestos agregados para la venta.",
                     "DEBE AGREGAR REPUESTOS",
@@ -347,6 +350,10 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
         } else {
             nota.setFecha(LocalDate.now());
             jButPagar.setEnabled(true);
+            GeneradorNotaRetiroTXT.generaNotaRetiro(this.detalles, rutaArchivo);
+            
+            Impresor.imprimirConSistema(rutaArchivo);
+            
             JOptionPane.showMessageDialog(null, "Se ha emitido la nota de retiro correctamente.",
                     "EMISIÓN DE NOTA",
                     JOptionPane.INFORMATION_MESSAGE);
@@ -354,7 +361,7 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
     }//GEN-LAST:event_jButEmitirNotaActionPerformed
 
     private void jButModificarCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButModificarCantidadActionPerformed
-
+        
     }//GEN-LAST:event_jButModificarCantidadActionPerformed
 
     /**
