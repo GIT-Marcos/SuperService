@@ -188,7 +188,7 @@ public class PanelVentas extends javax.swing.JPanel {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Máximo");
 
-        jcbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cualquiera", "Aceptada", "Pagada", "Cancelada" }));
+        jcbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cualquiera", "Pendiente", "Pagada", "Cancelada" }));
 
         jLabel4.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
@@ -390,8 +390,8 @@ public class PanelVentas extends javax.swing.JPanel {
             case 0: //se eligió: cualquiera
                 estadoParaBuscar = null;
                 break;
-            case 1: //se eligió: aceptado
-                estadoParaBuscar = EstadoVentaRepuesto.ACEPTADO;
+            case 1: //se eligió: pendiente
+                estadoParaBuscar = EstadoVentaRepuesto.PENDIENTE_PAGO;
 //                jLabMostrando.setText(jLabMostrando.getText().concat("& Estado: aceptadas "));
                 break;
             case 2: //se eligió: pagado
@@ -403,7 +403,8 @@ public class PanelVentas extends javax.swing.JPanel {
 //                jLabMostrando.setText(jLabMostrando.getText().concat("& Estado: canceladas "));
                 break;
             default:
-                throw new AssertionError();
+                System.out.println("////////////////////"+ seleccionEstadoVenta);
+                return;
         }
         listaParaTabla = ventaServ.buscarVentas(codVentaIngresado, estadoParaBuscar, montoMinimo, montoMaximo);
         tabla.setRowCount(0);
