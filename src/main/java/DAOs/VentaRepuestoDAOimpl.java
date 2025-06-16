@@ -54,7 +54,7 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
 
         //SI SE QUIERE BUSCAR ALGO POR CÓDIGO...
         if (codVenta != null) {
-            filtros.add(cb.like(root.get("id"), String.valueOf(codVenta)));
+            filtros.add(cb.equal(root.get("id"), String.valueOf(codVenta)));
         }
         //SI SE BUSCA UN ESTADO != DE CUALQUIERA...
         if (estadoVenta != null) {
@@ -62,8 +62,8 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
                 case PRESUPUESTANDO: //se eligió cod barra
                     filtros.add(cb.like(root.get("estadoVenta"), EstadoVentaRepuesto.PRESUPUESTANDO.toString()));
                     break;
-                case ACEPTADO:
-                    filtros.add(cb.like(root.get("estadoVenta"), EstadoVentaRepuesto.ACEPTADO.toString()));
+                case PENDIENTE_PAGO:
+                    filtros.add(cb.like(root.get("estadoVenta"), EstadoVentaRepuesto.PENDIENTE_PAGO.toString()));
                     break;
                 case PAGADO:
                     filtros.add(cb.like(root.get("estadoVenta"), EstadoVentaRepuesto.PAGADO.toString()));
@@ -72,18 +72,19 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
                     filtros.add(cb.like(root.get("estadoVenta"), EstadoVentaRepuesto.CANCELADO.toString()));
                     break;
                 default:
-                    throw new AssertionError();
+                    throw new IllegalArgumentException("Error en el estado de la venta:"
+                            + " error en el estado de la búsqueda de la venta.");
             }
         }
         //FILTROS DE LA FECHA
 
         //FILTROS DEL MONTO
         if (montoMinimo != null && montomaximo != null) {
-            filtros.add(cb.between(root.get("monto"), montoMinimo, montomaximo));
+            filtros.add(cb.between(root.get("montoTotal"), montoMinimo, montomaximo));
         } else if (montoMinimo != null && montomaximo == null) {
-            filtros.add(cb.greaterThan(root.get("monto"), montoMinimo));
+            filtros.add(cb.greaterThan(root.get("montoTotal"), montoMinimo));
         } else if (montoMinimo == null && montomaximo != null) {
-            filtros.add(cb.lessThan(root.get("monto"), montomaximo));
+            filtros.add(cb.lessThan(root.get("montoTotal"), montomaximo));
         }
 
         query.where(cb.and(filtros.toArray(new Predicate[0])));
