@@ -5,6 +5,8 @@
 package GUI;
 
 import java.awt.CardLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 /**
  *
@@ -17,6 +19,9 @@ public class Inicio extends javax.swing.JFrame {
      */
     public Inicio() {
         initComponents();
+        
+        Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imgs/icono.png"));
+        setIconImage(image);
     }
     
     public void mostrarPanel(String nombrePanel){
