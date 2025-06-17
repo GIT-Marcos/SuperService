@@ -86,6 +86,7 @@ public class PanelVentas extends javax.swing.JPanel {
         jButVerHoy = new javax.swing.JButton();
         jButVerDetalles = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButCancelarVenta = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jButBuscar = new javax.swing.JButton();
         jtfBuscar = new javax.swing.JTextField();
@@ -135,6 +136,13 @@ public class PanelVentas extends javax.swing.JPanel {
 
         jButton2.setText("IMPRIMIR FACTURA");
 
+        jButCancelarVenta.setText("CANCELAR VENTA");
+        jButCancelarVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButCancelarVentaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -145,8 +153,9 @@ public class PanelVentas extends javax.swing.JPanel {
                     .addComponent(jButVolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButVerDetalles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButVerHoy, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
-                    .addComponent(jButTodasVentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButVerHoy, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                    .addComponent(jButTodasVentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButCancelarVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -160,6 +169,8 @@ public class PanelVentas extends javax.swing.JPanel {
                 .addComponent(jButVerDetalles)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButCancelarVenta)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButVolver)
                 .addContainerGap())
@@ -222,7 +233,7 @@ public class PanelVentas extends javax.swing.JPanel {
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
                         .addComponent(jLabel6)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -292,7 +303,7 @@ public class PanelVentas extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 870, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 868, Short.MAX_VALUE)
                 .addGap(6, 6, 6))
         );
         jPanel3Layout.setVerticalGroup(
@@ -403,7 +414,7 @@ public class PanelVentas extends javax.swing.JPanel {
 //                jLabMostrando.setText(jLabMostrando.getText().concat("& Estado: canceladas "));
                 break;
             default:
-                System.out.println("////////////////////"+ seleccionEstadoVenta);
+                System.out.println("////////////////////" + seleccionEstadoVenta);
                 return;
         }
         listaParaTabla = ventaServ.buscarVentas(codVentaIngresado, estadoParaBuscar, montoMinimo, montoMaximo);
@@ -412,9 +423,42 @@ public class PanelVentas extends javax.swing.JPanel {
 
     }//GEN-LAST:event_jButBuscarActionPerformed
 
+    private void jButCancelarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButCancelarVentaActionPerformed
+        VentaRepuesto ventaParaCancelar = new VentaRepuesto();
+        int filaParaCancelar = jTableVentas.getSelectedRow();
+        if (filaParaCancelar == -1) {
+            JOptionPane.showMessageDialog(null, "No ha seleccionado una venta.", "DEBE SELECCIONAR UNA VENTA",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        Long codVentaElegido = Long.valueOf(jTableVentas.getValueAt(filaParaCancelar, 0).toString());
+        //TO-DO: MOJORAR ESTO
+        for (int i = 0; i < listaParaTabla.size(); i++) {
+            if (Objects.equals(listaParaTabla.get(i).getId(), codVentaElegido)) {
+                ventaParaCancelar = listaParaTabla.get(i);
+            }
+        }
+        ventaParaCancelar.setEstadoVenta(EstadoVentaRepuesto.CANCELADO);
+        int respuesta = JOptionPane.showConfirmDialog(null,
+                "Esta a punto de cancelar una venta, esta acción es irreversible. ¿Continuar?",
+                "CONFIRMACIÓN DE CANCELADO", JOptionPane.WARNING_MESSAGE);
+        if (respuesta == JOptionPane.YES_OPTION) {
+            int respuesta2 = JOptionPane.showConfirmDialog(null,
+                    "Confirmar eliminación de venta nro: " + ventaParaCancelar.getId(),
+                    "CONFIRMACIÓN DE BORRADO", JOptionPane.WARNING_MESSAGE);
+            if (respuesta2 == JOptionPane.YES_OPTION) {
+                //TO-DO: GESTIONAR ERRORES
+                ventaServ.modificarVenta(ventaParaCancelar);
+                JOptionPane.showMessageDialog(null, "Venta cancelada correctamente.",
+                        "CANCELACIÓN DE VENTA", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButCancelarVentaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButBuscar;
+    private javax.swing.JButton jButCancelarVenta;
     private javax.swing.JButton jButTodasVentas;
     private javax.swing.JButton jButVerDetalles;
     private javax.swing.JButton jButVerHoy;
