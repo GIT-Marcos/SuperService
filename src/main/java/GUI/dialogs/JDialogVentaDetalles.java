@@ -5,6 +5,7 @@
 package GUI.dialogs;
 
 import entities.DetalleRetiro;
+import entities.Pago;
 import entities.Repuesto;
 import entities.VentaRepuesto;
 import java.awt.Color;
@@ -23,7 +24,7 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
 
     private VentaRepuesto venta;
 
-    //constantes para tabla
+    //constantes para tabla REPUESTOS
     private final String COL_COD_BARRA = "COD BARRA";
     private final String COL_DETALLE = "DETALLE";
     private final String COL_MARCA = "MARCA";
@@ -39,7 +40,28 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
         }
     };
 
-    private List<DetalleRetiro> listaParaLlenar = new ArrayList<>();
+    //constantes para tabla PAGOS
+    private final String COL_MONTO_PAGADO = "PAGADO";
+    private final String COL_FECHA_PAGO = "FECHA PAGO";
+    private final String COL_METODO_PAGO = "METODO PAGO";
+    private final String COL_DTO = "DESCUENTO";
+    private final String COL_MARCA_TARJETA = "TARJETA";
+    private final String COL_BANCO = "BANCO";
+    private final String COL_REFERENCIA = "REFERENCIA";
+    private final String COL_ULTIMOS4 = "ÚLTIMOS 4";
+
+    private final DefaultTableModel tabla2 = new DefaultTableModel(new Object[]{
+        COL_MONTO_PAGADO, COL_FECHA_PAGO, COL_METODO_PAGO, COL_DTO, COL_MARCA_TARJETA,
+        COL_BANCO, COL_REFERENCIA, COL_ULTIMOS4}, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false; // ninguna celda editable
+        }
+    };
+
+    private List<DetalleRetiro> listaParaTablaRepuestos = new ArrayList<>();
+
+    private List<Pago> listaParaTablaPagos = new ArrayList<>();
 
     public JDialogVentaDetalles(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -49,26 +71,33 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
     public JDialogVentaDetalles(java.awt.Frame parent, boolean modal, VentaRepuesto venta) {
         super(parent, modal);
         initComponents();
+        
+        this.setResizable(false);
 
         this.venta = venta;
         jLabCodVenta.setText(String.valueOf(venta.getId()));
         jLabFechaVenta.setText(String.valueOf(venta.getFechaVenta()));
         jLabMontoTotal.setText("$ " + String.valueOf(venta.getMontoTotal()));
         jLabEstadoVenta.setText(String.valueOf(venta.getEstadoVenta()));
-//        jLabMetodoPago.setText(String.valueOf(venta.getgetMetodosPago()));
 
-        setTabla();
-        listaParaLlenar = venta.getNotaRetiro().getDetallesRetiro();
-        llenaTabla(listaParaLlenar);
+        setTablas();
+        listaParaTablaRepuestos = venta.getNotaRetiro().getDetallesRetiro();
+        listaParaTablaPagos = venta.getPagosList();
+        llenaTablas(listaParaTablaRepuestos, listaParaTablaPagos);
     }
 
-    private void setTabla() {
+    private void setTablas() {
+        //tabla rep
         jTableDetalles = new JTable(tabla);
         jScrollPane1.setViewportView(jTableDetalles);
+        //tabla pagos
+        jTablePagos = new JTable(tabla2);
+        jScrollPane2.setViewportView(jTablePagos);
     }
 
-    private void llenaTabla(List<DetalleRetiro> listaParaLlenar) {
-        listaParaLlenar.forEach(detalle -> {
+    private void llenaTablas(List<DetalleRetiro> listaParaTablaRepuestos, List<Pago> listaParaTablaPagos) {
+        //tabla rep
+        listaParaTablaRepuestos.forEach(detalle -> {
             tabla.addRow(new Object[]{
                 detalle.getRepuesto().getCodBarra(),
                 detalle.getRepuesto().getDetalle(),
@@ -76,6 +105,19 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
                 "$ " + detalle.getRepuesto().getPrecio(),
                 detalle.getCantidad(),
                 "$ " + detalle.getRepuesto().getPrecio().multiply(BigDecimal.valueOf(detalle.getCantidad()))
+            });
+        });
+        //tabla pagos
+        listaParaTablaPagos.forEach(pago -> {
+            tabla2.addRow(new Object[]{
+                "$ " + pago.getMontoPagado(),
+                pago.getFechaPago(),
+                pago.getMetodosPago(),
+                pago.getDescuento(),
+                pago.getMarcaTarjeta(),
+                pago.getBanco(),
+                pago.getReferencia(),
+                pago.getUltimos4()
             });
         });
     }
@@ -100,12 +142,19 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         jLabEstadoVenta = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableDetalles = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTablePagos = new javax.swing.JTable();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Detalle de venta");
+        setAlwaysOnTop(true);
         setIconImage(null);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -148,13 +197,12 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jLabMontoTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabCodVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabFechaVenta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabMontoTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabCodVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabFechaVenta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 242, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabMetodoPago, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                     .addComponent(jLabEstadoVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -190,7 +238,15 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jTabbedPane1.setBackground(new java.awt.Color(204, 255, 204));
+        jTabbedPane1.setForeground(new java.awt.Color(0, 0, 0));
+        jTabbedPane1.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel7.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel7.setText("Repuestos:");
 
         jTableDetalles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -210,32 +266,86 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        jTabbedPane1.addTab("Repuestos vendidos", jPanel3);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        jTablePagos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTablePagos);
+
+        jLabel6.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel6.setText("Pagos:");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Pagos", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 256, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGap(0, 145, Short.MAX_VALUE)
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         pack();
@@ -295,9 +405,15 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableDetalles;
+    private javax.swing.JTable jTablePagos;
     // End of variables declaration//GEN-END:variables
 }
