@@ -456,13 +456,13 @@ public class PanelDeposito extends javax.swing.JPanel {
     }//GEN-LAST:event_jButModificarActionPerformed
 
     private void jButEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButEliminarActionPerformed
-        int filaParaModificar = jTableRepuestos.getSelectedRow();
-        if (filaParaModificar == -1) {
+        int filaParaEliminar = jTableRepuestos.getSelectedRow();
+        if (filaParaEliminar == -1) {
             JOptionPane.showMessageDialog(null, "No ha seleccionado un repuesto.", "DEBE SELECCIONAR UN REPUESTO",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        String codBarra = jTableRepuestos.getValueAt(filaParaModificar, 0).toString();
+        String codBarra = jTableRepuestos.getValueAt(filaParaEliminar, 0).toString();
         Repuesto repuestoBorrar = repuestoServ.buscarPorCodBarraExacto(codBarra);
         //CONFIRMACIÓN
         int respuesta = JOptionPane.showConfirmDialog(null,
