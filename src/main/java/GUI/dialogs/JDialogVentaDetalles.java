@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package GUI.dialogs;
 
 import entities.DetalleRetiro;
 import entities.Pago;
 import entities.Repuesto;
 import entities.VentaRepuesto;
+import enums.EstadoVentaRepuesto;
 import java.awt.Color;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -71,7 +68,7 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
     public JDialogVentaDetalles(java.awt.Frame parent, boolean modal, VentaRepuesto venta) {
         super(parent, modal);
         initComponents();
-        
+
         this.setResizable(false);
 
         this.venta = venta;
@@ -79,6 +76,12 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
         jLabFechaVenta.setText(String.valueOf(venta.getFechaVenta()));
         jLabMontoTotal.setText("$ " + String.valueOf(venta.getMontoTotal()));
         jLabEstadoVenta.setText(String.valueOf(venta.getEstadoVenta()));
+        if (venta.getEstadoVenta() == EstadoVentaRepuesto.CANCELADO
+                || venta.getEstadoVenta() == EstadoVentaRepuesto.PAGADO) {
+            jButAgregarPago.setEnabled(false);
+
+        }
+        jLabMontoFaltante.setText("$ "+String.valueOf(venta.getMontoFaltante()));
 
         setTablas();
         listaParaTablaRepuestos = venta.getNotaRetiro().getDetallesRetiro();
@@ -121,7 +124,7 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
             });
         });
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -138,10 +141,11 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
         jLabFechaVenta = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabMontoTotal = new javax.swing.JLabel();
-        jLabMetodoPago = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabEstadoVenta = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jButAgregarPago = new javax.swing.JButton();
+        jLabTituloMontoFaltante = new javax.swing.JLabel();
+        jLabMontoFaltante = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -154,7 +158,6 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Detalle de venta");
-        setAlwaysOnTop(true);
         setIconImage(null);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -177,17 +180,25 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
         jLabMontoTotal.setForeground(new java.awt.Color(0, 0, 0));
         jLabMontoTotal.setText("$ 000000000");
 
-        jLabMetodoPago.setForeground(new java.awt.Color(0, 0, 0));
-        jLabMetodoPago.setText("AAAAAAAAAAAAAAAA");
-
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel5.setText("MÉTODO DE PAGO:");
-
         jLabEstadoVenta.setForeground(new java.awt.Color(0, 0, 0));
         jLabEstadoVenta.setText("AAAAAAAAAAAAAAAA");
 
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("ESTADO:");
+
+        jButAgregarPago.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jButAgregarPago.setText("AGREGAR PAGO");
+        jButAgregarPago.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButAgregarPagoActionPerformed(evt);
+            }
+        });
+
+        jLabTituloMontoFaltante.setForeground(new java.awt.Color(0, 0, 0));
+        jLabTituloMontoFaltante.setText("MONTO FALTANTE:");
+
+        jLabMontoFaltante.setForeground(new java.awt.Color(0, 0, 0));
+        jLabMontoFaltante.setText("$ 000000000");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -204,17 +215,18 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
                     .addComponent(jLabFechaVenta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 242, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabMetodoPago, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
-                    .addComponent(jLabEstadoVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabEstadoVenta, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButAgregarPago, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabTituloMontoFaltante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabMontoFaltante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -222,19 +234,21 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabFechaVenta))
+                        .addComponent(jLabFechaVenta)
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabMontoTotal))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabEstadoVenta)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabTituloMontoFaltante)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabMetodoPago)))
-                .addGap(12, 12, 12)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabMontoTotal)
+                        .addComponent(jLabMontoFaltante)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButAgregarPago)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -352,6 +366,11 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButAgregarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButAgregarPagoActionPerformed
+        JDialogPago jdp = new JDialogPago(null, true, this.venta, this);
+        jdp.setVisible(true);
+    }//GEN-LAST:event_jButAgregarPagoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -395,16 +414,17 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButAgregarPago;
     private javax.swing.JLabel jLabCodVenta;
     private javax.swing.JLabel jLabEstadoVenta;
     private javax.swing.JLabel jLabFechaVenta;
-    private javax.swing.JLabel jLabMetodoPago;
+    private javax.swing.JLabel jLabMontoFaltante;
     private javax.swing.JLabel jLabMontoTotal;
+    private javax.swing.JLabel jLabTituloMontoFaltante;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;

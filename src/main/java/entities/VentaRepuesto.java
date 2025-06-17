@@ -48,7 +48,7 @@ public class VentaRepuesto implements Serializable {
     @JoinColumn(name = "fk_nota_retiro")
     private NotaRetiro notaRetiro;
 
-    //RELACIÓN 1 A * CON PAGO
+    //RELACIÓN BI 1 A * CON PAGO
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_venta")
     private List<Pago> pagosList = new ArrayList<>();

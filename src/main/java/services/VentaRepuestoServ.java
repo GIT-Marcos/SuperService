@@ -29,4 +29,11 @@ public class VentaRepuestoServ {
         return dao.buscarVentas(codVenta, estadoVenta, montoMinimo, montomaximo);
     }
     
+    /**
+     * @param venta
+     * @return 
+     */
+    public VentaRepuesto modificarVenta(VentaRepuesto venta){
+        return dao.modificarVenta(venta);
+    }
 }
