@@ -6,6 +6,8 @@ package GUI;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Toolkit;
 
 /**
  *
@@ -18,6 +20,9 @@ public class JFrameHome extends javax.swing.JFrame {
     public JFrameHome() {
         initComponents();
         this.setResizable(false);
+        
+        Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imgs/icono.png"));
+        setIconImage(image);
     }
     
     public void mostrarPanel(String nombrePanel){
