@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package GUI.dialogs;
 
 import entities.Repuesto;
@@ -60,6 +56,10 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
         jtfObservaciones = new javax.swing.JTextField();
         jButtonAgregar = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
+        jcbUbicaciones = new javax.swing.JComboBox<>();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jcbMarcas = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nuevo Repuesto");
@@ -102,7 +102,7 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
         jtfStockMinimo.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
-        jLabel6.setText("Ubicación");
+        jLabel6.setText("Ubicación nueva");
 
         jtfUbicacion.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
 
@@ -126,6 +126,26 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
 
         jLabel9.setText("*Los campos \"lote\" y \"observaciones\" no son obligatorios.");
 
+        jcbUbicaciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nueva ubicación...", "Depósito a", "Depósito b", "Depósito c", "Depósito d", "Depósito e" }));
+        jcbUbicaciones.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbUbicacionesItemStateChanged(evt);
+            }
+        });
+
+        jLabel11.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jLabel11.setText("Ubicación ya existente");
+
+        jLabel12.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jLabel12.setText("Marca ya existente");
+
+        jcbMarcas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nueva marca...", "Corven", "Fate", "Mirgor", "Bosch", "Valeo", "Monroe", "SKF", "Mopar", "Moura", "Magneti Marelli", "Omnicraft" }));
+        jcbMarcas.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jcbMarcasItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -134,38 +154,49 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel9))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jtfObservaciones, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jtfLote, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtfUbicacion, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButtonAgregar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jtfMarca, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jtfCodBarra, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jtfPrecio, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jtfDetalle, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(jtfUbicacion, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jtfCantidadStock, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jcbUbicaciones, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jtfStockMinimo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGap(28, 28, 28)
+                                        .addComponent(jLabel11))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel12))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jtfCantidadStock, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jtfStockMinimo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(15, 15, 15))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel9))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jtfMarca, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
+                                .addComponent(jcbMarcas, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(15, 15, 15))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,9 +206,13 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
                 .addGap(0, 0, 0)
                 .addComponent(jtfCodBarra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel12))
                 .addGap(0, 0, 0)
-                .addComponent(jtfMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcbMarcas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addGap(0, 0, 0)
@@ -195,9 +230,13 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
                     .addComponent(jtfStockMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfCantidadStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel11))
                 .addGap(0, 0, 0)
-                .addComponent(jtfUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcbUbicaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel7)
                 .addGap(0, 0, 0)
@@ -208,7 +247,7 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
                 .addComponent(jtfObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -221,19 +260,23 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
         //CONTROL DE VACÍOS
         try {
-            verificadorCampos.verificarVacio(jtfCodBarra.getText().trim(),jLabel1.getText());
-            verificadorCampos.verificarVacio(jtfMarca.getText().trim(),jLabel2.getText());
-            verificadorCampos.verificarVacio(jtfDetalle.getText().trim(),jLabel3.getText());
-            verificadorCampos.verificarVacio(jtfPrecio.getText().trim(),jLabel4.getText());
-            verificadorCampos.verificarVacio(jtfCantidadStock.getText().trim(),jLabel5.getText());
+            verificadorCampos.verificarVacio(jtfCodBarra.getText().trim(), jLabel1.getText());
+            if (jtfMarca.isEnabled()) {
+                verificadorCampos.verificarVacio(jtfMarca.getText().trim(), jLabel2.getText());
+            }
+            verificadorCampos.verificarVacio(jtfDetalle.getText().trim(), jLabel3.getText());
+            verificadorCampos.verificarVacio(jtfPrecio.getText().trim(), jLabel4.getText());
+            verificadorCampos.verificarVacio(jtfCantidadStock.getText().trim(), jLabel5.getText());
             verificadorCampos.verificarVacio(jtfStockMinimo.getText().trim(), jLabel10.getText());
-            verificadorCampos.verificarVacio(jtfUbicacion.getText().trim(),jLabel6.getText());
+            if (jtfUbicacion.isEnabled()) {
+                verificadorCampos.verificarVacio(jtfUbicacion.getText().trim(), jLabel6.getText());
+            }
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "HAY CAMPOS OBLIGATORIOS VACÍOS",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         //CONTROL DE LARGOS
         try {
             verificadorCampos.verificaLargo(jtfCodBarra.getText().trim(), 25, jLabel1.getText());
@@ -247,10 +290,10 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
             verificadorCampos.verificaLargo(jtfObservaciones.getText().trim(), 200, jLabel8.getText());
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(),
-                     "CAMPOS MUY LARGOS", JOptionPane.WARNING_MESSAGE);
+                    "CAMPOS MUY LARGOS", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         //CONTROL DE FORMATOS
         try {
             verificadorCampos.verificaFormatoDouble(jtfPrecio.getText().trim(), jLabel4.getText());
@@ -263,16 +306,26 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
         }
 
         String codBarra = jtfCodBarra.getText().trim();
-        String marca = jtfMarca.getText().trim();
+        String marca;
+        if (jtfMarca.isEnabled()) {
+            marca = jtfMarca.getText().trim();
+        } else {
+            marca = (String) jcbMarcas.getSelectedItem();
+        }
         String detalle = jtfDetalle.getText().trim();
-        BigDecimal precio = BigDecimal.valueOf(Double.parseDouble(jtfPrecio.getText().trim())).setScale(2,RoundingMode.HALF_UP);
+        BigDecimal precio = BigDecimal.valueOf(Double.parseDouble(jtfPrecio.getText().trim())).setScale(2, RoundingMode.HALF_UP);
         Integer cantidad = Integer.valueOf(jtfCantidadStock.getText().trim());
         Integer cantMinima = Integer.valueOf(jtfStockMinimo.getText().trim());
-        String ubicacion = jtfUbicacion.getText().trim();
+        String ubicacion;
+        if (jtfUbicacion.isEnabled()) {
+            ubicacion = jtfUbicacion.getText().trim();
+        } else {
+            ubicacion = (String) jcbUbicaciones.getSelectedItem();
+        }
         String lote = jtfLote.getText().trim();
         String observaciones = jtfObservaciones.getText().trim();
 
-        Stock stock = new Stock(null, cantidad, cantMinima,ubicacion, lote, observaciones);
+        Stock stock = new Stock(null, cantidad, cantMinima, ubicacion, lote, observaciones);
         Repuesto repuesto = new Repuesto(null, codBarra, marca, detalle, precio, stock);
 
         //INICIO CONFIRMACIÓN
@@ -290,6 +343,24 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_jButtonAgregarActionPerformed
+
+    private void jcbUbicacionesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbUbicacionesItemStateChanged
+        if (jcbUbicaciones.getSelectedIndex() != 0) {
+            jtfUbicacion.setText("");
+            jtfUbicacion.setEnabled(false);
+        } else {
+            jtfUbicacion.setEnabled(true);
+        }
+    }//GEN-LAST:event_jcbUbicacionesItemStateChanged
+
+    private void jcbMarcasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbMarcasItemStateChanged
+        if (jcbMarcas.getSelectedIndex() != 0) {
+            jtfMarca.setText("");
+            jtfMarca.setEnabled(false);
+        } else {
+            jtfMarca.setEnabled(true);
+        }
+    }//GEN-LAST:event_jcbMarcasItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -338,6 +409,8 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
     private javax.swing.JButton jButtonAgregar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -346,6 +419,8 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JComboBox<String> jcbMarcas;
+    private javax.swing.JComboBox<String> jcbUbicaciones;
     private javax.swing.JTextField jtfCantidadStock;
     private javax.swing.JTextField jtfCodBarra;
     private javax.swing.JTextField jtfDetalle;
