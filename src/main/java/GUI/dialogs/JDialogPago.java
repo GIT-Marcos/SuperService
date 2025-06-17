@@ -9,9 +9,11 @@ import enums.MetodosPago;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import services.PagoServ;
 import services.StockServ;
 import services.VentaRepuestoServ;
 
@@ -27,35 +29,46 @@ public class JDialogPago extends javax.swing.JDialog {
 
     private VentaRepuesto venta = new VentaRepuesto();
 
-    private BigDecimal montoTotalVenta;
+    private BigDecimal montoTotalPago;
 
     private VentaRepuestoServ ventaServ = new VentaRepuestoServ();
 
+    private PagoServ pagoServ = new PagoServ();
+
     private StockServ stockServ = new StockServ();
+
+    private JDialog ventanaPadre;
 
     public JDialogPago(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
 
-    public JDialogPago(java.awt.Frame parent, boolean modal, NotaRetiro nota) {
+    public JDialogPago(java.awt.Frame parent, boolean modal, VentaRepuesto venta,
+            JDialog ventanaPadre) {
         super(parent, modal);
         initComponents();
 
+        this.ventanaPadre = ventanaPadre;
+
+        this.venta = venta;
         //asignación de pago
         this.pago.setId(null);
         this.pago.setFechaPago(LocalDate.now());
+        //TO-DO: PONER ESTO EN CLASE VENTA COMO DEBE SER
         this.venta.getPagosList().add(this.pago);
+        this.pago.setVentaRepuesto(this.venta);
         //asignación de nota
-        this.nota = nota;
-        this.venta.setNotaRetiro(nota);
+        this.nota = venta.getNotaRetiro();
 
-        this.venta.setId(null);
-        this.venta.setFechaVenta(LocalDate.now());
-        this.montoTotalVenta = venta.calculaMontoTotal();
-        this.venta.setMontoTotal(montoTotalVenta);
-        this.venta.setEstadoVenta(EstadoVentaRepuesto.ACEPTADO);
-        jLabMonto.setText("$ " + String.valueOf(montoTotalVenta));
+        //si falta es una venta que falta pagar, se paga lo que falta
+        //y si es una nueva, se paga el total.
+        if (venta.getEstadoVenta() == EstadoVentaRepuesto.PENDIENTE_PAGO) {
+            this.montoTotalPago = this.venta.getMontoFaltante();
+        } else {
+            this.montoTotalPago = this.venta.getMontoTotal();
+        }
+        jLabMonto.setText("$ " + String.valueOf(this.montoTotalPago));
     }
 
     /**
@@ -507,7 +520,7 @@ public class JDialogPago extends javax.swing.JDialog {
         Integer dto = (Integer) jSpinner1.getValue();
 
         //verificaciones
-        BigDecimal restaMontos = this.montoTotalVenta.subtract(montoPagar);
+        BigDecimal restaMontos = this.montoTotalPago.subtract(montoPagar);
         if (restaMontos.compareTo(BigDecimal.ZERO) == -1) {
             JOptionPane.showMessageDialog(null, "El monto que intenta pagar es mayor al que se debe pagar.",
                     "PAGO", JOptionPane.ERROR_MESSAGE);
@@ -544,28 +557,35 @@ public class JDialogPago extends javax.swing.JDialog {
         //        this.pago.setNrotransaccion(nroTransaccion);
 
         venta.setMontoFaltante(restaMontos);
-        if (this.venta.getMontoFaltante().compareTo(BigDecimal.ZERO) == 1) {
+        //setea el estado EN EL QUE VA A QUEDAR la venta luego del pago
+        if (restaMontos.compareTo(BigDecimal.ZERO) == 1) {
             this.venta.setEstadoVenta(EstadoVentaRepuesto.PENDIENTE_PAGO);
         } else {
             this.venta.setEstadoVenta(EstadoVentaRepuesto.PAGADO);
         }
-
         int resultado = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea cargar esta venta al sistema?",
                 "CONFIRMACIÓN DE PAGO", JOptionPane.YES_NO_OPTION);
         if (resultado == 1) {
             return;
         }
 
-//        venta.setEstadoVenta();
         //TO-DO: GESTIONAR EXEPCIONES
-        ventaServ.cargarVenta(venta);
-        //TO-DO: HACER BIEN ESTO
-        for (int i = 0; i < nota.getDetallesRetiro().size(); i++) {
-            Stock s = nota.getDetallesRetiro().get(i).getRepuesto().getStock();
-            stockServ.actualizarStock(s);
+        //si el id es nulo significa que es una venta nueva
+        if (this.venta.getId() == null) {
+            ventaServ.cargarVenta(venta);
+            //TO-DO: HACER BIEN ESTO
+            for (int i = 0; i < nota.getDetallesRetiro().size(); i++) {
+                Stock s = nota.getDetallesRetiro().get(i).getRepuesto().getStock();
+                stockServ.actualizarStock(s);
+            }
+        } else {
+            ventaServ.modificarVenta(this.venta);
         }
-        JOptionPane.showMessageDialog(null, "Se ha guardado el pago correctamente y se ha actualizado el stock.",
+        JOptionPane.showMessageDialog(null, "Se ha guardado el pago correctamente.",
                 "PAGO", JOptionPane.INFORMATION_MESSAGE);
+        if (this.ventanaPadre != null) {
+            this.ventanaPadre.dispose();
+        }
         this.dispose();
     }//GEN-LAST:event_jButConfirmarPagoActionPerformed
 

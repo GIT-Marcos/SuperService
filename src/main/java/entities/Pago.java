@@ -8,6 +8,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -56,15 +58,20 @@ public class Pago implements Serializable {
     private MetodosPago MetodosPago;
 
     //ENUM BANCO
+    
     //ENUM ESTADO PAGO
+    
     //RELACIÓN CON VENTAsERVICE
-    //RELACIÓN CON VENTA
-//    @OneToOne()
-//    private VentaRepuesto ventaRepuesto;
+    
+    //RELACIÓN BI CON VENTA REPUESTO
+    @ManyToOne(optional = false)
+    private VentaRepuesto ventaRepuesto;
+
     public Pago() {
     }
 
-    public Pago(Long id, String dni, LocalDate fechaPago, BigDecimal montoPagado, String marcaTarjeta, String banco, String referencia, BigDecimal descuento, String ultimos4, MetodosPago MetodosPago) {
+    public Pago(Long id, String dni, LocalDate fechaPago, BigDecimal montoPagado, String marcaTarjeta,
+            String banco, String referencia, BigDecimal descuento, String ultimos4, MetodosPago MetodosPago, VentaRepuesto ventaRepuesto) {
         this.id = id;
         this.dni = dni;
         this.fechaPago = fechaPago;
@@ -75,6 +82,7 @@ public class Pago implements Serializable {
         this.descuento = descuento;
         this.ultimos4 = ultimos4;
         this.MetodosPago = MetodosPago;
+        this.ventaRepuesto = ventaRepuesto;
     }
 
     public Long getId() {
@@ -155,6 +163,14 @@ public class Pago implements Serializable {
 
     public void setMetodosPago(MetodosPago MetodosPago) {
         this.MetodosPago = MetodosPago;
+    }
+
+    public VentaRepuesto getVentaRepuesto() {
+        return ventaRepuesto;
+    }
+
+    public void setVentaRepuesto(VentaRepuesto ventaRepuesto) {
+        this.ventaRepuesto = ventaRepuesto;
     }
 
     @Override

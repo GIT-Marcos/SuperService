@@ -4,6 +4,7 @@ import entities.DetalleRetiro;
 import entities.NotaRetiro;
 import entities.Repuesto;
 import entities.VentaRepuesto;
+import enums.EstadoVentaRepuesto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -42,6 +43,8 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
     //TO-DO: QUITAR LISTA PRECINDIBLE
     private List<Long> idsRepuestosAgregados = new ArrayList<>();
 
+    private VentaRepuesto venta = new VentaRepuesto();
+    
     private NotaRetiro nota = new NotaRetiro();
 
     private VentaRepuesto ventaParaTotalJlabel = new VentaRepuesto();
@@ -53,11 +56,16 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
         initComponents();
 
         ////MÉTODOS CUANDO SE INICIA LA VENTANA
-        setTabla();
+        this.venta.setNotaRetiro(this.nota);
+        this.venta.setId(null);
+        this.venta.setFechaVenta(LocalDate.now());
         this.nota.setId(null);
         this.nota.setDetallesRetiro(this.detalles);
+        
+        
+        setTabla();
+        
         jLabFecha.setText("FECHA: " + LocalDate.now());
-
         this.ventaParaTotalJlabel.setNotaRetiro(nota);
     }
 
@@ -93,6 +101,11 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
         jLabTotal.setText("TOTAL: $ " + String.valueOf(bd));
     }
 
+    /**
+     * usado para ver que no se puedan agregar erpuestos repetidos en JDialog
+     * agregarRepuesto
+     * @return 
+     */
     public List<Long> getAgregados() {
         return this.idsRepuestosAgregados;
     }
@@ -337,7 +350,10 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
     }//GEN-LAST:event_jButQuitarRepuestoActionPerformed
 
     private void jButPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButPagarActionPerformed
-        JDialogPago jDialogPago = new JDialogPago(null, true, nota);
+        BigDecimal montoTotalVenta = this.venta.calculaMontoTotal();
+        this.venta.setMontoTotal(montoTotalVenta);
+        this.venta.setEstadoVenta(EstadoVentaRepuesto.ACEPTADO);
+        JDialogPago jDialogPago = new JDialogPago(null, true, this.venta, this);
         jDialogPago.setVisible(true);
     }//GEN-LAST:event_jButPagarActionPerformed
 

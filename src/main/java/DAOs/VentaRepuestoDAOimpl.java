@@ -111,7 +111,17 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
 
     @Override
     public VentaRepuesto modificarVenta(VentaRepuesto venta) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        session = Util.getHibernateSession();
+        try{
+            session.beginTransaction();
+            session.merge(venta);
+            session.getTransaction().commit();
+        } catch(Exception e){
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        }
+        session.close();
+        return venta;
     }
 
     @Override
