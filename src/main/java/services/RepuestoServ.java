@@ -26,8 +26,21 @@ public class RepuestoServ {
         return dao.buscarPorDetalle(detalle);
     }
 
-    public List<Repuesto> buscarConFiltros(String inputParaBuscar, Integer opcionBusqueda, Boolean stockNormal, Boolean stockBajo) {
-        return dao.buscarConFiltros(inputParaBuscar, opcionBusqueda, stockNormal, stockBajo);
+    /**
+     * 
+     * @param tipoOrden pasar nulo si no importa el orden
+     * @return 
+     */
+    public List<Repuesto> buscarConFiltros(String inputParaBuscar, Integer opcionBusqueda,
+            Boolean stockNormal, Boolean stockBajo, String nombreColumnaOrnenar, Integer tipoOrden) {
+        if (nombreColumnaOrnenar == null) {
+            nombreColumnaOrnenar = "detalle";
+        }
+        if (tipoOrden == null) {
+            tipoOrden = 0;
+        }
+        return dao.buscarConFiltros(inputParaBuscar, opcionBusqueda, stockNormal,
+                stockBajo, nombreColumnaOrnenar, tipoOrden);
     }
 
     public Repuesto cargarRepuesto(Repuesto repuesto) {

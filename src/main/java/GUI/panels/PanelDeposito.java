@@ -113,6 +113,23 @@ public class PanelDeposito extends javax.swing.JPanel {
             jLabelExistenciaStock.setVisible(false);
         }
     }
+    
+    private String tomaOrdenEligido(){
+        int ordenarPor = jcbOrdenar.getSelectedIndex();
+        //los valores q toma son el del atributo de Repuesto.class
+        switch (ordenarPor) {
+            case 0:
+                return "detalle";
+            case 1:
+                return "marca";
+            case 2:
+                return "codBarra";
+            case 3:
+                return "precio";
+            default:
+                return "detalle";
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -134,6 +151,10 @@ public class PanelDeposito extends javax.swing.JPanel {
         jcbStockBajo = new javax.swing.JCheckBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableRepuestos = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        jcbOrdenar = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        jcbTipoOrden = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jButActualizar = new javax.swing.JButton();
         jButAgregarRepuesto = new javax.swing.JButton();
@@ -204,6 +225,20 @@ public class PanelDeposito extends javax.swing.JPanel {
         jTableRepuestos.setShowVerticalLines(true);
         jScrollPane1.setViewportView(jTableRepuestos);
 
+        jLabel3.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Ordenar por:");
+
+        jcbOrdenar.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+        jcbOrdenar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Detalle", "Marca", "Código barra", "Precio" }));
+
+        jLabel4.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Tipo de orden:");
+
+        jcbTipoOrden.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+        jcbTipoOrden.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ascendente", "Descendente" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -212,23 +247,31 @@ public class PanelDeposito extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jtfBuscar)
+                            .addComponent(jButBuscarRepuesto, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelExistenciaStock)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jtfBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jComboBoxBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButBuscarRepuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabelExistenciaStock)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(29, 29, 29)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jcbStockNormal)
                             .addComponent(jcbStockBajo))
-                        .addGap(291, 291, 291))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jcbOrdenar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jcbTipoOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 150, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1)))
@@ -238,20 +281,28 @@ public class PanelDeposito extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jComboBoxBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtfBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButBuscarRepuesto))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel1)
+                                .addComponent(jComboBoxBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jtfBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jButBuscarRepuesto))
+                        .addComponent(jLabelExistenciaStock))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jcbStockNormal)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jcbStockBajo))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelExistenciaStock)
-                            .addComponent(jcbStockBajo))))
+                            .addComponent(jLabel3)
+                            .addComponent(jcbOrdenar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(jcbTipoOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1)
                 .addContainerGap())
@@ -408,7 +459,7 @@ public class PanelDeposito extends javax.swing.JPanel {
                 .addGap(2, 2, 2)
                 .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
@@ -425,8 +476,11 @@ public class PanelDeposito extends javax.swing.JPanel {
     private void jButActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButActualizarActionPerformed
         boolean stockNormal = jcbStockNormal.isSelected();
         boolean stockBajo = jcbStockBajo.isSelected();
+        String columnaParaOrdenamiento = tomaOrdenEligido();
+        Integer tipoOrdenElegido = jcbTipoOrden.getSelectedIndex();
         if (stockNormal || stockBajo) {
-            listaParaTabla = repuestoServ.buscarConFiltros(null, null, stockNormal, stockBajo);
+            listaParaTabla = repuestoServ.buscarConFiltros(null, null, stockNormal, stockBajo,
+                    columnaParaOrdenamiento, tipoOrdenElegido);
         } else {
             listaParaTabla.clear();
         }
@@ -490,11 +544,13 @@ public class PanelDeposito extends javax.swing.JPanel {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
+        String columnaParaOrdenamiento = tomaOrdenEligido();
+        Integer tipoOrdenElegido = jcbTipoOrden.getSelectedIndex();
         boolean stockNormalCheckBox = jcbStockNormal.isSelected();
         boolean stockBajoCheckBox = jcbStockBajo.isSelected();
         if (stockNormalCheckBox || stockBajoCheckBox) {
-            listaParaTabla = repuestoServ.buscarConFiltros(input,
-                    seleccionComboBox, stockNormalCheckBox, stockBajoCheckBox);
+            listaParaTabla = repuestoServ.buscarConFiltros(input, seleccionComboBox,
+                    stockNormalCheckBox, stockBajoCheckBox, columnaParaOrdenamiento, tipoOrdenElegido);
         }
         tabla.setRowCount(0);
         llenaTabla(listaParaTabla);
@@ -543,6 +599,8 @@ public class PanelDeposito extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> jComboBoxBuscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelExistenciaStock;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -550,8 +608,10 @@ public class PanelDeposito extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTable jTableRepuestos;
+    private javax.swing.JComboBox<String> jcbOrdenar;
     private javax.swing.JCheckBox jcbStockBajo;
     private javax.swing.JCheckBox jcbStockNormal;
+    private javax.swing.JComboBox<String> jcbTipoOrden;
     private javax.swing.JTextField jtfBuscar;
     // End of variables declaration//GEN-END:variables
 }

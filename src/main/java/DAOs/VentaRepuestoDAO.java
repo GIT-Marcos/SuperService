@@ -15,7 +15,7 @@ public interface VentaRepuestoDAO {
     List<VentaRepuesto> todasVentas();
 
     List<VentaRepuesto> buscarVentas(Long codVenta, EstadoVentaRepuesto estadoVenta,
-            BigDecimal montoMinimo, BigDecimal montomaximo);
+            BigDecimal montoMinimo, BigDecimal montomaximo, String nombreColumnaOrnenar,Integer tipoOrden);
 
     //ESCRITURA
     VentaRepuesto cargarVenta(VentaRepuesto venta);

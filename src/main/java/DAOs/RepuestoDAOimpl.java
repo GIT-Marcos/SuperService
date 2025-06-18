@@ -94,7 +94,8 @@ public class RepuestoDAOimpl implements RepuestoDAO {
     }
 
     @Override
-    public List<Repuesto> buscarConFiltros(String inputParaBuscar, Integer opcionBusqueda, Boolean stockNormal, Boolean stockBajo) {
+    public List<Repuesto> buscarConFiltros(String inputParaBuscar, Integer opcionBusqueda, Boolean stockNormal,
+            Boolean stockBajo, String nombreColumnaOrnenar, Integer tipoOrden) {
         session = Util.getHibernateSession();
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<Repuesto> query = cb.createQuery(Repuesto.class);
@@ -122,6 +123,11 @@ public class RepuestoDAOimpl implements RepuestoDAO {
             filtros.add(cb.lessThanOrEqualTo(joinStock.get("cantidad"), joinStock.get("cantMinima")));
         }
         query.where(cb.and(filtros.toArray(new Predicate[0])));
+        if (tipoOrden == 0) {
+            query.orderBy(cb.asc(root.get(nombreColumnaOrnenar)));
+        } else if (tipoOrden == 1) {
+            query.orderBy(cb.desc(root.get(nombreColumnaOrnenar)));
+        }
         List<Repuesto> repuestos = session.createQuery(query).setMaxResults(50).getResultList();
         session.close();
         return repuestos;

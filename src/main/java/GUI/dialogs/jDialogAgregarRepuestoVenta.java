@@ -244,7 +244,8 @@ public class jDialogAgregarRepuestoVenta extends javax.swing.JDialog {
             return;
         }
         //true xq siempre se veran los activos
-        listaParaTabla = repuestoServ.buscarConFiltros(input, seleccionComboBox, true, stockBajoCheckBox);
+        listaParaTabla = repuestoServ.buscarConFiltros(input, seleccionComboBox, true,
+                stockBajoCheckBox, null, null);
         tabla.setRowCount(0);
         llenaTabla(listaParaTabla);
     }//GEN-LAST:event_jButBuscarActionPerformed

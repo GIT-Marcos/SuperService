@@ -40,7 +40,7 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
 
     @Override
     public List<VentaRepuesto> buscarVentas(Long codVenta, EstadoVentaRepuesto estadoVenta,
-            BigDecimal montoMinimo, BigDecimal montomaximo) {
+            BigDecimal montoMinimo, BigDecimal montomaximo, String nombreColumnaOrnenar, Integer tipoOrden) {
         session = Util.getHibernateSession();
 
         CriteriaBuilder cb = session.getCriteriaBuilder();
@@ -88,6 +88,11 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
         }
 
         query.where(cb.and(filtros.toArray(new Predicate[0])));
+        if (tipoOrden == 0) {
+            query.orderBy(cb.asc(root.get(nombreColumnaOrnenar)));
+        } else if (tipoOrden == 1) {
+            query.orderBy(cb.desc(root.get(nombreColumnaOrnenar)));
+        }
         List<VentaRepuesto> ventas = session.createQuery(query).setMaxResults(50).getResultList();
 
         session.close();
@@ -112,11 +117,11 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
     @Override
     public VentaRepuesto modificarVenta(VentaRepuesto venta) {
         session = Util.getHibernateSession();
-        try{
+        try {
             session.beginTransaction();
             session.merge(venta);
             session.getTransaction().commit();
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
