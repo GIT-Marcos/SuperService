@@ -5,6 +5,7 @@ import GUI.dialogs.JDialogVentaDetalles;
 import entities.VentaRepuesto;
 import enums.EstadoVentaRepuesto;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -71,6 +72,19 @@ public class PanelVentas extends javax.swing.JPanel {
         });
     }
 
+    private String tomaOrdenEligido() {
+        int ordenarPor = jcbOrdenar.getSelectedIndex();
+        //los valores q toma son el del atributo de Repuesto.class
+        switch (ordenarPor) {
+            case 0:
+                return "id";
+            case 1:
+                return "montoTotal";
+            default:
+                return "id";
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -100,6 +114,10 @@ public class PanelVentas extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jcbOrdenar = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        jcbTipoOrden = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableVentas = new javax.swing.JTable();
@@ -207,12 +225,26 @@ public class PanelVentas extends javax.swing.JPanel {
 
         jLabel5.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel5.setText("Estado de las ventas:");
+        jLabel5.setText("Estado de ventas:");
 
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("---------");
 
         jLabel6.setText("*Proximamente buscar por fecha");
+
+        jLabel8.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel8.setText("Ordenar por:");
+
+        jcbOrdenar.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
+        jcbOrdenar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Código", "Monto" }));
+
+        jLabel9.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel9.setText("Tipo de orden:");
+
+        jcbTipoOrden.setFont(new java.awt.Font("Malgun Gothic", 0, 12)); // NOI18N
+        jcbTipoOrden.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ascendente", "Descendente" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -220,20 +252,30 @@ public class PanelVentas extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
-                        .addComponent(jcbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jtfBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
-                        .addComponent(jLabel5))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtfBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jcbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jcbOrdenar, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jcbTipoOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addComponent(jLabel9))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -271,14 +313,21 @@ public class PanelVentas extends javax.swing.JPanel {
                             .addComponent(jLabel7)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jtfBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButBuscar))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jtfBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButBuscar)
-                            .addComponent(jcbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(16, Short.MAX_VALUE))
+                            .addComponent(jcbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jcbOrdenar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jcbTipoOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 255));
@@ -303,14 +352,14 @@ public class PanelVentas extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 868, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addGap(6, 6, 6))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
                 .addGap(6, 6, 6))
         );
 
@@ -389,11 +438,11 @@ public class PanelVentas extends javax.swing.JPanel {
         BigDecimal montoMinimo = null;
         BigDecimal montoMaximo = null;
         if (!jtfMontoMinimo.getText().trim().isBlank() && !jtfMontoMinimo.getText().trim().isEmpty()) {
-            montoMinimo = new BigDecimal(jtfMontoMinimo.getText().trim());
+            montoMinimo = BigDecimal.valueOf(Double.parseDouble(jtfMontoMinimo.getText().trim())).setScale(2, RoundingMode.HALF_UP);
 //            jLabMostrando.setText(jLabMostrando.getText().concat("& Monto Mínimo: " + montoMinimo + " "));
         }
         if (!jtfMontoMaximo.getText().trim().isBlank() && !jtfMontoMaximo.getText().trim().isEmpty()) {
-            montoMaximo = new BigDecimal(jtfMontoMaximo.getText().trim());
+            montoMaximo = BigDecimal.valueOf(Double.parseDouble(jtfMontoMaximo.getText().trim())).setScale(2, RoundingMode.HALF_UP);
 //            jLabMostrando.setText(jLabMostrando.getText().concat("& Monto Máximo: " + montoMaximo + " "));
         }
         int seleccionEstadoVenta = jcbEstado.getSelectedIndex();
@@ -417,7 +466,10 @@ public class PanelVentas extends javax.swing.JPanel {
                 System.out.println("////////////////////" + seleccionEstadoVenta);
                 return;
         }
-        listaParaTabla = ventaServ.buscarVentas(codVentaIngresado, estadoParaBuscar, montoMinimo, montoMaximo);
+        String columnaParaOrdenamiento = tomaOrdenEligido();
+        Integer tipoOrdenElegido = jcbTipoOrden.getSelectedIndex();
+        listaParaTabla = ventaServ.buscarVentas(codVentaIngresado, estadoParaBuscar, montoMinimo,
+                montoMaximo, columnaParaOrdenamiento, tipoOrdenElegido);
         tabla.setRowCount(0);
         llenaTabla(listaParaTabla);
 
@@ -471,12 +523,16 @@ public class PanelVentas extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableVentas;
     private javax.swing.JComboBox<String> jcbEstado;
+    private javax.swing.JComboBox<String> jcbOrdenar;
+    private javax.swing.JComboBox<String> jcbTipoOrden;
     private javax.swing.JTextField jtfBuscar;
     private javax.swing.JTextField jtfMontoMaximo;
     private javax.swing.JTextField jtfMontoMinimo;

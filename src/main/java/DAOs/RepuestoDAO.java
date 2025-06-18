@@ -55,7 +55,8 @@ public interface RepuestoDAO {
      * @param stockBajo si el stock existente es MENOR q el mínimo
      * @return 
      */
-    List<Repuesto> buscarConFiltros(String inputParaBuscar, Integer opcionBusqueda, Boolean stockNormal, Boolean stockBajo);
+    List<Repuesto> buscarConFiltros(String inputParaBuscar, Integer opcionBusqueda,
+            Boolean stockNormal, Boolean stockBajo, String nombreColumnaOrnenar,Integer tipoOrden);
 
     //////////////////////ESCRITURA
     
