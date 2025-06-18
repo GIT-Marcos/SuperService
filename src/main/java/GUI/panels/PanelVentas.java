@@ -9,10 +9,12 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import services.VentaRepuestoServ;
+import util.GeneradorPDF;
 import util.VerificadorCampos;
 
 /**
@@ -99,7 +101,7 @@ public class PanelVentas extends javax.swing.JPanel {
         jButVolver = new javax.swing.JButton();
         jButVerHoy = new javax.swing.JButton();
         jButVerDetalles = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jButImprimirFactura = new javax.swing.JButton();
         jButCancelarVenta = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jButBuscar = new javax.swing.JButton();
@@ -152,7 +154,12 @@ public class PanelVentas extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setText("IMPRIMIR FACTURA");
+        jButImprimirFactura.setText("IMPRIMIR FACTURA");
+        jButImprimirFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButImprimirFacturaActionPerformed(evt);
+            }
+        });
 
         jButCancelarVenta.setText("CANCELAR VENTA");
         jButCancelarVenta.addActionListener(new java.awt.event.ActionListener() {
@@ -169,7 +176,7 @@ public class PanelVentas extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButVolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButImprimirFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButVerDetalles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButVerHoy, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
                     .addComponent(jButTodasVentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -186,7 +193,7 @@ public class PanelVentas extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButVerDetalles)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(jButImprimirFactura)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButCancelarVenta)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -323,10 +330,11 @@ public class PanelVentas extends javax.swing.JPanel {
                             .addComponent(jLabel8)
                             .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jcbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jcbOrdenar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jcbTipoOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jcbOrdenar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jcbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jcbTipoOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -507,15 +515,41 @@ public class PanelVentas extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jButCancelarVentaActionPerformed
 
+    private void jButImprimirFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButImprimirFacturaActionPerformed
+        VentaRepuesto ventaParaImprimir = new VentaRepuesto();
+        int filaParaImprimir = jTableVentas.getSelectedRow();
+        if (filaParaImprimir == -1) {
+            JOptionPane.showMessageDialog(null, "No ha seleccionado una venta.", "DEBE SELECCIONAR UNA VENTA",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        Long codVentaElegido = Long.valueOf(jTableVentas.getValueAt(filaParaImprimir, 0).toString());
+        //TO-DO: MOJORAR ESTO
+        for (int i = 0; i < listaParaTabla.size(); i++) {
+            if (Objects.equals(listaParaTabla.get(i).getId(), codVentaElegido)) {
+                ventaParaImprimir = listaParaTabla.get(i);
+            }
+        }
+
+        JFileChooser fileChooser = new JFileChooser();
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!ruta.endsWith(".pdf")) {
+                ruta += ".pdf";
+            }
+            GeneradorPDF.generaPDFVenta(ventaParaImprimir, ruta);
+        }
+    }//GEN-LAST:event_jButImprimirFacturaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButBuscar;
     private javax.swing.JButton jButCancelarVenta;
+    private javax.swing.JButton jButImprimirFactura;
     private javax.swing.JButton jButTodasVentas;
     private javax.swing.JButton jButVerDetalles;
     private javax.swing.JButton jButVerHoy;
     private javax.swing.JButton jButVolver;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
