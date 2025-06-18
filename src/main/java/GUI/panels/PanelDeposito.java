@@ -114,8 +114,8 @@ public class PanelDeposito extends javax.swing.JPanel {
             jLabelExistenciaStock.setVisible(false);
         }
     }
-    
-    private String tomaOrdenEligido(){
+
+    private String tomaOrdenEligido() {
         int ordenarPor = jcbOrdenar.getSelectedIndex();
         //los valores q toma son el del atributo de Repuesto.class
         switch (ordenarPor) {
@@ -562,8 +562,40 @@ public class PanelDeposito extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButIngresarStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButIngresarStockActionPerformed
+        Integer cantidadStockIngresar = 0;
+        int filaParaIngresar = jTableRepuestos.getSelectedRow();
+        if (filaParaIngresar == -1) {
+            JOptionPane.showMessageDialog(null, "No ha seleccionado un repuesto.", "DEBE SELECCIONAR UN REPUESTO",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String codBarra = jTableRepuestos.getValueAt(filaParaIngresar, 0).toString();
+        Repuesto repuestoIngresarStock = repuestoServ.buscarPorCodBarraExacto(codBarra);
 
+        String input = JOptionPane.showInputDialog(null, "Ingrese la cantidad de stock a agregar:");
+        if (input == null) {
+            // Usuario canceló el input
+            return;
+        }
+        try {
+            cantidadStockIngresar = Integer.parseInt(input);
 
+            if (cantidadStockIngresar <= 0) {
+                JOptionPane.showMessageDialog(null, "La cantidad debe ser mayor a cero.", "Cantidad inválida",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            int cantidadActual = repuestoIngresarStock.getStock().getCantidad();
+            repuestoIngresarStock.getStock().setCantidad(cantidadActual + cantidadStockIngresar);
+            repuestoServ.modificarRepuesto(repuestoIngresarStock, codBarra);
+
+            JOptionPane.showMessageDialog(null, "Se ha agregado stock correctamente.");
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar un número entero válido.", "Error de entrada",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButIngresarStockActionPerformed
 
     private void jButGenerarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButGenerarCSVActionPerformed
