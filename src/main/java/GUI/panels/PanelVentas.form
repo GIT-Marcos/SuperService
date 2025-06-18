@@ -52,7 +52,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jButVolver" max="32767" attributes="0"/>
-                      <Component id="jButton2" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jButImprimirFactura" alignment="0" max="32767" attributes="0"/>
                       <Component id="jButVerDetalles" alignment="0" max="32767" attributes="0"/>
                       <Component id="jButVerHoy" pref="156" max="32767" attributes="0"/>
                       <Component id="jButTodasVentas" alignment="0" max="32767" attributes="0"/>
@@ -72,7 +72,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButVerDetalles" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButImprimirFactura" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButCancelarVenta" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
@@ -115,10 +115,13 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButVerDetallesActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
+        <Component class="javax.swing.JButton" name="jButImprimirFactura">
           <Properties>
             <Property name="text" type="java.lang.String" value="IMPRIMIR FACTURA"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButImprimirFacturaActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButCancelarVenta">
           <Properties>
@@ -234,10 +237,12 @@
                               <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jcbEstado" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jcbOrdenar" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="jcbTipoOrden" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jcbEstado" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jcbTipoOrden" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                   </Group>

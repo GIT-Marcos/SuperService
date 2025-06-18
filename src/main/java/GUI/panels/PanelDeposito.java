@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -571,7 +572,14 @@ public class PanelDeposito extends javax.swing.JPanel {
                     "ERROR DE EXPORTACIÓN", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        ExportadorCSV.exportarRepuestosCSV(listaParaTabla, "C:\\Users\\Usuario\\Desktop\\repuestos.csv");
+        JFileChooser fileChooser = new JFileChooser();
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!ruta.endsWith(".csv")) {
+                ruta += ".csv";
+            }
+            ExportadorCSV.exportarRepuestosCSV(listaParaTabla, ruta);
+        }
     }//GEN-LAST:event_jButGenerarCSVActionPerformed
 
     private void jButGenerarXLSXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButGenerarXLSXActionPerformed
@@ -580,7 +588,14 @@ public class PanelDeposito extends javax.swing.JPanel {
                     "ERROR DE EXPORTACIÓN", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        ExportadorCSV.exportarRepuestosXLSX(listaParaTabla, "C:\\Users\\Usuario\\Desktop\\repuestos.xlsx");
+        JFileChooser fileChooser = new JFileChooser();
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!ruta.endsWith(".xlsx")) {
+                ruta += ".xlsx";
+            }
+            ExportadorCSV.exportarRepuestosXLSX(listaParaTabla, ruta);
+        }
     }//GEN-LAST:event_jButGenerarXLSXActionPerformed
 
 
