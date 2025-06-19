@@ -4,6 +4,7 @@
  */
 package GUI.dialogs;
 
+import GUI.panels.PanelDeposito;
 import entities.Repuesto;
 import entities.Stock;
 import java.math.BigDecimal;
@@ -27,15 +28,22 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
 
     private Repuesto repuestoCargaPantalla;
 
+    private PanelDeposito pdepo;
+
     /**
      * Creates new form JDialogEditarRepuesto
-     *
-     * @param parent
-     * @param modal
      */
     public JDialogEditarRepuesto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+
+    }
+
+    public JDialogEditarRepuesto(java.awt.Frame parent, boolean modal, PanelDeposito pdepo) {
+        super(parent, modal);
+        initComponents();
+
+        this.pdepo = pdepo;
 
     }
 
@@ -284,13 +292,13 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
     private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
         //CONTROL DE VACÍOS
         try {
-            verificadorCampos.verificarVacio(jtfCodBarra.getText().trim(),jLabel1.getText());
+            verificadorCampos.verificarVacio(jtfCodBarra.getText().trim(), jLabel1.getText());
             if (jtfMarca.isEnabled()) {
                 verificadorCampos.verificarVacio(jtfMarca.getText().trim(), jLabel2.getText());
             }
-            verificadorCampos.verificarVacio(jtfDetalle.getText().trim(),jLabel3.getText());
-            verificadorCampos.verificarVacio(jtfPrecio.getText().trim(),jLabel4.getText());
-            verificadorCampos.verificarVacio(jtfCantidadStock.getText().trim(),jLabel5.getText());
+            verificadorCampos.verificarVacio(jtfDetalle.getText().trim(), jLabel3.getText());
+            verificadorCampos.verificarVacio(jtfPrecio.getText().trim(), jLabel4.getText());
+            verificadorCampos.verificarVacio(jtfCantidadStock.getText().trim(), jLabel5.getText());
             verificadorCampos.verificarVacio(jtfStockMinimo.getText().trim(), jLabel10.getText());
             if (jtfUbicacion.isEnabled()) {
                 verificadorCampos.verificarVacio(jtfUbicacion.getText().trim(), jLabel6.getText());
@@ -313,7 +321,7 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
             verificadorCampos.verificaLargo(jtfObservaciones.getText().trim(), 200, jLabel8.getText());
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(),
-                     "CAMPOS MUY LARGOS", JOptionPane.WARNING_MESSAGE);
+                    "CAMPOS MUY LARGOS", JOptionPane.WARNING_MESSAGE);
             return;
         }
         //CONTROL DE FORMATOS
@@ -326,7 +334,7 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         String codBarra = jtfCodBarra.getText().trim();
         String marca;
         if (jtfMarca.isEnabled()) {
@@ -335,7 +343,7 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
             marca = (String) jcbMarcas.getSelectedItem();
         }
         String detalle = jtfDetalle.getText().trim();
-        BigDecimal precio = BigDecimal.valueOf(Double.parseDouble(jtfPrecio.getText().trim())).setScale(2,RoundingMode.HALF_UP);
+        BigDecimal precio = BigDecimal.valueOf(Double.parseDouble(jtfPrecio.getText().trim())).setScale(2, RoundingMode.HALF_UP);
         Integer cantidad = Integer.valueOf(jtfCantidadStock.getText().trim());
         Integer cantMinima = Integer.valueOf(jtfStockMinimo.getText().trim());
         String ubicacion;
@@ -358,6 +366,7 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
                 repuestoServ.modificarRepuesto(repuesto, codBarraCargaPantalla);
                 JOptionPane.showMessageDialog(null, "Repuesto modificado correctamente.",
                         "MODIFICACIÓN DE REPUESTO", JOptionPane.INFORMATION_MESSAGE);
+                this.pdepo.actualizaTabla();
                 this.dispose();
             } catch (NullPointerException | HibernateException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR DE GUARDADO",
@@ -368,8 +377,9 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
 
     /*
     CARGA LAS CAJAS DE TEXTO CON LOS DATOS DEL REPUESTO A MODIFICAR
-    */
+     */
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        //TO-DO: CAMBIAR ESTO Q VENGA POR PARÁMETRO EN CONSTRUCTOR
         repuestoCargaPantalla = repuestoServ.buscarPorCodBarraExacto(codBarraCargaPantalla);
 
         jtfCodBarra.setText(repuestoCargaPantalla.getCodBarra());
