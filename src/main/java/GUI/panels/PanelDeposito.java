@@ -131,6 +131,23 @@ public class PanelDeposito extends javax.swing.JPanel {
                 return "detalle";
         }
     }
+    
+    public void actualizaTabla(){
+        boolean stockNormal = jcbStockNormal.isSelected();
+        boolean stockBajo = jcbStockBajo.isSelected();
+        String columnaParaOrdenamiento = tomaOrdenEligido();
+        Integer tipoOrdenElegido = jcbTipoOrden.getSelectedIndex();
+        if (stockNormal || stockBajo) {
+            listaParaTabla = repuestoServ.buscarConFiltros(null, null, stockNormal, stockBajo,
+                    columnaParaOrdenamiento, tipoOrdenElegido);
+        } else {
+            listaParaTabla.clear();
+        }
+        jtfBuscar.setText("");
+        tabla.setRowCount(0);
+        llenaTabla(listaParaTabla);
+        gestionaAvisoStock();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -475,24 +492,11 @@ public class PanelDeposito extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButActualizarActionPerformed
-        boolean stockNormal = jcbStockNormal.isSelected();
-        boolean stockBajo = jcbStockBajo.isSelected();
-        String columnaParaOrdenamiento = tomaOrdenEligido();
-        Integer tipoOrdenElegido = jcbTipoOrden.getSelectedIndex();
-        if (stockNormal || stockBajo) {
-            listaParaTabla = repuestoServ.buscarConFiltros(null, null, stockNormal, stockBajo,
-                    columnaParaOrdenamiento, tipoOrdenElegido);
-        } else {
-            listaParaTabla.clear();
-        }
-        jtfBuscar.setText("");
-        tabla.setRowCount(0);
-        llenaTabla(listaParaTabla);
-        gestionaAvisoStock();
+        actualizaTabla();
     }//GEN-LAST:event_jButActualizarActionPerformed
 
     private void jButAgregarRepuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButAgregarRepuestoActionPerformed
-        JDialogCrearRepuesto jdiaRep = new JDialogCrearRepuesto(home, true);
+        JDialogCrearRepuesto jdiaRep = new JDialogCrearRepuesto(home, true, this);
         jdiaRep.setVisible(true);
     }//GEN-LAST:event_jButAgregarRepuestoActionPerformed
 
@@ -505,7 +509,7 @@ public class PanelDeposito extends javax.swing.JPanel {
             return;
         }
         String codBarra = jTableRepuestos.getValueAt(filaParaModificar, 0).toString();
-        JDialogEditarRepuesto jDialogEditarRepuesto = new JDialogEditarRepuesto(home, true);
+        JDialogEditarRepuesto jDialogEditarRepuesto = new JDialogEditarRepuesto(null, true, this);
         jDialogEditarRepuesto.setCodBarra(codBarra);
         jDialogEditarRepuesto.setVisible(true);
     }//GEN-LAST:event_jButModificarActionPerformed

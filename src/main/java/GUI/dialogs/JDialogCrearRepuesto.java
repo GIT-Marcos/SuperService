@@ -1,5 +1,6 @@
 package GUI.dialogs;
 
+import GUI.panels.PanelDeposito;
 import entities.Repuesto;
 import entities.Stock;
 import java.math.BigDecimal;
@@ -18,6 +19,8 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
     private final RepuestoServ repuestoServ = new RepuestoServ();
 
     private final VerificadorCampos verificadorCampos = new VerificadorCampos();
+    
+    private PanelDeposito pdepo;
 
     /**
      * Creates new form JDialogAgregarRepuesto
@@ -25,6 +28,13 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
     public JDialogCrearRepuesto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+    
+    public JDialogCrearRepuesto(java.awt.Frame parent, boolean modal, PanelDeposito pdepo) {
+        super(parent, modal);
+        initComponents();
+        
+        this.pdepo = pdepo;
     }
 
     /**
@@ -336,6 +346,7 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
                 repuestoServ.cargarRepuesto(repuesto);
                 JOptionPane.showMessageDialog(null, "Repuesto cargado correctamente.",
                         "CARGA DE REPUESTO", JOptionPane.INFORMATION_MESSAGE);
+                this.pdepo.actualizaTabla();
                 this.dispose();
             } catch (NullPointerException | HibernateException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR DE STOCK",
