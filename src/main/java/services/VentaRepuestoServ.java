@@ -5,6 +5,7 @@ import DAOs.VentaRepuestoDAOimpl;
 import entities.VentaRepuesto;
 import enums.EstadoVentaRepuesto;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,14 +31,16 @@ public class VentaRepuestoServ {
      * @return
      */
     public List<VentaRepuesto> buscarVentas(Long codVenta, EstadoVentaRepuesto estadoVenta,
-            BigDecimal montoMinimo, BigDecimal montomaximo, String nombreColumnaOrnenar, Integer tipoOrden) {
+            BigDecimal montoMinimo, BigDecimal montomaximo, String nombreColumnaOrnenar,
+            Integer tipoOrden, Date fechaMinima, Date fechaMaxima) {
         if (nombreColumnaOrnenar == null) {
             nombreColumnaOrnenar = "id";
         }
         if (tipoOrden == null) {
             tipoOrden = 0;
         }
-        return dao.buscarVentas(codVenta, estadoVenta, montoMinimo, montomaximo, nombreColumnaOrnenar, tipoOrden);
+        return dao.buscarVentas(codVenta, estadoVenta, montoMinimo, montomaximo, nombreColumnaOrnenar,
+                tipoOrden, fechaMinima, fechaMaxima);
     }
 
     /**

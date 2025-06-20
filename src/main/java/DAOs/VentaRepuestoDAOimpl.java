@@ -6,7 +6,6 @@ import entities.Repuesto;
 import entities.Stock;
 import entities.VentaRepuesto;
 import enums.EstadoVentaRepuesto;
-import static enums.EstadoVentaRepuesto.ACEPTADO;
 import static enums.EstadoVentaRepuesto.CANCELADO;
 import static enums.EstadoVentaRepuesto.PAGADO;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -15,8 +14,8 @@ import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Session;
 import util.Util;
@@ -40,7 +39,8 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
 
     @Override
     public List<VentaRepuesto> buscarVentas(Long codVenta, EstadoVentaRepuesto estadoVenta,
-            BigDecimal montoMinimo, BigDecimal montomaximo, String nombreColumnaOrnenar, Integer tipoOrden) {
+            BigDecimal montoMinimo, BigDecimal montomaximo, String nombreColumnaOrnenar,
+            Integer tipoOrden, Date fechaMinima, Date fechaMaxima) {
         session = Util.getHibernateSession();
 
         CriteriaBuilder cb = session.getCriteriaBuilder();
@@ -82,9 +82,17 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
         if (montoMinimo != null && montomaximo != null) {
             filtros.add(cb.between(root.get("montoTotal"), montoMinimo, montomaximo));
         } else if (montoMinimo != null && montomaximo == null) {
-            filtros.add(cb.greaterThan(root.get("montoTotal"), montoMinimo));
+            filtros.add(cb.greaterThanOrEqualTo(root.get("montoTotal"), montoMinimo));
         } else if (montoMinimo == null && montomaximo != null) {
-            filtros.add(cb.lessThan(root.get("montoTotal"), montomaximo));
+            filtros.add(cb.lessThanOrEqualTo(root.get("montoTotal"), montomaximo));
+        }
+
+        if (fechaMinima != null && fechaMaxima != null) {
+            filtros.add(cb.between(root.get("fechaVenta"), fechaMinima, fechaMaxima));
+        } else if (fechaMinima != null && fechaMaxima == null) {
+            filtros.add(cb.greaterThanOrEqualTo(root.get("fechaVenta"), fechaMinima));
+        } else if (fechaMinima == null && fechaMaxima != null) {
+            filtros.add(cb.lessThanOrEqualTo(root.get("fechaVenta"), fechaMaxima));
         }
 
         query.where(cb.and(filtros.toArray(new Predicate[0])));
