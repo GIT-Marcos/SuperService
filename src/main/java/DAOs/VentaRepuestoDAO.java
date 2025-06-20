@@ -3,6 +3,7 @@ package DAOs;
 import entities.VentaRepuesto;
 import enums.EstadoVentaRepuesto;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,7 +16,8 @@ public interface VentaRepuestoDAO {
     List<VentaRepuesto> todasVentas();
 
     List<VentaRepuesto> buscarVentas(Long codVenta, EstadoVentaRepuesto estadoVenta,
-            BigDecimal montoMinimo, BigDecimal montomaximo, String nombreColumnaOrnenar,Integer tipoOrden);
+            BigDecimal montoMinimo, BigDecimal montomaximo, String nombreColumnaOrnenar,
+            Integer tipoOrden, Date fechaMinima, Date fechaMaxima);
 
     //ESCRITURA
     VentaRepuesto cargarVenta(VentaRepuesto venta);
