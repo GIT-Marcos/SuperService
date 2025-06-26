@@ -112,6 +112,9 @@ public class RepuestoDAOimpl implements RepuestoDAO {
                 case 1: //se eligió detalle
                     filtros.add(cb.like(cb.lower(root.get("detalle")), "%" + inputParaBuscar.toLowerCase() + "%"));
                     break;
+                case 2:
+                    filtros.add(cb.like(cb.lower(root.get("marca")), "%" + inputParaBuscar.toLowerCase() + "%"));
+                    break;
                 default:
                     throw new AssertionError();
             }

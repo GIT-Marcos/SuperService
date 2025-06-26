@@ -9,4 +9,4 @@ public enum MetodosPago {
     TARJETA_CREDITO,
     TARJETA_DEBITO,
     TRANSFERENCIA
-}
+    }
