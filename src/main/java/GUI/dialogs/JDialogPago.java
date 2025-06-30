@@ -54,6 +54,7 @@ public class JDialogPago extends javax.swing.JDialog {
         this.venta = venta;
         //asignación de pago
         this.pago.setId(null);
+        this.pago.setActivo(Boolean.TRUE);
         this.pago.setFechaPago(LocalDate.now());
         //TO-DO: PONER ESTO EN CLASE VENTA COMO DEBE SER
         this.venta.getPagosList().add(this.pago);

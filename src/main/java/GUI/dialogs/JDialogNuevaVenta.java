@@ -58,6 +58,7 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
         ////MÉTODOS CUANDO SE INICIA LA VENTANA
         this.venta.setNotaRetiro(this.nota);
         this.venta.setId(null);
+        this.venta.setActivo(Boolean.TRUE);
         this.venta.setFechaVenta(LocalDate.now());
         this.nota.setId(null);
         this.nota.setDetallesRetiro(this.detalles);
