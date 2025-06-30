@@ -19,7 +19,7 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
     private final RepuestoServ repuestoServ = new RepuestoServ();
 
     private final VerificadorCampos verificadorCampos = new VerificadorCampos();
-    
+
     private PanelDeposito pdepo;
 
     /**
@@ -29,11 +29,11 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
-    
+
     public JDialogCrearRepuesto(java.awt.Frame parent, boolean modal, PanelDeposito pdepo) {
         super(parent, modal);
         initComponents();
-        
+
         this.pdepo = pdepo;
     }
 
@@ -335,8 +335,8 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
         String lote = jtfLote.getText().trim();
         String observaciones = jtfObservaciones.getText().trim();
 
-        Stock stock = new Stock(null, cantidad, cantMinima, ubicacion, lote, observaciones);
-        Repuesto repuesto = new Repuesto(null, codBarra, marca, detalle, precio, stock);
+        Stock stock = new Stock(null, cantidad, cantMinima, ubicacion, lote, observaciones, true);
+        Repuesto repuesto = new Repuesto(null, codBarra, marca, detalle, precio, true, stock);
 
         //INICIO CONFIRMACIÓN
         int opcionElegida = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea crear este repuesto?",

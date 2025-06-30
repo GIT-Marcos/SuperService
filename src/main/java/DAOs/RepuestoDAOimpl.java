@@ -19,7 +19,8 @@ public class RepuestoDAOimpl implements RepuestoDAO {
     @Override
     public List<Repuesto> todosRepuestos() {
         session = Util.getHibernateSession();
-        List<Repuesto> repuestos = session.createQuery("SELECT r FROM Repuesto r JOIN FETCH r.stock",
+        List<Repuesto> repuestos = session.createQuery("SELECT r FROM Repuesto r JOIN FETCH r.stock "
+                + "WHERE r.activo = true",
                 Repuesto.class).setMaxResults(50).list();
         session.close();
         return repuestos;
@@ -37,10 +38,10 @@ public class RepuestoDAOimpl implements RepuestoDAO {
     public Long cuentaRespBajoStock() {
         session = Util.getHibernateSession();
         Long cantidad = session.createQuery("SELECT DISTINCT COUNT(r) FROM Repuesto r "
-                + "WHERE r.stock.cantidad <= r.stock.cantMinima",
+                + "WHERE r.stock.cantidad <= r.stock.cantMinima AND "
+                + "r.stock.activo = true",
                 Long.class)
                 .getSingleResult();
-
         session.close();
         return cantidad;
     }
@@ -58,8 +59,7 @@ public class RepuestoDAOimpl implements RepuestoDAO {
     }
 
     @Override
-    public Repuesto buscarPorCodBarraExacto(String codBarra
-    ) {
+    public Repuesto buscarPorCodBarraExacto(String codBarra) {
         session = Util.getHibernateSession();
         Repuesto repuesto = session.createQuery("SELECT DISTINCT r FROM Repuesto r "
                 + "WHERE r.codBarra LIKE :codBarra",
@@ -71,23 +71,23 @@ public class RepuestoDAOimpl implements RepuestoDAO {
     }
 
     @Override
-    public List<Repuesto> buscarPorCodBarra(String codBarra
-    ) {
+    public List<Repuesto> buscarPorCodBarra(String codBarra) {
         session = Util.getHibernateSession();
         List<Repuesto> lista = session.createQuery("SELECT DISTINCT r FROM Repuesto r "
-                + "WHERE r.codBarra LIKE :codBarra",
+                + "WHERE r.codBarra LIKE :codBarra "
+                + "AND r.activo = true",
                 Repuesto.class).setParameter("codBarra", "%" + codBarra + "%").list();
         session.close();
         return lista;
     }
 
     @Override
-    public List<Repuesto> buscarPorDetalle(String detalle
-    ) {
+    public List<Repuesto> buscarPorDetalle(String detalle) {
         session = Util.getHibernateSession();
         List<Repuesto> lista = session.createQuery("SELECT DISTINCT r FROM Repuesto r "
                 + "WHERE LOWER(r.detalle) "
-                + "LIKE :detalle",
+                + "LIKE :detalle "
+                + "AND r.activo = true",
                 Repuesto.class).setParameter("detalle", "%" + detalle.toLowerCase() + "%").list();
         session.close();
         return lista;
@@ -102,7 +102,9 @@ public class RepuestoDAOimpl implements RepuestoDAO {
         Root<Repuesto> root = query.from(Repuesto.class);
         Join<Repuesto, Stock> joinStock = root.join("stock");
         List<Predicate> filtros = new ArrayList<>();
-
+        
+        filtros.add(cb.equal(root.get("activo"), Boolean.TRUE));
+        
         //SI SE QUIERE BUSCAR ALGO...
         if (inputParaBuscar != null) {
             switch (opcionBusqueda) {
@@ -137,8 +139,7 @@ public class RepuestoDAOimpl implements RepuestoDAO {
     }
 
     @Override
-    public Repuesto cargarRepuesto(Repuesto repuesto
-    ) {
+    public Repuesto cargarRepuesto(Repuesto repuesto) {
         session = Util.getHibernateSession();
         try {
             session.beginTransaction();
@@ -153,8 +154,7 @@ public class RepuestoDAOimpl implements RepuestoDAO {
     }
 
     @Override
-    public Repuesto modificarRepuesto(Repuesto repuesto
-    ) {
+    public Repuesto modificarRepuesto(Repuesto repuesto) {
         session = Util.getHibernateSession();
         try {
             session.beginTransaction();
@@ -179,7 +179,7 @@ public class RepuestoDAOimpl implements RepuestoDAO {
                 .getSingleResultOrNull();
         try {
             session.beginTransaction();
-            session.createNativeQuery("UPDATE stock SET cantidad_minima= :cantidad_minima, "
+            session.createNativeQuery("UPDATE stocks SET cantidad_minima= :cantidad_minima, "
                     + "cantidad= :cantidad, lote= :lote, observaciones= :obser, ubicacion= :ubic, "
                     + "activo = true "
                     + "WHERE pk_stock= :pk",
@@ -212,40 +212,29 @@ public class RepuestoDAOimpl implements RepuestoDAO {
     }
 
     @Override
-    public Boolean borrarRepuesto(Repuesto repuesto
-    ) {
-        //TO-DO: MEJORAR ESTO
-        //ESTO ES VILLERO PERO ANDA
+    public boolean borradoLogico(Long id) {
         session = Util.getHibernateSession();
-        Repuesto aBorrar = session.find(Repuesto.class, repuesto.getId());
-
         try {
             session.beginTransaction();
-            session.remove(aBorrar);
+            session.createNativeQuery("UPDATE stocks SET activo = false "
+                    + "WHERE pk_stock= :pk",
+                    Integer.class)
+                    .setParameter("pk", id)
+                    .executeUpdate();
+            session.createNativeQuery("UPDATE repuestos SET activo = false "
+                    + "WHERE pk_repuesto= :pk",
+                    Integer.class)
+                    .setParameter("pk", id)
+                    .executeUpdate();
             session.getTransaction().commit();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             session.getTransaction().rollback();
+            e.printStackTrace();
             return false;
         } finally {
             session.close();
         }
-
-        /* DA ERROR. EL OBJETO NO ESTA ATTACHEADO A LA SESSION
-        session = Util.getHibernateSession();
-        try {
-            session.beginTransaction();
-            session.remove(repuesto);
-            session.getTransaction().commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-            return false;
-        } finally {
-            session.close();
-        }*/
     }
 
 }

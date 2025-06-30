@@ -10,11 +10,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import org.hibernate.annotations.SoftDelete;
-import org.hibernate.annotations.SoftDeleteType;
 
 @Entity
-@SoftDelete(strategy = SoftDeleteType.ACTIVE, columnName = "activo")
 @Table(name = "repuestos")
 public class Repuesto implements Serializable{
 
@@ -35,6 +32,9 @@ public class Repuesto implements Serializable{
     @Column(precision = 16, scale = 2, nullable = false)
     private BigDecimal precio;
     
+    @Column(nullable = false)
+    private Boolean activo;
+    
     //RELACIÓN HACIA STOCK 1-1
     @OneToOne(cascade = CascadeType.ALL, optional = false, orphanRemoval = true)
     private Stock stock;
@@ -42,12 +42,13 @@ public class Repuesto implements Serializable{
     public Repuesto() {
     }
 
-    public Repuesto(Long id, String codBarra, String marca, String detalle, BigDecimal precio, Stock stock) {
+    public Repuesto(Long id, String codBarra, String marca, String detalle, BigDecimal precio, Boolean activo,Stock stock) {
         this.id = id;
         this.codBarra = codBarra;
         this.marca = marca;
         this.detalle = detalle;
         this.precio = precio;
+        this.activo = activo;
         this.stock = stock;
     }
 
@@ -90,6 +91,14 @@ public class Repuesto implements Serializable{
     public void setPrecio(BigDecimal precio) {
         this.precio = precio;
     }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
     
     public Stock getStock() {
         return stock;
@@ -101,7 +110,7 @@ public class Repuesto implements Serializable{
 
     @Override
     public String toString() {
-        return "Repuesto{" + "id=" + id + ", codBarra=" + codBarra + ", marca=" + marca + ", detalle=" + detalle + ", precio=" + precio + '}';
+        return "Repuesto{" + "id=" + id + ", codBarra=" + codBarra + ", marca=" + marca + ", detalle=" + detalle + ", precio=" + precio + ", activo=" + activo + '}';
     }
 
 }
