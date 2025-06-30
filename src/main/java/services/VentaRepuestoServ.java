@@ -43,11 +43,11 @@ public class VentaRepuestoServ {
                 tipoOrden, fechaMinima, fechaMaxima);
     }
 
-    /**
-     * @param venta
-     * @return
-     */
     public VentaRepuesto modificarVenta(VentaRepuesto venta) {
         return dao.modificarVenta(venta);
+    }
+    
+    public Boolean borradoLogico(VentaRepuesto ventaRepuesto){
+        return dao.borradoLogico(ventaRepuesto.getId());
     }
 }

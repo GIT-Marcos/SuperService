@@ -24,5 +24,5 @@ public interface VentaRepuestoDAO {
 
     VentaRepuesto modificarVenta(VentaRepuesto venta);
 
-    Boolean eliminarVenta(VentaRepuesto venta);
+    Boolean borradoLogico(Long idVenta);
 }

@@ -564,7 +564,6 @@ public class PanelVentas extends javax.swing.JPanel {
                 ventaParaCancelar = listaParaTabla.get(i);
             }
         }
-        ventaParaCancelar.setEstadoVenta(EstadoVentaRepuesto.CANCELADO);
         int respuesta = JOptionPane.showConfirmDialog(null,
                 "Esta a punto de cancelar una venta, esta acción es irreversible. ¿Continuar?",
                 "CONFIRMACIÓN DE CANCELADO", JOptionPane.WARNING_MESSAGE);
@@ -574,7 +573,7 @@ public class PanelVentas extends javax.swing.JPanel {
                     "CONFIRMACIÓN DE BORRADO", JOptionPane.WARNING_MESSAGE);
             if (respuesta2 == JOptionPane.YES_OPTION) {
                 //TO-DO: GESTIONAR ERRORES
-                ventaServ.modificarVenta(ventaParaCancelar);
+                ventaServ.borradoLogico(ventaParaCancelar);
                 JOptionPane.showMessageDialog(null, "Venta cancelada correctamente.",
                         "CANCELACIÓN DE VENTA", JOptionPane.INFORMATION_MESSAGE);
             }

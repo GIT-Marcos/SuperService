@@ -14,12 +14,14 @@ import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import org.hibernate.envers.Audited;
 
 /**
  *
  * @author Usuario
  */
 @Entity
+@Audited
 @Table(name = "pagos")
 public class Pago implements Serializable {
 
@@ -52,17 +54,17 @@ public class Pago implements Serializable {
     @Column(name = "ultimos_4")
     private String ultimos4;
 
+    @Column(nullable = false)
+    private Boolean activo;
+
     //ENUM MÉTODO DE PAGO
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false, name = "metodo_pago")
     private MetodosPago MetodosPago;
 
     //ENUM BANCO
-    
     //ENUM ESTADO PAGO
-    
     //RELACIÓN CON VENTAsERVICE
-    
     //RELACIÓN BI CON VENTA REPUESTO
     @ManyToOne(optional = false)
     private VentaRepuesto ventaRepuesto;
@@ -71,7 +73,8 @@ public class Pago implements Serializable {
     }
 
     public Pago(Long id, String dni, LocalDate fechaPago, BigDecimal montoPagado, String marcaTarjeta,
-            String banco, String referencia, BigDecimal descuento, String ultimos4, MetodosPago MetodosPago, VentaRepuesto ventaRepuesto) {
+            String banco, String referencia, BigDecimal descuento, String ultimos4, Boolean activo,
+            MetodosPago MetodosPago, VentaRepuesto ventaRepuesto) {
         this.id = id;
         this.dni = dni;
         this.fechaPago = fechaPago;
@@ -81,6 +84,7 @@ public class Pago implements Serializable {
         this.referencia = referencia;
         this.descuento = descuento;
         this.ultimos4 = ultimos4;
+        this.activo = activo;
         this.MetodosPago = MetodosPago;
         this.ventaRepuesto = ventaRepuesto;
     }
@@ -157,6 +161,14 @@ public class Pago implements Serializable {
         this.ultimos4 = ultimos4;
     }
 
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
     public MetodosPago getMetodosPago() {
         return MetodosPago;
     }
@@ -175,7 +187,7 @@ public class Pago implements Serializable {
 
     @Override
     public String toString() {
-        return "Pago{" + "id=" + id + ", dni=" + dni + ", fechaPago=" + fechaPago + ", montoPagado=" + montoPagado + ", marcaTarjeta=" + marcaTarjeta + ", banco=" + banco + ", referencia=" + referencia + ", descuento=" + descuento + ", ultimos4=" + ultimos4 + ", MetodosPago=" + MetodosPago + '}';
+        return "Pago{" + "id=" + id + ", dni=" + dni + ", fechaPago=" + fechaPago + ", montoPagado=" + montoPagado + ", marcaTarjeta=" + marcaTarjeta + ", banco=" + banco + ", referencia=" + referencia + ", descuento=" + descuento + ", ultimos4=" + ultimos4 + ", activo=" + activo + ", MetodosPago=" + MetodosPago + '}';
     }
 
 }

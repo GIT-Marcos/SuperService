@@ -2,6 +2,7 @@ package DAOs;
 
 import entities.DetalleRetiro;
 import entities.NotaRetiro;
+import entities.Pago;
 import entities.Repuesto;
 import entities.Stock;
 import entities.VentaRepuesto;
@@ -138,8 +139,29 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
     }
 
     @Override
-    public Boolean eliminarVenta(VentaRepuesto venta) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Boolean borradoLogico(Long idVenta) {
+        session = Util.getHibernateSession();
+        VentaRepuesto venta = session.find(VentaRepuesto.class, idVenta);
+        if (venta != null) {
+            venta.setActivo(Boolean.FALSE);
+            venta.setEstadoVenta(CANCELADO);
+            for (Pago p : venta.getPagosList()) {
+                p.setActivo(Boolean.FALSE);
+            }
+            try {
+                session.beginTransaction();
+                session.merge(venta);
+                session.getTransaction().commit();
+                return true;
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                e.printStackTrace();
+                return false;
+            } finally {
+                session.close();
+            }
+        }
+        return false;
     }
 
 }
