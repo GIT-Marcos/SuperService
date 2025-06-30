@@ -80,7 +80,7 @@ public class RepuestoServ {
     }
 
     public Boolean borrarRepuesto(Repuesto repuesto) {
-        return dao.borrarRepuesto(repuesto);
+        return dao.borradoLogico(repuesto.getId());
     }
 
     public Long cuentaRespBajoStock() {

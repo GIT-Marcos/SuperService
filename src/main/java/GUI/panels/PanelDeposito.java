@@ -521,6 +521,7 @@ public class PanelDeposito extends javax.swing.JPanel {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
+        //TO-DO: QUE BUSQUE EN LA LISTA DE CLASE EN VEZ DE EN DB
         String codBarra = jTableRepuestos.getValueAt(filaParaEliminar, 0).toString();
         Repuesto repuestoBorrar = repuestoServ.buscarPorCodBarraExacto(codBarra);
         //CONFIRMACIÓN
@@ -533,6 +534,7 @@ public class PanelDeposito extends javax.swing.JPanel {
                     "CONFIRMACIÓN DE BORRADO", JOptionPane.WARNING_MESSAGE);
             if (respuesta2 == JOptionPane.YES_OPTION) {
                 repuestoServ.borrarRepuesto(repuestoBorrar);
+                actualizaTabla();
                 JOptionPane.showMessageDialog(null, "Repuesto eliminado correctamente.",
                         "ELIMINACIÓN DE REPUESTO", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -578,7 +580,6 @@ public class PanelDeposito extends javax.swing.JPanel {
 
         String input = JOptionPane.showInputDialog(null, "Ingrese la cantidad de stock a agregar:");
         if (input == null) {
-            // Usuario canceló el input
             return;
         }
         try {
@@ -595,7 +596,7 @@ public class PanelDeposito extends javax.swing.JPanel {
             repuestoServ.modificarRepuesto(repuestoIngresarStock, codBarra);
 
             JOptionPane.showMessageDialog(null, "Se ha agregado stock correctamente.");
-
+            actualizaTabla();
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Debe ingresar un número entero válido.", "Error de entrada",
                     JOptionPane.ERROR_MESSAGE);

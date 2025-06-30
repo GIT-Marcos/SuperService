@@ -7,13 +7,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.io.Serializable;
-import org.hibernate.annotations.SoftDelete;
-import org.hibernate.annotations.SoftDeleteType;
 
 @Entity
-@SoftDelete(strategy = SoftDeleteType.ACTIVE, columnName = "activo")
-@Table(name = "stock")
-public class Stock implements Serializable{
+@Table(name = "stocks")
+public class Stock implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +19,7 @@ public class Stock implements Serializable{
 
     @Column(nullable = false)
     private Integer cantidad;
-    
+
     @Column(name = "cantidad_minima")
     private Integer cantMinima;
 
@@ -35,16 +32,20 @@ public class Stock implements Serializable{
     @Column
     private String observaciones;
 
+    @Column(nullable = false)
+    private Boolean activo;
+
     public Stock() {
     }
 
-    public Stock(Long id, Integer cantidad, Integer cantMinima, String ubicacion, String lote, String observaciones) {
+    public Stock(Long id, Integer cantidad, Integer cantMinima, String ubicacion, String lote, String observaciones, Boolean activo) {
         this.id = id;
         this.cantidad = cantidad;
         this.cantMinima = cantMinima;
         this.ubicacion = ubicacion;
         this.lote = lote;
         this.observaciones = observaciones;
+        this.activo = activo;
     }
 
     public Long getId() {
@@ -95,9 +96,17 @@ public class Stock implements Serializable{
         this.observaciones = observaciones;
     }
 
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
     @Override
     public String toString() {
-        return "Stock{" + "id=" + id + ", cantidad=" + cantidad + ", cantMinima=" + cantMinima + ", ubicacion=" + ubicacion + ", lote=" + lote + ", observaciones=" + observaciones + '}';
+        return "Stock{" + "id=" + id + ", cantidad=" + cantidad + ", cantMinima=" + cantMinima + ", ubicacion=" + ubicacion + ", lote=" + lote + ", observaciones=" + observaciones + ", activo=" + activo + '}';
     }
 
 }

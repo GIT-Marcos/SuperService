@@ -355,8 +355,8 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
         String lote = jtfLote.getText().trim();
         String observaciones = jtfObservaciones.getText().trim();
 
-        Stock stock = new Stock(repuestoCargaPantalla.getStock().getId(), cantidad, cantMinima, ubicacion, lote, observaciones);
-        Repuesto repuesto = new Repuesto(repuestoCargaPantalla.getId(), codBarra, marca, detalle, precio, stock);
+        Stock stock = new Stock(repuestoCargaPantalla.getStock().getId(), cantidad, cantMinima, ubicacion, lote, observaciones,true);
+        Repuesto repuesto = new Repuesto(repuestoCargaPantalla.getId(), codBarra, marca, detalle, precio, true, stock);
 
         //INICIO CONFIRMACIÓN
         int opcionElegida = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea editar este repuesto?",
