@@ -25,7 +25,7 @@ public class DetalleRetiro implements Serializable {
     private Long id;
 
     @Column(length = 10, nullable = false)
-    private Integer cantidad;
+    private Double cantidad;
 
     //RELACIÓN * A 1 CON REPUESTO
     @ManyToOne(optional = false)
@@ -35,7 +35,7 @@ public class DetalleRetiro implements Serializable {
     public DetalleRetiro() {
     }
 
-    public DetalleRetiro(Long id, Integer cantidad, Repuesto repuesto) {
+    public DetalleRetiro(Long id, Double cantidad, Repuesto repuesto) {
         this.id = id;
         this.cantidad = cantidad;
         this.repuesto = repuesto;
@@ -49,11 +49,11 @@ public class DetalleRetiro implements Serializable {
         this.id = id;
     }
 
-    public Integer getCantidad() {
+    public Double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(Double cantidad) {
         this.cantidad = cantidad;
     }
 

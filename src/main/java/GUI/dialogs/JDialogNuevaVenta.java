@@ -75,21 +75,23 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
         jScrollPane1.setViewportView(jTableRepuestos);
     }
 
-    private void agregaRepuestoTabla(Repuesto repuesto, Integer cantidad) {
+    private void agregaRepuestoTabla(Repuesto repuesto, Double cantidad) {
         BigDecimal total = repuesto.getPrecio().multiply(BigDecimal.valueOf(cantidad));
         tabla.addRow(new Object[]{
             repuesto.getCodBarra(),
             repuesto.getDetalle(),
             repuesto.getMarca(),
             "$ " + repuesto.getPrecio(),
-            cantidad,
+            cantidad + " " + repuesto.getStock().getUnidadMedida(),
             "$ " + total
         });
     }
 
-    public void recibeRepuesto(Repuesto repuesto, Integer cantidad) {
+    public void recibeRepuesto(Repuesto repuesto, Double cantidad) {
         //TO-DO:HACER BIEN LA ACTUALIZACION DE STOCK AL VENDER
-        int nuevaCantidadStock = repuesto.getStock().getCantidad() - cantidad;
+        Double resto = repuesto.getStock().getCantidad() - cantidad;
+        //TO-DO: MOVER ESTE REDONDEO A LA CLASE UTIL
+        Double nuevaCantidadStock = Math.round(resto * 100.0) / 100.0;
         repuesto.getStock().setCantidad(nuevaCantidadStock);
 
         this.idsRepuestosAgregados.add(repuesto.getId());

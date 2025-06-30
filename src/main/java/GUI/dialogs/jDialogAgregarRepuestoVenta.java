@@ -23,10 +23,11 @@ public class jDialogAgregarRepuestoVenta extends javax.swing.JDialog {
     private final String COL_MARCA = "MARCA";
     private final String COL_PRECIO = "PRECIO";
     private final String COL_CANTI_STOCK = "CANTIDAD STOCK";
+    private final String COL_UNI_MEDIDA = "UNI MEDIDA";
     private final String COL_STOCK_MIN = "STOCK MÍNIMO";
 
     private final DefaultTableModel tabla = new DefaultTableModel(new Object[]{
-        COL_COD_BARRA, COL_DETALLE, COL_MARCA, COL_PRECIO, COL_CANTI_STOCK, COL_STOCK_MIN}, 0) {
+        COL_COD_BARRA, COL_DETALLE, COL_MARCA, COL_PRECIO, COL_CANTI_STOCK, COL_UNI_MEDIDA, COL_STOCK_MIN}, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false; // ninguna celda editable
@@ -71,6 +72,7 @@ public class jDialogAgregarRepuestoVenta extends javax.swing.JDialog {
                 repuesto.getMarca(),
                 "$ " + repuesto.getPrecio(),
                 repuesto.getStock().getCantidad(),
+                repuesto.getStock().getUnidadMedida(),
                 repuesto.getStock().getCantMinima()
             });
         });
@@ -78,10 +80,10 @@ public class jDialogAgregarRepuestoVenta extends javax.swing.JDialog {
         //aplica render para colorear filas según condición
         ColorRenderTables renderer = new ColorRenderTables((table, row) -> {
             Object stocActu = table.getValueAt(row, 4);
-            Object stockMin = table.getValueAt(row, 5);
-            if (stocActu instanceof Integer && stockMin instanceof Integer) {
-                int actual = (int) stocActu;
-                int minimo = (int) stockMin;
+            Object stockMin = table.getValueAt(row, 6);
+            if (stocActu instanceof Double && stockMin instanceof Double) {
+                Double actual = (Double) stocActu;
+                Double minimo = (Double) stockMin;
                 return actual <= minimo;
             }
             return false;
@@ -272,13 +274,14 @@ public class jDialogAgregarRepuestoVenta extends javax.swing.JDialog {
             return;
         }
         try {
-            verificadorCampos.verificaFormatoInteger(jtfCantidad.getText().trim(), jLabel4.getText());
+            verificadorCampos.verificaFormatoDouble(jtfCantidad.getText().trim(), jLabel4.getText());
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "HAY CAMPOS NUMÉRICOS EN MAL FORMATO",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        Integer cantidad = Integer.valueOf(jtfCantidad.getText().trim());
+        Double inputCant = Double.valueOf(jtfCantidad.getText().trim());
+        Double cantidad = Math.round(inputCant * 100.0) / 100.0;
         String codBarraSeleccionTabla = jTableRepuestos.getValueAt(
                 jTableRepuestos.getSelectedRow(), 0).toString();
         if (codBarraSeleccionTabla == null) {
@@ -301,7 +304,7 @@ public class jDialogAgregarRepuestoVenta extends javax.swing.JDialog {
         } else {
             jDialogNuevaVenta.recibeRepuesto(repuesto, cantidad);
             JOptionPane.showMessageDialog(null, "Repuesto agregado para venta correctamente.",
-                        "VENTA DE REPUESTO", JOptionPane.INFORMATION_MESSAGE);
+                    "VENTA DE REPUESTO", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
         }
     }//GEN-LAST:event_jButAgregarActionPerformed
