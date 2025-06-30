@@ -81,7 +81,7 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
             jButAgregarPago.setEnabled(false);
 
         }
-        jLabMontoFaltante.setText("$ "+String.valueOf(venta.getMontoFaltante()));
+        jLabMontoFaltante.setText("$ " + String.valueOf(venta.getMontoFaltante()));
 
         setTablas();
         listaParaTablaRepuestos = venta.getNotaRetiro().getDetallesRetiro();
@@ -106,7 +106,7 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
                 detalle.getRepuesto().getDetalle(),
                 detalle.getRepuesto().getMarca(),
                 "$ " + detalle.getRepuesto().getPrecio(),
-                detalle.getCantidad(),
+                detalle.getCantidad() + " " + detalle.getRepuesto().getStock().getUnidadMedida(),
                 "$ " + detalle.getRepuesto().getPrecio().multiply(BigDecimal.valueOf(detalle.getCantidad()))
             });
         });
@@ -124,7 +124,7 @@ public class JDialogVentaDetalles extends javax.swing.JDialog {
             });
         });
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

@@ -29,10 +29,11 @@ public class PanelDeposito extends javax.swing.JPanel {
     private final String COL_MARCA = "MARCA";
     private final String COL_PRECIO = "PRECIO";
     private final String COL_CANTI_STOCK = "CANTIDAD STOCK";
+    private final String COL_UNI_MEDIDA = "UNI MEDIDA";
     private final String COL_STOCK_MIN = "STOCK MÍNIMO";
 
     private final DefaultTableModel tabla = new DefaultTableModel(new Object[]{
-        COL_COD_BARRA, COL_DETALLE, COL_MARCA, COL_PRECIO, COL_CANTI_STOCK, COL_STOCK_MIN}, 0) {
+        COL_COD_BARRA, COL_DETALLE, COL_MARCA, COL_PRECIO, COL_CANTI_STOCK, COL_UNI_MEDIDA, COL_STOCK_MIN}, 0) {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false; // ninguna celda editable
@@ -74,6 +75,7 @@ public class PanelDeposito extends javax.swing.JPanel {
                 repuesto.getMarca(),
                 "$ " + repuesto.getPrecio(),
                 repuesto.getStock().getCantidad(),
+                repuesto.getStock().getUnidadMedida(),
                 repuesto.getStock().getCantMinima()
             });
         });
@@ -81,10 +83,10 @@ public class PanelDeposito extends javax.swing.JPanel {
         //aplica render para colorear filas según condición
         ColorRenderTables renderer = new ColorRenderTables((table, row) -> {
             Object stocActu = table.getValueAt(row, 4);
-            Object stockMin = table.getValueAt(row, 5);
-            if (stocActu instanceof Integer && stockMin instanceof Integer) {
-                int actual = (int) stocActu;
-                int minimo = (int) stockMin;
+            Object stockMin = table.getValueAt(row, 6);
+            if (stocActu instanceof Double && stockMin instanceof Double) {
+                Double actual = (Double) stocActu;
+                Double minimo = (Double) stockMin;
                 return actual <= minimo;
             }
             return false;
@@ -131,8 +133,8 @@ public class PanelDeposito extends javax.swing.JPanel {
                 return "detalle";
         }
     }
-    
-    public void actualizaTabla(){
+
+    public void actualizaTabla() {
         boolean stockNormal = jcbStockNormal.isSelected();
         boolean stockBajo = jcbStockBajo.isSelected();
         String columnaParaOrdenamiento = tomaOrdenEligido();
@@ -568,7 +570,7 @@ public class PanelDeposito extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButIngresarStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButIngresarStockActionPerformed
-        Integer cantidadStockIngresar = 0;
+        Double cantidadStockIngresar;
         int filaParaIngresar = jTableRepuestos.getSelectedRow();
         if (filaParaIngresar == -1) {
             JOptionPane.showMessageDialog(null, "No ha seleccionado un repuesto.", "DEBE SELECCIONAR UN REPUESTO",
@@ -583,7 +585,8 @@ public class PanelDeposito extends javax.swing.JPanel {
             return;
         }
         try {
-            cantidadStockIngresar = Integer.parseInt(input);
+            Double inputCant = Double.valueOf(input);
+            cantidadStockIngresar = Math.round(inputCant * 100.0) / 100.0;
 
             if (cantidadStockIngresar <= 0) {
                 JOptionPane.showMessageDialog(null, "La cantidad debe ser mayor a cero.", "Cantidad inválida",
@@ -591,7 +594,7 @@ public class PanelDeposito extends javax.swing.JPanel {
                 return;
             }
 
-            int cantidadActual = repuestoIngresarStock.getStock().getCantidad();
+            Double cantidadActual = repuestoIngresarStock.getStock().getCantidad();
             repuestoIngresarStock.getStock().setCantidad(cantidadActual + cantidadStockIngresar);
             repuestoServ.modificarRepuesto(repuestoIngresarStock, codBarra);
 

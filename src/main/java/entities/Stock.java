@@ -18,10 +18,13 @@ public class Stock implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    private Integer cantidad;
+    private Double cantidad;
 
     @Column(name = "cantidad_minima")
-    private Integer cantMinima;
+    private Double cantMinima;
+
+    @Column(name = "unidad_medida", nullable = false)
+    private String unidadMedida;
 
     @Column(nullable = false)
     private String ubicacion;
@@ -38,10 +41,11 @@ public class Stock implements Serializable {
     public Stock() {
     }
 
-    public Stock(Long id, Integer cantidad, Integer cantMinima, String ubicacion, String lote, String observaciones, Boolean activo) {
+    public Stock(Long id, Double cantidad, Double cantMinima, String unidadMedida, String ubicacion, String lote, String observaciones, Boolean activo) {
         this.id = id;
         this.cantidad = cantidad;
         this.cantMinima = cantMinima;
+        this.unidadMedida = unidadMedida;
         this.ubicacion = ubicacion;
         this.lote = lote;
         this.observaciones = observaciones;
@@ -56,20 +60,28 @@ public class Stock implements Serializable {
         this.id = id;
     }
 
-    public Integer getCantidad() {
+    public Double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
+    public void setCantidad(Double cantidad) {
         this.cantidad = cantidad;
     }
 
-    public Integer getCantMinima() {
+    public Double getCantMinima() {
         return cantMinima;
     }
 
-    public void setCantMinima(Integer cantMinima) {
+    public void setCantMinima(Double cantMinima) {
         this.cantMinima = cantMinima;
+    }
+
+    public String getUnidadMedida() {
+        return unidadMedida;
+    }
+
+    public void setUnidadMedida(String unidadMedida) {
+        this.unidadMedida = unidadMedida;
     }
 
     public String getUbicacion() {
@@ -106,7 +118,7 @@ public class Stock implements Serializable {
 
     @Override
     public String toString() {
-        return "Stock{" + "id=" + id + ", cantidad=" + cantidad + ", cantMinima=" + cantMinima + ", ubicacion=" + ubicacion + ", lote=" + lote + ", observaciones=" + observaciones + ", activo=" + activo + '}';
+        return "Stock{" + "id=" + id + ", cantidad=" + cantidad + ", cantMinima=" + cantMinima + ", unidadMedida=" + unidadMedida + ", ubicacion=" + ubicacion + ", lote=" + lote + ", observaciones=" + observaciones + ", activo=" + activo + '}';
     }
 
 }

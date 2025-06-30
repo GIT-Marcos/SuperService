@@ -70,6 +70,8 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jcbMarcas = new javax.swing.JComboBox<>();
+        jLabel13 = new javax.swing.JLabel();
+        jcbUnidadMedida = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nuevo Repuesto");
@@ -80,7 +82,7 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
         setSize(new java.awt.Dimension(0, 0));
 
         jLabel1.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
-        jLabel1.setText("Código de barras");
+        jLabel1.setText("Código de Barras");
 
         jtfCodBarra.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
 
@@ -156,6 +158,10 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
             }
         });
 
+        jLabel13.setText("Unidad medida");
+
+        jcbUnidadMedida.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Unidad", "Metros", "Litros", "Kilos", "Otra..." }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -179,12 +185,17 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
                             .addComponent(jtfDetalle, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jtfUbicacion, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jtfCantidadStock, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jtfUbicacion, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jtfCantidadStock, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jcbUnidadMedida, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                     .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -234,11 +245,13 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jLabel10))
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel13))
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtfStockMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtfCantidadStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfCantidadStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcbUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -307,8 +320,8 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
         //CONTROL DE FORMATOS
         try {
             verificadorCampos.verificaFormatoDouble(jtfPrecio.getText().trim(), jLabel4.getText());
-            verificadorCampos.verificaFormatoInteger(jtfCantidadStock.getText().trim(), jLabel5.getText());
-            verificadorCampos.verificaFormatoInteger(jtfStockMinimo.getText().trim(), jLabel10.getText());
+            verificadorCampos.verificaFormatoDouble(jtfCantidadStock.getText().trim(), jLabel5.getText());
+            verificadorCampos.verificaFormatoDouble(jtfStockMinimo.getText().trim(), jLabel10.getText());
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "HAY CAMPOS NUMÉRICOS EN MAL FORMATO",
                     JOptionPane.WARNING_MESSAGE);
@@ -324,8 +337,11 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
         }
         String detalle = jtfDetalle.getText().trim();
         BigDecimal precio = BigDecimal.valueOf(Double.parseDouble(jtfPrecio.getText().trim())).setScale(2, RoundingMode.HALF_UP);
-        Integer cantidad = Integer.valueOf(jtfCantidadStock.getText().trim());
-        Integer cantMinima = Integer.valueOf(jtfStockMinimo.getText().trim());
+        Double inputCant = Double.valueOf(jtfCantidadStock.getText().trim());
+        Double cantidad = Math.round(inputCant * 100.0) / 100.0;
+        Double inputCantMin = Double.valueOf(jtfStockMinimo.getText().trim());
+        Double cantMinima = Math.round(inputCantMin * 100.0) / 100.0;
+        String unidadMedida = (String) jcbUnidadMedida.getSelectedItem();
         String ubicacion;
         if (jtfUbicacion.isEnabled()) {
             ubicacion = jtfUbicacion.getText().trim();
@@ -335,7 +351,7 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
         String lote = jtfLote.getText().trim();
         String observaciones = jtfObservaciones.getText().trim();
 
-        Stock stock = new Stock(null, cantidad, cantMinima, ubicacion, lote, observaciones, true);
+        Stock stock = new Stock(null, cantidad, cantMinima, unidadMedida, ubicacion, lote, observaciones, true);
         Repuesto repuesto = new Repuesto(null, codBarra, marca, detalle, precio, true, stock);
 
         //INICIO CONFIRMACIÓN
@@ -422,6 +438,7 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -432,6 +449,7 @@ public class JDialogCrearRepuesto extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JComboBox<String> jcbMarcas;
     private javax.swing.JComboBox<String> jcbUbicaciones;
+    private javax.swing.JComboBox<String> jcbUnidadMedida;
     private javax.swing.JTextField jtfCantidadStock;
     private javax.swing.JTextField jtfCodBarra;
     private javax.swing.JTextField jtfDetalle;
