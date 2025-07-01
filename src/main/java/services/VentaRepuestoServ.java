@@ -7,6 +7,7 @@ import enums.EstadoVentaRepuesto;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -18,6 +19,10 @@ public class VentaRepuestoServ {
 
     public List<VentaRepuesto> todasVentas() {
         return dao.todasVentas();
+    }
+
+    public Map<String, Long> ventasPorMeses(Integer anio) {
+        return dao.ventasPorMeses(anio);
     }
 
     public VentaRepuesto cargarVenta(VentaRepuesto venta) {
@@ -46,8 +51,8 @@ public class VentaRepuestoServ {
     public VentaRepuesto modificarVenta(VentaRepuesto venta) {
         return dao.modificarVenta(venta);
     }
-    
-    public Boolean borradoLogico(VentaRepuesto ventaRepuesto){
+
+    public Boolean borradoLogico(VentaRepuesto ventaRepuesto) {
         return dao.borradoLogico(ventaRepuesto.getId());
     }
 }

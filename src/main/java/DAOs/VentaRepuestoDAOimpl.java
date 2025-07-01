@@ -17,7 +17,9 @@ import jakarta.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import org.hibernate.Session;
 import util.Util;
 
@@ -106,6 +108,36 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
 
         session.close();
         return ventas;
+    }
+
+    @Override
+    public Map<String, Long> ventasPorMeses(Integer anio) {
+        session = Util.getHibernateSession();
+        List<Object[]> objetos = session.createQuery("SELECT MONTH(v.fechaVenta), COUNT(v) "
+                + "FROM VentaRepuesto v "
+                + "WHERE YEAR(v.fechaVenta) = :anio "
+                + "GROUP BY MONTH(v.fechaVenta) "
+                + "ORDER BY MONTH(v.fechaVenta)",
+                Object[].class)
+                .setParameter("anio", anio)
+                .list();
+        String[] meses = {
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        };
+        Map<String, Long> ventasPorMes = new LinkedHashMap<>();
+        // Inicializa con 0 para todos los meses
+        for (int i = 0; i < 12; i++) {
+            ventasPorMes.put(meses[i], 0L);
+        }
+        // Llena con los datos reales desde la BD
+        for (Object[] fila : objetos) {
+            Integer mes = (Integer) fila[0];  // mes: 1 - 12
+            Long cantidad = (Long) fila[1];
+            ventasPorMes.put(meses[mes - 1], cantidad);
+        }
+        session.close();
+        return ventasPorMes;
     }
 
     @Override

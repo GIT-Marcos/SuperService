@@ -5,6 +5,7 @@ import enums.EstadoVentaRepuesto;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -18,6 +19,8 @@ public interface VentaRepuestoDAO {
     List<VentaRepuesto> buscarVentas(Long codVenta, EstadoVentaRepuesto estadoVenta,
             BigDecimal montoMinimo, BigDecimal montomaximo, String nombreColumnaOrnenar,
             Integer tipoOrden, Date fechaMinima, Date fechaMaxima);
+    
+    Map<String, Long> ventasPorMeses(Integer anio);
 
     //ESCRITURA
     VentaRepuesto cargarVenta(VentaRepuesto venta);
