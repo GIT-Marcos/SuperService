@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -17,6 +18,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import services.VentaRepuestoServ;
 import util.GeneradorPDF;
+import util.GeneradorReportes;
 import util.VerificadorCampos;
 
 /**
@@ -42,6 +44,8 @@ public class PanelVentas extends javax.swing.JPanel {
     };
 
     private VerificadorCampos verificadorCampos = new VerificadorCampos();
+
+    private GeneradorReportes gr = new GeneradorReportes();
 
     private VentaRepuestoServ ventaServ = new VentaRepuestoServ();
 
@@ -107,6 +111,7 @@ public class PanelVentas extends javax.swing.JPanel {
         jButVerDetalles = new javax.swing.JButton();
         jButImprimirFactura = new javax.swing.JButton();
         jButCancelarVenta = new javax.swing.JButton();
+        jButReporteVentas = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jButBuscar = new javax.swing.JButton();
         jtfBuscar = new javax.swing.JTextField();
@@ -177,6 +182,14 @@ public class PanelVentas extends javax.swing.JPanel {
             }
         });
 
+        jButReporteVentas.setText("REPORTE VENTAS ANUALES");
+        jButReporteVentas.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButReporteVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButReporteVentasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -187,9 +200,10 @@ public class PanelVentas extends javax.swing.JPanel {
                     .addComponent(jButVolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButImprimirFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButVerDetalles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButVerHoy, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                    .addComponent(jButVerHoy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButTodasVentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButCancelarVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButCancelarVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButReporteVentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -203,6 +217,8 @@ public class PanelVentas extends javax.swing.JPanel {
                 .addComponent(jButVerDetalles)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButImprimirFactura)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButReporteVentas)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButCancelarVenta)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -316,7 +332,7 @@ public class PanelVentas extends javax.swing.JPanel {
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel12)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel2Layout.createSequentialGroup()
@@ -606,11 +622,43 @@ public class PanelVentas extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jButImprimirFacturaActionPerformed
 
+    private void jButReporteVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButReporteVentasActionPerformed
+        String ruta;
+        String input = JOptionPane.showInputDialog(null, "Ingrese el número del año (Ej: 2020):");
+        if (input == null) {
+            return;
+        }
+        try {
+            verificadorCampos.verificarVacio(input, "año");
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        try {
+            verificadorCampos.verificaFormatoInteger(input, "año");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        JFileChooser fileChooser = new JFileChooser();
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            ruta = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!ruta.endsWith(".jpg")) {
+                ruta += ".jpg";
+            }
+            Integer anio = Integer.valueOf(input);
+            Map<String, Long> mapa = ventaServ.ventasPorMeses(anio);
+            gr.cantidadVentasAnual(ruta, mapa);
+        }
+    }//GEN-LAST:event_jButReporteVentasActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButBuscar;
     private javax.swing.JButton jButCancelarVenta;
     private javax.swing.JButton jButImprimirFactura;
+    private javax.swing.JButton jButReporteVentas;
     private javax.swing.JButton jButTodasVentas;
     private javax.swing.JButton jButVerDetalles;
     private javax.swing.JButton jButVerHoy;

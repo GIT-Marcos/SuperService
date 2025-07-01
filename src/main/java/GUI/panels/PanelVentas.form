@@ -54,9 +54,10 @@
                       <Component id="jButVolver" max="32767" attributes="0"/>
                       <Component id="jButImprimirFactura" alignment="0" max="32767" attributes="0"/>
                       <Component id="jButVerDetalles" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jButVerHoy" pref="156" max="32767" attributes="0"/>
+                      <Component id="jButVerHoy" max="32767" attributes="0"/>
                       <Component id="jButTodasVentas" alignment="0" max="32767" attributes="0"/>
                       <Component id="jButCancelarVenta" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jButReporteVentas" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -73,6 +74,8 @@
                   <Component id="jButVerDetalles" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButImprimirFactura" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jButReporteVentas" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButCancelarVenta" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
@@ -129,6 +132,17 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButCancelarVentaActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButReporteVentas">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="REPORTE VENTAS ANUALES"/>
+            <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+              <Insets value="[2, 2, 2, 2]"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButReporteVentasActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -188,7 +202,7 @@
                           <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="96" max="32767" attributes="0"/>
+                  <EmptySpace pref="92" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
