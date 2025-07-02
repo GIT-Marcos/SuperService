@@ -11,8 +11,13 @@ import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.labels.ItemLabelAnchor;
+import org.jfree.chart.labels.ItemLabelPosition;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.ui.TextAnchor;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
@@ -21,40 +26,51 @@ import org.jfree.data.category.DefaultCategoryDataset;
  */
 public class GeneradorReportes {
 
-    public void totalVentasAnual(String ruta, Map<String, BigDecimal> valores){
-         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+    public void totalVentasAnual(String ruta, Map<String, BigDecimal> valores) {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         for (Map.Entry<String, BigDecimal> entry : valores.entrySet()) {
             String mes = entry.getKey();
             BigDecimal totalVentas = entry.getValue();
             dataset.setValue(totalVentas, "totalVentas", mes);
         }
-        JFreeChart chart = ChartFactory.createBarChart("TOTAL DE VENTAS", null, null, dataset,
-                PlotOrientation.VERTICAL, false, false, true);
         
-//        // Configurar eje Y
-//        CategoryPlot plot = chart.getCategoryPlot();
-//        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
-//
-//        long max = valores.values().stream().mapToLong(Long::longValue).max().orElse(1);
-//        int tickUnit = calcularTickUnit(max);
-//
-//        // Rango desde 0 hasta el siguiente múltiplo del tickUnit por encima del valor máximo
-//        double upperBound = Math.ceil((double) max / tickUnit) * tickUnit;
-//
-//        rangeAxis.setRange(0, upperBound);
-//        rangeAxis.setTickUnit(new NumberTickUnit(tickUnit));
-//        rangeAxis.setNumberFormatOverride(NumberFormat.getIntegerInstance());
-        
-        //TO-DO: GESTIONAR COMO TIENE Q SER ESTAS EXEPCIONES, EN PDF GENERADOR TBN
+        //TO-DO: HACER Q TOME EL AÑO CORRESPONDIENTE AL REPORTE
+        JFreeChart chart = ChartFactory.createBarChart(
+                "TOTAL DE VENTAS AÑO: 2025",
+                null, // eje X
+                "$", // eje Y
+                dataset,
+                PlotOrientation.VERTICAL,
+                false, // leyenda
+                false,
+                true
+        );
+
+        // Configurar renderizado para mostrar montos en las barras
+        CategoryPlot plot = chart.getCategoryPlot();
+        BarRenderer renderer = (BarRenderer) plot.getRenderer();
+
+        // Mostrar etiquetas con los valores
+        renderer.setDefaultItemLabelsVisible(true);
+
+        // Formato de número (ej. 12,000)
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance();
+        renderer.setDefaultItemLabelGenerator(new StandardCategoryItemLabelGenerator("{2}", numberFormat));
+
+        // Posición de las etiquetas (encima de la barra)
+        renderer.setDefaultPositiveItemLabelPosition(
+                new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12, TextAnchor.BASELINE_CENTER)
+        );
+
         try {
             ChartUtils.saveChartAsJPEG(new File(ruta), chart, 1200, 700);
             JOptionPane.showMessageDialog(null, "Reporte creado exitosamente en:\n" + ruta);
         } catch (IOException ex) {
-            System.err.println("ERROR AL GUARDAR CHART");
+            System.err.println("ERROR AL GUARDAR CHART: " + ex.getMessage());
         }
     }
-    
+
     public void cantidadVentasAnual(String ruta, Map<String, Long> valores) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
@@ -64,29 +80,43 @@ public class GeneradorReportes {
             dataset.setValue(cantidadDeVentas, "CantidadVentas", mes);
         }
 
-        JFreeChart chart = ChartFactory.createBarChart("CANTIDAD DE VENTAS", null, null, dataset,
-                PlotOrientation.VERTICAL, false, false, true);
+        //TO-DO: HACER Q TOME EL AÑO CORRESPONDIENTE AL REPORTE
+        JFreeChart chart = ChartFactory.createBarChart(
+                "CANTIDAD DE VENTAS AÑO: 2025",
+                null, // eje X
+                "N° de Ventas", // eje Y
+                dataset,
+                PlotOrientation.VERTICAL,
+                false, // leyenda
+                false,
+                true
+        );
 
-        // Configurar eje Y
         CategoryPlot plot = chart.getCategoryPlot();
-        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 
+        // Configurar eje Y con rango dinámico
+        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         long max = valores.values().stream().mapToLong(Long::longValue).max().orElse(1);
         int tickUnit = calcularTickUnit(max);
-
-        // Rango desde 0 hasta el siguiente múltiplo del tickUnit por encima del valor máximo
         double upperBound = Math.ceil((double) max / tickUnit) * tickUnit;
 
         rangeAxis.setRange(0, upperBound);
         rangeAxis.setTickUnit(new NumberTickUnit(tickUnit));
         rangeAxis.setNumberFormatOverride(NumberFormat.getIntegerInstance());
-        
-        //TO-DO: GESTIONAR COMO TIENE Q SER ESTAS EXEPCIONES, EN PDF GENERADOR TBN
+
+        // Mostrar etiquetas encima de las barras
+        BarRenderer renderer = (BarRenderer) plot.getRenderer();
+        renderer.setDefaultItemLabelsVisible(true);
+        renderer.setDefaultItemLabelGenerator(new StandardCategoryItemLabelGenerator("{2}", NumberFormat.getIntegerInstance()));
+        renderer.setDefaultPositiveItemLabelPosition(
+                new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12, TextAnchor.BASELINE_CENTER)
+        );
+
         try {
             ChartUtils.saveChartAsJPEG(new File(ruta), chart, 1200, 700);
             JOptionPane.showMessageDialog(null, "Reporte creado exitosamente en:\n" + ruta);
         } catch (IOException ex) {
-            System.err.println("ERROR AL GUARDAR CHART");
+            System.err.println("ERROR AL GUARDAR CHART: " + ex.getMessage());
         }
     }
 
