@@ -119,6 +119,7 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
         List<Object[]> objetos = session.createQuery("SELECT MONTH(v.fechaVenta), COUNT(v) "
                 + "FROM VentaRepuesto v "
                 + "WHERE YEAR(v.fechaVenta) = :anio "
+                + "AND v.activo = true"
                 + "GROUP BY MONTH(v.fechaVenta) "
                 + "ORDER BY MONTH(v.fechaVenta)",
                 Object[].class)
