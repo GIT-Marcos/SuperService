@@ -2,6 +2,7 @@ package services;
 
 import DAOs.RepuestoDAO;
 import DAOs.RepuestoDAOimpl;
+import DTOs.RepuestoRetiradoReporteDTO;
 import entities.Repuesto;
 import java.util.List;
 import org.hibernate.HibernateException;
@@ -41,6 +42,10 @@ public class RepuestoServ {
         }
         return dao.buscarConFiltros(inputParaBuscar, opcionBusqueda, stockNormal,
                 stockBajo, nombreColumnaOrnenar, tipoOrden);
+    }
+    
+    public List<RepuestoRetiradoReporteDTO> masRetiradosPorMes(int mes, int anio){
+        return dao.masRetiradosEnMes(mes, anio);
     }
 
     public Repuesto cargarRepuesto(Repuesto repuesto) {

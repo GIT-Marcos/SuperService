@@ -24,7 +24,7 @@ public interface VentaRepuestoDAO {
     Map<String, Long> cantidadVentasPorMeses(Integer anio);
     
     Map<String, BigDecimal> totalVentasPorMeses(Integer anio);
-
+    
     //ESCRITURA
     VentaRepuesto cargarVenta(VentaRepuesto venta);
 

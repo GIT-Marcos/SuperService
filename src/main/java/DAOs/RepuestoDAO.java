@@ -1,5 +1,6 @@
 package DAOs;
 
+import DTOs.RepuestoRetiradoReporteDTO;
 import entities.Repuesto;
 import java.util.List;
 
@@ -56,6 +57,8 @@ public interface RepuestoDAO {
      */
     List<Repuesto> buscarConFiltros(String inputParaBuscar, Integer opcionBusqueda,
             Boolean stockNormal, Boolean stockBajo, String nombreColumnaOrnenar, Integer tipoOrden);
+    
+    List<RepuestoRetiradoReporteDTO> masRetiradosEnMes(int mes, int anio);
 
     //////////////////////ESCRITURA
     
