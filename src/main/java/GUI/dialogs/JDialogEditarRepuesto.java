@@ -5,6 +5,7 @@ import entities.Repuesto;
 import entities.Stock;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
 import services.RepuestoServ;
@@ -26,6 +27,8 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
 
     private PanelDeposito pdepo;
 
+    private Repuesto repuesto;
+
     /**
      * Creates new form JDialogEditarRepuesto
      */
@@ -35,16 +38,13 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
 
     }
 
-    public JDialogEditarRepuesto(java.awt.Frame parent, boolean modal, PanelDeposito pdepo) {
+    public JDialogEditarRepuesto(java.awt.Frame parent, boolean modal, PanelDeposito pdepo, Repuesto repuesto) {
         super(parent, modal);
         initComponents();
 
         this.pdepo = pdepo;
-
-    }
-
-    public void setCodBarra(String codBarra) {
-        this.codBarraCargaPantalla = codBarra;
+        this.repuesto = repuesto;
+        cargarDatos();
     }
 
     /**
@@ -87,11 +87,6 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
         setTitle("MODIFICANDO UN REPUESTO");
         setResizable(false);
         setSize(new java.awt.Dimension(0, 0));
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
         jLabel1.setText("Código de Barras");
@@ -364,15 +359,15 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
         String lote = jtfLote.getText().trim();
         String observaciones = jtfObservaciones.getText().trim();
 
-        Stock stock = new Stock(repuestoCargaPantalla.getStock().getId(), cantidad, cantMinima, unidadMedida, ubicacion, lote, observaciones, true);
-        Repuesto repuesto = new Repuesto(repuestoCargaPantalla.getId(), codBarra, marca, detalle, precio, true, stock);
+        Stock stock = new Stock(this.repuesto.getStock().getId(), cantidad, cantMinima, unidadMedida, ubicacion, lote, observaciones, true);
+        Repuesto repuestoMerge = new Repuesto(this.repuesto.getId(), codBarra, marca, detalle, precio, true, stock);
 
         //INICIO CONFIRMACIÓN
         int opcionElegida = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea editar este repuesto?",
                 "CONFIRMACIÓN DE EDICIÓN", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (opcionElegida == JOptionPane.YES_OPTION) {
             try {
-                repuestoServ.modificarRepuesto(repuesto, codBarraCargaPantalla);
+                repuestoServ.modificarRepuesto(repuestoMerge, this.repuesto.getCodBarra());
                 JOptionPane.showMessageDialog(null, "Repuesto modificado correctamente.",
                         "MODIFICACIÓN DE REPUESTO", JOptionPane.INFORMATION_MESSAGE);
                 this.pdepo.actualizaTabla();
@@ -387,23 +382,33 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
     /*
     CARGA LAS CAJAS DE TEXTO CON LOS DATOS DEL REPUESTO A MODIFICAR
      */
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        //TO-DO: CAMBIAR ESTO Q VENGA POR PARÁMETRO EN CONSTRUCTOR
-        repuestoCargaPantalla = repuestoServ.buscarPorCodBarraExacto(codBarraCargaPantalla);
-
-        jtfCodBarra.setText(repuestoCargaPantalla.getCodBarra());
+    private void cargarDatos() {
+        jtfCodBarra.setText(this.repuesto.getCodBarra());
+        //TO-DO:OPTIMIZAR ESTO Y QUE TOME LAS MARCAS Y DEPO DE BASE DE DATOS
         //carga a jcb trucha para parcial
-        jcbMarcas.addItem(repuestoCargaPantalla.getMarca());
-        jtfMarca.setEnabled(false);
-        jtfDetalle.setText(repuestoCargaPantalla.getDetalle());
-        jtfPrecio.setText(repuestoCargaPantalla.getPrecio().toString());
-        jtfCantidadStock.setText(repuestoCargaPantalla.getStock().getCantidad().toString());
-        jtfStockMinimo.setText(repuestoCargaPantalla.getStock().getCantMinima().toString());
+        jcbMarcas.setSelectedItem(this.repuesto.getMarca());
+        if (jcbMarcas.getSelectedIndex() == 0) {
+            jtfMarca.setEnabled(true);
+            jtfMarca.setText(this.repuesto.getMarca());
+        } else {
+            jtfMarca.setEnabled(false);
+        }
+        jtfDetalle.setText(this.repuesto.getDetalle());
+        jtfPrecio.setText(this.repuesto.getPrecio().toString());
+        jcbUnidadMedida.setSelectedItem(this.repuesto.getStock().getUnidadMedida());
+        jtfCantidadStock.setText(this.repuesto.getStock().getCantidad().toString());
+        jtfStockMinimo.setText(this.repuesto.getStock().getCantMinima().toString());
+        //TO-DO:OPTIMIZAR ESTO Y QUE TOME LAS MARCAS Y UBI DE BASE DE DATOS
         //carga a jcb trucha para parcial
-        jcbUbicaciones.addItem(repuestoCargaPantalla.getStock().getUbicacion());
-        jtfUbicacion.setEnabled(false);
-        jtfLote.setText(repuestoCargaPantalla.getStock().getLote());
-    }//GEN-LAST:event_formWindowOpened
+        jcbUbicaciones.setSelectedItem(this.repuesto.getStock().getUbicacion());
+        if (jcbUbicaciones.getSelectedIndex() == 0) {
+            jcbUbicaciones.setEnabled(true);
+            jtfUbicacion.setText(this.repuesto.getStock().getUbicacion());
+        } else {
+            jtfUbicacion.setEnabled(false);
+        }
+        jtfLote.setText(this.repuesto.getStock().getLote());
+    }
 
     private void jcbMarcasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbMarcasItemStateChanged
         if (jcbMarcas.getSelectedIndex() != 0) {

@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -503,6 +504,7 @@ public class PanelDeposito extends javax.swing.JPanel {
     }//GEN-LAST:event_jButAgregarRepuestoActionPerformed
 
     private void jButModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButModificarActionPerformed
+        Repuesto repuesto = null;
         int filaParaModificar = jTableRepuestos.getSelectedRow();
         if (filaParaModificar == -1) {
             JOptionPane.showMessageDialog(null, "No ha seleccionado un repuesto de la tabla.",
@@ -510,9 +512,13 @@ public class PanelDeposito extends javax.swing.JPanel {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        String codBarra = jTableRepuestos.getValueAt(filaParaModificar, 0).toString();
-        JDialogEditarRepuesto jDialogEditarRepuesto = new JDialogEditarRepuesto(null, true, this);
-        jDialogEditarRepuesto.setCodBarra(codBarra);
+        String codBarraElegido = jTableRepuestos.getValueAt(filaParaModificar, 0).toString();
+        for (int i = 0; i < listaParaTabla.size(); i++) {
+            if (Objects.equals(listaParaTabla.get(i).getCodBarra(), codBarraElegido)) {
+                repuesto = listaParaTabla.get(i);
+            }
+        }
+        JDialogEditarRepuesto jDialogEditarRepuesto = new JDialogEditarRepuesto(null, true, this, repuesto);
         jDialogEditarRepuesto.setVisible(true);
     }//GEN-LAST:event_jButModificarActionPerformed
 
