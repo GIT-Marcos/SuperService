@@ -114,12 +114,12 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
     }
 
     @Override
-    public Map<String, Long> ventasPorMeses(Integer anio) {
+    public Map<String, Long> cantidadVentasPorMeses(Integer anio) {
         session = Util.getHibernateSession();
         List<Object[]> objetos = session.createQuery("SELECT MONTH(v.fechaVenta), COUNT(v) "
                 + "FROM VentaRepuesto v "
                 + "WHERE YEAR(v.fechaVenta) = :anio "
-                + "AND v.activo = true"
+                + "AND v.activo = true "
                 + "GROUP BY MONTH(v.fechaVenta) "
                 + "ORDER BY MONTH(v.fechaVenta)",
                 Object[].class)
@@ -144,6 +144,38 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
         return ventasPorMes;
     }
 
+    @Override
+    public Map<String, BigDecimal> totalVentasPorMeses(Integer anio) {
+        session = Util.getHibernateSession();
+        List<Object[]> objetos = session.createQuery("SELECT MONTH(v.fechaVenta), SUM(v.montoTotal) "
+                + "FROM VentaRepuesto v "
+                + "WHERE YEAR(v.fechaVenta) = :anio "
+                + "AND v.activo = true "
+                + "GROUP BY MONTH(v.fechaVenta) "
+                + "ORDER BY MONTH(v.fechaVenta)",
+                Object[].class)
+                .setParameter("anio", anio)
+                .list();
+        String[] meses = {
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        };
+        
+        Map<String, BigDecimal> ventasPorMes = new LinkedHashMap<>();
+        // Inicializa con 0 para todos los meses
+        for (int i = 0; i < 12; i++) {
+            ventasPorMes.put(meses[i], BigDecimal.ZERO);
+        }
+        // Llena con los datos reales desde la BD
+        for (Object[] fila : objetos) {
+            Integer mes = (Integer) fila[0];  // mes: 1 - 12
+            BigDecimal cantidad = (BigDecimal) fila[1];
+            ventasPorMes.put(meses[mes - 1], cantidad);
+        }
+        session.close();
+        return ventasPorMes;
+    }
+    
     @Override
     public VentaRepuesto cargarVenta(VentaRepuesto venta) {
         session = Util.getHibernateSession();

@@ -22,8 +22,12 @@ public class VentaRepuestoServ {
         return dao.todasVentas();
     }
 
-    public Map<String, Long> ventasPorMeses(Integer anio) {
-        return dao.ventasPorMeses(anio);
+    public Map<String, BigDecimal> totalVentasPorMeses(Integer anio){
+        return dao.totalVentasPorMeses(anio);
+    }
+    
+    public Map<String, Long> cantidadVentasPorMeses(Integer anio) {
+        return dao.cantidadVentasPorMeses(anio);
     }
 
     public VentaRepuesto cargarVenta(VentaRepuesto venta) {

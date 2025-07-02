@@ -21,7 +21,9 @@ public interface VentaRepuestoDAO {
             BigDecimal montoMinimo, BigDecimal montomaximo, String nombreColumnaOrnenar,
             Integer tipoOrden, Date fechaMinima, Date fechaMaxima);
     
-    Map<String, Long> ventasPorMeses(Integer anio);
+    Map<String, Long> cantidadVentasPorMeses(Integer anio);
+    
+    Map<String, BigDecimal> totalVentasPorMeses(Integer anio);
 
     //ESCRITURA
     VentaRepuesto cargarVenta(VentaRepuesto venta);
