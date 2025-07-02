@@ -1,10 +1,12 @@
 package DAOs;
 
+import entities.AuditoriaVenta;
 import entities.DetalleRetiro;
 import entities.NotaRetiro;
 import entities.Pago;
 import entities.Repuesto;
 import entities.Stock;
+import entities.Usuario;
 import entities.VentaRepuesto;
 import enums.EstadoVentaRepuesto;
 import static enums.EstadoVentaRepuesto.CANCELADO;
@@ -15,6 +17,7 @@ import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -116,6 +119,7 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
         List<Object[]> objetos = session.createQuery("SELECT MONTH(v.fechaVenta), COUNT(v) "
                 + "FROM VentaRepuesto v "
                 + "WHERE YEAR(v.fechaVenta) = :anio "
+                + "AND v.activo = true"
                 + "GROUP BY MONTH(v.fechaVenta) "
                 + "ORDER BY MONTH(v.fechaVenta)",
                 Object[].class)
@@ -171,18 +175,21 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
     }
 
     @Override
-    public Boolean borradoLogico(Long idVenta) {
+    public Boolean borradoLogico(Long idVenta, String motivo, Usuario usuario) {
         session = Util.getHibernateSession();
         VentaRepuesto venta = session.find(VentaRepuesto.class, idVenta);
         if (venta != null) {
             venta.setActivo(Boolean.FALSE);
             venta.setEstadoVenta(CANCELADO);
+            AuditoriaVenta auditoria = new AuditoriaVenta(null, "cancelación", motivo,
+                    LocalDateTime.now(), usuario);
             for (Pago p : venta.getPagosList()) {
                 p.setActivo(Boolean.FALSE);
             }
             try {
                 session.beginTransaction();
                 session.merge(venta);
+                session.persist(auditoria);
                 session.getTransaction().commit();
                 return true;
             } catch (Exception e) {

@@ -21,7 +21,6 @@ import org.hibernate.envers.Audited;
  * @author Usuario
  */
 @Entity
-@Audited
 @Table(name = "pagos")
 public class Pago implements Serializable {
 

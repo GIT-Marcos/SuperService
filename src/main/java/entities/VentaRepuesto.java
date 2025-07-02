@@ -19,11 +19,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
 
 @Entity
-@Audited
 @Table(name = "ventas_repuestos")
 public class VentaRepuesto implements Serializable {
 
@@ -52,7 +49,6 @@ public class VentaRepuesto implements Serializable {
     //RELACIÓN CON NOTA DE RETIRO
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fk_nota_retiro")
-    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private NotaRetiro notaRetiro;
 
     //RELACIÓN BI 1 A * CON PAGO
