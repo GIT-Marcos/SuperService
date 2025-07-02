@@ -1,11 +1,11 @@
 package GUI.panels;
 
+import DTOs.RepuestoRetiradoReporteDTO;
 import GUI.JFrameHome;
 import GUI.dialogs.JDialogCrearRepuesto;
 import GUI.dialogs.JDialogEditarRepuesto;
 import entities.Repuesto;
 import java.awt.Color;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import services.RepuestoServ;
 import util.ColorRenderTables;
 import util.ExportadorCSV;
+import util.GeneradorReportes;
 import util.VerificadorCampos;
 
 public class PanelDeposito extends javax.swing.JPanel {
@@ -23,6 +24,8 @@ public class PanelDeposito extends javax.swing.JPanel {
     private JFrameHome home;
 
     private final RepuestoServ repuestoServ = new RepuestoServ();
+    
+    private GeneradorReportes genReportes = new GeneradorReportes();
 
     //constantes para tabla
     private final String COL_COD_BARRA = "COD BARRA";
@@ -189,6 +192,9 @@ public class PanelDeposito extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jButGenerarXLSX = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
+        jSeparator3 = new javax.swing.JSeparator();
+        jLabel5 = new javax.swing.JLabel();
+        jButReporteMasRetirado = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(51, 51, 51));
 
@@ -393,7 +399,6 @@ public class PanelDeposito extends javax.swing.JPanel {
 
         jSeparator1.setBackground(new java.awt.Color(51, 51, 51));
         jSeparator1.setForeground(new java.awt.Color(51, 51, 51));
-        jSeparator1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel2.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
@@ -412,13 +417,28 @@ public class PanelDeposito extends javax.swing.JPanel {
 
         jSeparator2.setBackground(new java.awt.Color(51, 51, 51));
         jSeparator2.setForeground(new java.awt.Color(51, 51, 51));
-        jSeparator2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel5.setFont(new java.awt.Font("Malgun Gothic", 0, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Generar Reportes");
+        jLabel5.setToolTipText("");
+
+        jButReporteMasRetirado.setFont(new java.awt.Font("Malgun Gothic", 1, 14)); // NOI18N
+        jButReporteMasRetirado.setText("Más retirados en mes");
+        jButReporteMasRetirado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButReporteMasRetiradoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -430,16 +450,19 @@ public class PanelDeposito extends javax.swing.JPanel {
                     .addComponent(jButActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButIngresarStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(13, 13, 13)
                         .addComponent(jButGenerarCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButGenerarXLSX, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)))
+                        .addGap(10, 10, 10))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jButReporteMasRetirado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -455,6 +478,12 @@ public class PanelDeposito extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButIngresarStock)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButReporteMasRetirado)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
@@ -644,6 +673,54 @@ public class PanelDeposito extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jButGenerarXLSXActionPerformed
 
+    private void jButReporteMasRetiradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButReporteMasRetiradoActionPerformed
+        String ruta;
+        String inputAnio = JOptionPane.showInputDialog(null, "Ingrese el número del año (Ej: 2020):");
+        if (inputAnio == null) {
+            return;
+        }
+        try {
+            verificadorCampos.verificarVacio(inputAnio, "año");
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        try {
+            verificadorCampos.verificaFormatoInteger(inputAnio, "año");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String inputMes = JOptionPane.showInputDialog(null, "Ingrese el número del mes (Ej: 7 para Julio):");
+        if (inputMes == null) {
+            return;
+        }
+        try {
+            verificadorCampos.verificarVacio(inputMes, "mes");
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        try {
+            verificadorCampos.verificaFormatoInteger(inputMes, "mes");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        JFileChooser fileChooser = new JFileChooser();
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            ruta = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!ruta.endsWith(".jpg")) {
+                ruta += ".jpg";
+            }
+            int anio = Integer.parseInt(inputAnio);
+            int mes = Integer.parseInt(inputMes);
+            List<RepuestoRetiradoReporteDTO> reporteDTOs = repuestoServ.masRetiradosPorMes(mes, anio);
+            genReportes.repuestosMasRetiradosEnMes(ruta, reporteDTOs, mes, anio);
+        }
+    }//GEN-LAST:event_jButReporteMasRetiradoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.Box.Filler filler1;
@@ -655,6 +732,7 @@ public class PanelDeposito extends javax.swing.JPanel {
     private javax.swing.JButton jButGenerarXLSX;
     private javax.swing.JButton jButIngresarStock;
     private javax.swing.JButton jButModificar;
+    private javax.swing.JButton jButReporteMasRetirado;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBoxBuscar;
@@ -662,12 +740,14 @@ public class PanelDeposito extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabelExistenciaStock;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTable jTableRepuestos;
     private javax.swing.JComboBox<String> jcbOrdenar;
     private javax.swing.JCheckBox jcbStockBajo;

@@ -258,7 +258,7 @@ public class PanelVentas extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButBuscar.setText("BUSCAR");
+        jButBuscar.setText("BUSCAR CON FILTROS");
         jButBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButBuscarActionPerformed(evt);

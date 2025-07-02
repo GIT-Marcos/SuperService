@@ -343,7 +343,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="jButBuscar">
           <Properties>
-            <Property name="text" type="java.lang.String" value="BUSCAR"/>
+            <Property name="text" type="java.lang.String" value="BUSCAR CON FILTROS"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButBuscarActionPerformed"/>

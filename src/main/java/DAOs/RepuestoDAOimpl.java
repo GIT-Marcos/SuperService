@@ -1,7 +1,9 @@
 package DAOs;
 
+import DTOs.RepuestoRetiradoReporteDTO;
 import entities.Repuesto;
 import entities.Stock;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
@@ -102,9 +104,9 @@ public class RepuestoDAOimpl implements RepuestoDAO {
         Root<Repuesto> root = query.from(Repuesto.class);
         Join<Repuesto, Stock> joinStock = root.join("stock");
         List<Predicate> filtros = new ArrayList<>();
-        
+
         filtros.add(cb.equal(root.get("activo"), Boolean.TRUE));
-        
+
         //SI SE QUIERE BUSCAR ALGO...
         if (inputParaBuscar != null) {
             switch (opcionBusqueda) {
@@ -136,6 +138,42 @@ public class RepuestoDAOimpl implements RepuestoDAO {
         List<Repuesto> repuestos = session.createQuery(query).setMaxResults(50).getResultList();
         session.close();
         return repuestos;
+    }
+
+    @Override
+    public List<RepuestoRetiradoReporteDTO> masRetiradosEnMes(int mes, int anio) {
+        session = Util.getHibernateSession();
+
+        TypedQuery<Object[]> query = session.createQuery(
+                "SELECT dr.repuesto, COUNT(dr.repuesto) "
+                + "FROM NotaRetiro nr "
+                + "JOIN nr.detalleRetiroList dr "
+                + "WHERE MONTH(nr.fecha) = :mes "
+                + "AND YEAR(nr.fecha) = :anio "
+                + "GROUP BY dr.repuesto "
+                + "ORDER BY COUNT(dr.repuesto) DESC",
+                Object[].class)
+                .setParameter("mes", mes)
+                .setParameter("anio", anio)
+                .setMaxResults(5);
+
+        List<Object[]> lista = query.getResultList();
+        List<RepuestoRetiradoReporteDTO> masRetirados = new ArrayList<>();
+
+        for (Object[] fila : lista) {
+            Repuesto repuesto = (Repuesto) fila[0];
+            Long cantidad = (Long) fila[1];
+            RepuestoRetiradoReporteDTO dto = new RepuestoRetiradoReporteDTO(
+                    repuesto.getCodBarra(),
+                    repuesto.getMarca(),
+                    repuesto.getDetalle(),
+                    cantidad
+            );
+            masRetirados.add(dto);
+        }
+
+        session.close();
+        return masRetirados;
     }
 
     @Override
