@@ -44,7 +44,7 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
     private List<Long> idsRepuestosAgregados = new ArrayList<>();
 
     private VentaRepuesto venta = new VentaRepuesto();
-    
+
     private NotaRetiro nota = new NotaRetiro();
 
     private VentaRepuesto ventaParaTotalJlabel = new VentaRepuesto();
@@ -62,10 +62,9 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
         this.venta.setFechaVenta(LocalDate.now());
         this.nota.setId(null);
         this.nota.setDetallesRetiro(this.detalles);
-        
-        
+
         setTabla();
-        
+
         jLabFecha.setText("FECHA: " + LocalDate.now());
         this.ventaParaTotalJlabel.setNotaRetiro(nota);
     }
@@ -107,7 +106,8 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
     /**
      * usado para ver que no se puedan agregar erpuestos repetidos en JDialog
      * agregarRepuesto
-     * @return 
+     *
+     * @return
      */
     public List<Long> getAgregados() {
         return this.idsRepuestosAgregados;
@@ -130,6 +130,7 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
         jButPagar = new javax.swing.JButton();
         jButEmitirNota = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jcbMandarNotaImprimir = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
         jButAgregarRepuesto = new javax.swing.JButton();
         jButQuitarRepuesto = new javax.swing.JButton();
@@ -181,6 +182,9 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Debe emitir una nota de retiro para poder continuar con el pago");
 
+        jcbMandarNotaImprimir.setForeground(new java.awt.Color(0, 0, 0));
+        jcbMandarNotaImprimir.setText("Mandar nota a imprimir");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -191,6 +195,8 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 634, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jButEmitirNota)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jcbMandarNotaImprimir)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -217,7 +223,8 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButPagar)
-                    .addComponent(jButEmitirNota))
+                    .addComponent(jButEmitirNota)
+                    .addComponent(jcbMandarNotaImprimir))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -371,8 +378,10 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
             jButPagar.setEnabled(true);
             GeneradorNotaRetiroTXT.generaNotaRetiro(this.detalles, rutaArchivo);
             
-            Impresor.imprimirConSistema(rutaArchivo);
-            
+            if (jcbMandarNotaImprimir.isSelected()) {
+                Impresor.imprimirConSistema(rutaArchivo);
+            }
+
             JOptionPane.showMessageDialog(null, "Se ha emitido la nota de retiro correctamente.",
                     "EMISIÓN DE NOTA",
                     JOptionPane.INFORMATION_MESSAGE);
@@ -380,7 +389,7 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
     }//GEN-LAST:event_jButEmitirNotaActionPerformed
 
     private void jButModificarCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButModificarCantidadActionPerformed
-        
+
     }//GEN-LAST:event_jButModificarCantidadActionPerformed
 
     /**
@@ -441,5 +450,6 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableRepuestos;
+    private javax.swing.JCheckBox jcbMandarNotaImprimir;
     // End of variables declaration//GEN-END:variables
 }
