@@ -6,6 +6,7 @@ import entities.Repuesto;
 import entities.VentaRepuesto;
 import enums.EstadoVentaRepuesto;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +77,7 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
 
     private void agregaRepuestoTabla(Repuesto repuesto, Double cantidad) {
         BigDecimal total = repuesto.getPrecio().multiply(BigDecimal.valueOf(cantidad));
+        total = total.setScale(2, RoundingMode.HALF_UP);
         tabla.addRow(new Object[]{
             repuesto.getCodBarra(),
             repuesto.getDetalle(),

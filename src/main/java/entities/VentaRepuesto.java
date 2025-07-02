@@ -16,6 +16,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -147,6 +148,7 @@ public class VentaRepuesto implements Serializable {
             BigDecimal cantidad = BigDecimal.valueOf(detalle.getCantidad());
             montoTotal = montoTotal.add(precio.multiply(cantidad));
         }
-        return montoTotal;
+        //TO-DO: VER BUG CANTIDAD DECIMALES ACÁ ABAJO
+        return montoTotal.setScale(2, RoundingMode.HALF_UP);
     }
 }
