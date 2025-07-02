@@ -2,6 +2,7 @@ package GUI.panels;
 
 import GUI.JFrameHome;
 import GUI.dialogs.JDialogVentaDetalles;
+import entities.Usuario;
 import entities.VentaRepuesto;
 import enums.EstadoVentaRepuesto;
 import java.math.BigDecimal;
@@ -567,6 +568,8 @@ public class PanelVentas extends javax.swing.JPanel {
 
     private void jButCancelarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButCancelarVentaActionPerformed
         VentaRepuesto ventaParaCancelar = new VentaRepuesto();
+        String motivo;
+        Usuario usuario = this.home.tomarUsuarioLogueado();
         int filaParaCancelar = jTableVentas.getSelectedRow();
         if (filaParaCancelar == -1) {
             JOptionPane.showMessageDialog(null, "No ha seleccionado una venta.", "DEBE SELECCIONAR UNA VENTA",
@@ -580,16 +583,26 @@ public class PanelVentas extends javax.swing.JPanel {
                 ventaParaCancelar = listaParaTabla.get(i);
             }
         }
+        motivo = JOptionPane.showInputDialog(null, "Ingrese el motivo para la cancelación de la venta:");
+        if (motivo == null) {
+            return;
+        }
+        try {
+            verificadorCampos.verificarVacio(motivo, "motivo");
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "COMPO OBLIGATORIO", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         int respuesta = JOptionPane.showConfirmDialog(null,
                 "Esta a punto de cancelar una venta, esta acción es irreversible. ¿Continuar?",
                 "CONFIRMACIÓN DE CANCELADO", JOptionPane.WARNING_MESSAGE);
         if (respuesta == JOptionPane.YES_OPTION) {
             int respuesta2 = JOptionPane.showConfirmDialog(null,
-                    "Confirmar eliminación de venta nro: " + ventaParaCancelar.getId(),
-                    "CONFIRMACIÓN DE BORRADO", JOptionPane.WARNING_MESSAGE);
+                    "Confirmar cancelación de venta nro: " + ventaParaCancelar.getId(),
+                    "CONFIRMACIÓN DE CANCELADO", JOptionPane.WARNING_MESSAGE);
             if (respuesta2 == JOptionPane.YES_OPTION) {
                 //TO-DO: GESTIONAR ERRORES
-                ventaServ.borradoLogico(ventaParaCancelar);
+                ventaServ.borradoLogico(ventaParaCancelar, motivo, usuario);
                 JOptionPane.showMessageDialog(null, "Venta cancelada correctamente.",
                         "CANCELACIÓN DE VENTA", JOptionPane.INFORMATION_MESSAGE);
             }

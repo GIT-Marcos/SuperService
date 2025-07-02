@@ -2,6 +2,7 @@ package services;
 
 import DAOs.VentaRepuestoDAO;
 import DAOs.VentaRepuestoDAOimpl;
+import entities.Usuario;
 import entities.VentaRepuesto;
 import enums.EstadoVentaRepuesto;
 import java.math.BigDecimal;
@@ -52,7 +53,7 @@ public class VentaRepuestoServ {
         return dao.modificarVenta(venta);
     }
 
-    public Boolean borradoLogico(VentaRepuesto ventaRepuesto) {
-        return dao.borradoLogico(ventaRepuesto.getId());
+    public Boolean borradoLogico(VentaRepuesto ventaRepuesto, String motivo, Usuario usuario) {
+        return dao.borradoLogico(ventaRepuesto.getId(), motivo, usuario);
     }
 }

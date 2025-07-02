@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package GUI;
 
+import entities.Usuario;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -15,14 +12,25 @@ import java.awt.Toolkit;
  */
 public class JFrameHome extends javax.swing.JFrame {
 
+    public Usuario usuarioLogueado;
     
-    
-    public JFrameHome() {
+    private JFrameHome() {
         initComponents();
         this.setResizable(false);
         
+    }
+    
+    public JFrameHome(Usuario usuarioLogueado) {
+        initComponents();
+        this.setResizable(false);
+        
+        this.usuarioLogueado=usuarioLogueado;
         Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imgs/icono.png"));
         setIconImage(image);
+    }
+    
+    public Usuario tomarUsuarioLogueado(){
+        return this.usuarioLogueado;
     }
     
     public void mostrarPanel(String nombrePanel){

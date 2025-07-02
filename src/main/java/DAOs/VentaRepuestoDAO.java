@@ -1,5 +1,6 @@
 package DAOs;
 
+import entities.Usuario;
 import entities.VentaRepuesto;
 import enums.EstadoVentaRepuesto;
 import java.math.BigDecimal;
@@ -27,5 +28,5 @@ public interface VentaRepuestoDAO {
 
     VentaRepuesto modificarVenta(VentaRepuesto venta);
 
-    Boolean borradoLogico(Long idVenta);
+    Boolean borradoLogico(Long idVenta, String motivo, Usuario usuario);
 }
