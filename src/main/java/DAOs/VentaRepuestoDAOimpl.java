@@ -107,7 +107,7 @@ public class VentaRepuestoDAOimpl implements VentaRepuestoDAO {
         } else if (tipoOrden == 1) {
             query.orderBy(cb.desc(root.get(nombreColumnaOrnenar)));
         }
-        List<VentaRepuesto> ventas = session.createQuery(query).setMaxResults(50).getResultList();
+        List<VentaRepuesto> ventas = session.createQuery(query).getResultList();
 
         session.close();
         return ventas;

@@ -39,6 +39,8 @@ public class PanelOpciones extends javax.swing.JPanel {
         jButRepuestos = new javax.swing.JButton();
         jButClientes = new javax.swing.JButton();
 
+        jButNuevaVenta.setBackground(new java.awt.Color(255, 204, 204));
+        jButNuevaVenta.setForeground(new java.awt.Color(0, 0, 0));
         jButNuevaVenta.setText("NUEVA VENTA");
         jButNuevaVenta.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButNuevaVenta.addActionListener(new java.awt.event.ActionListener() {
@@ -47,6 +49,8 @@ public class PanelOpciones extends javax.swing.JPanel {
             }
         });
 
+        jButVerVentas.setBackground(new java.awt.Color(204, 204, 255));
+        jButVerVentas.setForeground(new java.awt.Color(0, 0, 0));
         jButVerVentas.setText("VER VENTAS");
         jButVerVentas.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButVerVentas.addActionListener(new java.awt.event.ActionListener() {
@@ -55,6 +59,8 @@ public class PanelOpciones extends javax.swing.JPanel {
             }
         });
 
+        jButRepuestos.setBackground(new java.awt.Color(153, 255, 153));
+        jButRepuestos.setForeground(new java.awt.Color(0, 0, 0));
         jButRepuestos.setText("REPUESTOS");
         jButRepuestos.setMargin(new java.awt.Insets(2, 2, 2, 2));
         jButRepuestos.addActionListener(new java.awt.event.ActionListener() {
