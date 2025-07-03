@@ -81,6 +81,7 @@ public class GeneradorPDF {
             datos.addElement(new Paragraph(" "));
 
 // Celda derecha: imagen
+//TO-DO: DA ERROR EN OTRAS PCS
             Image img = Image.getInstance("C:\\Users\\Usuario\\Documents\\NetBeansProjects\\SuperServiceClone\\src\\main\\resources\\imgs\\icono.png");
             img.scaleToFit(80, 80); // ajusta el tamaño según necesidad
 

@@ -35,8 +35,8 @@ public class GeneradorReportes {
 
         for (RepuestoRetiradoReporteDTO dto : listaMasRetiradosDTO) {
             long cantidad = dto.getCantidad();
-            dataset.setValue(cantidad, "masRetirados", dto.getDetalle() + " "
-                    + dto.getMarca() + " " + dto.getCodBarra());
+            String etiqueta = dto.getDetalle() + " - " + dto.getMarca();
+            dataset.setValue(cantidad, "masRetirados", etiqueta);
             if (cantidad > max) {
                 max = cantidad;
             }
