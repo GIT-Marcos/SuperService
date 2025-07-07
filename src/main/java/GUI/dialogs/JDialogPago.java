@@ -574,11 +574,7 @@ public class JDialogPago extends javax.swing.JDialog {
         //si el id es nulo significa que es una venta nueva
         if (this.venta.getId() == null) {
             ventaServ.cargarVenta(venta);
-            //TO-DO: HACER BIEN ESTO
-            for (int i = 0; i < nota.getDetallesRetiro().size(); i++) {
-                Stock s = nota.getDetallesRetiro().get(i).getRepuesto().getStock();
-                stockServ.actualizarStock(s);
-            }
+            stockServ.actualizarStock(this.nota);
         } else {
             ventaServ.modificarVenta(this.venta);
         }
