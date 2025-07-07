@@ -1,6 +1,7 @@
 package DAOs;
 
 import entities.Stock;
+import java.util.List;
 
 /**
  *
@@ -8,6 +9,6 @@ import entities.Stock;
  */
 public interface StockDAO {
 
-    Stock actualizarStock(Stock stock);
+    Boolean actualizarStock(List<Stock> stocks);
     
 }

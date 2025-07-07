@@ -89,12 +89,7 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
     }
 
     public void recibeRepuesto(Repuesto repuesto, Double cantidad) {
-        //TO-DO:HACER BIEN LA ACTUALIZACION DE STOCK AL VENDER
-        Double resto = repuesto.getStock().getCantidad() - cantidad;
-        //TO-DO: MOVER ESTE REDONDEO A LA CLASE UTIL
-        Double nuevaCantidadStock = Math.round(resto * 100.0) / 100.0;
-        repuesto.getStock().setCantidad(nuevaCantidadStock);
-
+        repuesto.getStock().salidaDeStock(cantidad);
         this.idsRepuestosAgregados.add(repuesto.getId());
         agregaRepuestoTabla(repuesto, cantidad);
         DetalleRetiro d = new DetalleRetiro(null, cantidad, repuesto);
@@ -379,7 +374,7 @@ public class JDialogNuevaVenta extends javax.swing.JDialog {
             nota.setFecha(LocalDate.now());
             jButPagar.setEnabled(true);
             GeneradorNotaRetiroTXT.generaNotaRetiro(this.detalles, rutaArchivo);
-            
+
             if (jcbMandarNotaImprimir.isSelected()) {
                 Impresor.imprimirConSistema(rutaArchivo);
             }

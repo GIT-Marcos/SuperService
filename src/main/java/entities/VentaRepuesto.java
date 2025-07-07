@@ -142,13 +142,13 @@ public class VentaRepuesto implements Serializable {
     }
 
     public BigDecimal calculaMontoTotal() {
-        BigDecimal montoTotal = BigDecimal.ZERO;
+        BigDecimal total = BigDecimal.ZERO;
         for (DetalleRetiro detalle : this.notaRetiro.getDetallesRetiro()) {
             BigDecimal precio = detalle.getRepuesto().getPrecio();
             BigDecimal cantidad = BigDecimal.valueOf(detalle.getCantidad());
-            montoTotal = montoTotal.add(precio.multiply(cantidad));
+            total = total.add(precio.multiply(cantidad));
         }
         //TO-DO: VER BUG CANTIDAD DECIMALES ACÁ ABAJO
-        return montoTotal.setScale(2, RoundingMode.HALF_UP);
+        return total.setScale(2, RoundingMode.HALF_UP);
     }
 }

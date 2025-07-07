@@ -121,4 +121,10 @@ public class Stock implements Serializable {
         return "Stock{" + "id=" + id + ", cantidad=" + cantidad + ", cantMinima=" + cantMinima + ", unidadMedida=" + unidadMedida + ", ubicacion=" + ubicacion + ", lote=" + lote + ", observaciones=" + observaciones + ", activo=" + activo + '}';
     }
 
+    public void salidaDeStock(Double cantidadSalida){
+        Double nuevaCantidad= this.getCantidad() - cantidadSalida;
+        nuevaCantidad = Math.round(nuevaCantidad * 100.0) / 100.0;
+        this.setCantidad(nuevaCantidad);
+    }
+    
 }
