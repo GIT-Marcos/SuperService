@@ -1,84 +1,165 @@
 package util;
 
 /**
+ * Clase para verificar que lo inresado por el usuario en los campos sea
+ * correcto.
  *
  * @author Usuario
  */
 public class VerificadorCampos {
 
-    public void verificarVacio(String paraVerificar, String nombreCampo) {
-        if (paraVerificar.isBlank() || paraVerificar.isEmpty() || paraVerificar == null) {
-            throw new IllegalArgumentException("El campo '" + nombreCampo
-                    + "' no puede quedar vacío.");
+    // ==== Métodos Privados Auxiliares ====    
+    private static void verificarVacio(String paraVerificar) {
+        if (paraVerificar == null || paraVerificar.isBlank()) {
+            throw new IllegalArgumentException("El campo no puede estar vacío.");
         }
     }
 
-    public void verificaLargo(String paraVerificar, int largo, String nombreCampo) {
-        if (paraVerificar.length() > largo || paraVerificar.length() < 0) {
-            throw new IllegalArgumentException("El campo '" + nombreCampo
-                    + "' no puede tener más de " + largo + " caracteres.");
+    private static void espaciosEnBlanco(String input) {
+        if (input.contains(" ")) {
+            throw new IllegalArgumentException("No puede haber espacios en blanco.");
         }
     }
 
+    private static void verificaLargo(String paraVerificar, Integer largoMin, Integer largoMax) {
+        int largoInput = paraVerificar.length();
+        if (largoMin != null && largoMax != null) {
+            if (largoInput < largoMin || largoInput > largoMax) {
+                throw new IllegalArgumentException("El campo debe tener entre " + largoMin + " "
+                        + "y " + largoMax + " caracteres.");
+            }
+        } else if (largoMin != null) {
+            if (largoInput < largoMin) {
+                throw new IllegalArgumentException("El campo no puede tener menos de: " + largoMin + " caracteres.");
+            }
+        } else if (largoMax != null) {
+            if (largoInput > largoMax) {
+                throw new IllegalArgumentException("El campo no puede tener más de: " + largoMax + " caracteres.");
+            }
+        }
+    }
+
+    private static void soloHayNumeros(String input) {
+        char[] chars = input.toCharArray();
+        for (char c : chars) {
+            if (!Character.isDigit(c)) {
+                throw new IllegalArgumentException("El texto solo puede tener números.");
+            }
+        }
+    }
+
+    private static void soloHayLetras(String input) {
+        char[] chars = input.toCharArray();
+        for (char c : chars) {
+            if (!Character.isAlphabetic(c)) {
+                throw new IllegalArgumentException("El texto solo puede tener letras.");
+            }
+        }
+    }
+
+    // ==== Validaciones Públicas ====
+    
     /**
-     * usado para verificar que las cantidades de stock ingresadas no tengan
-     * letras ni símbolos.
+     * Usado para todo campo que no encaje en los específicos de esta clase.
      *
-     * @param valorCampo
-     * @param nombreCampo
+     * @param tipoCaracteres NULL: cualquiera. TRUE: solo letras y símbolos.
+     * FALSE: solo números sin puntos ni coma.
      */
-    public void verificaFormatoInteger(String valorCampo, String nombreCampo) {
-        try {
-            Integer.valueOf(valorCampo);
-        } catch (NumberFormatException ex) {
-            throw new NumberFormatException("El campo '" + nombreCampo + "' está en formato incorrecto.");
+    public static void inputTextoGenerico(String input, Integer largoMin, Integer largoMax, boolean mandatorio,
+            boolean espaciosEnBlanco, Boolean tipoCaracteres) {
+        if (mandatorio) {
+            verificarVacio(input);
+        }
+        if (largoMin != null || largoMax != null) {
+            verificaLargo(input, largoMin, largoMax);
+        }
+        if (!espaciosEnBlanco) {
+            espaciosEnBlanco(input);
+        }
+        if (tipoCaracteres != null) {
+            if (tipoCaracteres) {
+                soloHayLetras(input);
+            } else {
+                soloHayNumeros(input);
+            }
         }
     }
 
-    /**
-     * usado para verificar que los precios ingresados no tengan letras ni
-     * símbolos.
-     *
-     * @param valorCampo
-     * @param nombreCampo
-     */
-    public void verificaFormatoDouble(String valorCampo, String nombreCampo) {
-        try {
-            Double.valueOf(valorCampo);
-        } catch (NumberFormatException ex) {
-            throw new NumberFormatException("El " + nombreCampo + " está en formato incorrecto.");
+    public static void codFacturaCodBarra(String input, boolean esObligatorio) {
+        if (esObligatorio) {
+            verificarVacio(input);
+        }
+        if (input != null) {
+            verificaLargo(input, null, 23);
         }
     }
 
-    /**
-     * LOS CÓDIGOS DE BARRAS PUEDEN TENER LETRAS ADEMÁS DE NÚMERO, O SEA QUE EL
-     * MÉTODO NO ES NECESARIO. usado para verificar que los códigos de barras
-     * ingresados no tengan letras ni símbolos.
-     *
-     * @param valorCampo
-     * @param nombreCampo
-     */
-    public void verificaFormatoLong(String valorCampo, String nombreCampo) {
-        try {
-            Long.valueOf(valorCampo);
-        } catch (NumberFormatException ex) {
-            throw new NumberFormatException("El " + nombreCampo + " está en formato incorrecto.");
+    public static void dinero(String input, boolean esObligatorio) {
+        if (esObligatorio) {
+            verificarVacio(input);
+        }
+        if (input != null) {
+            verificaLargo(input, null, 15);
+            espaciosEnBlanco(input);
         }
     }
 
-    public void verificaPassword(char[] password) {
+    public static void cantidadStock(String input, boolean esObligatorio) {
+        if (esObligatorio) {
+            verificarVacio(input);
+        }
+        if (input != null) {
+            verificaLargo(input, null, 12);
+            espaciosEnBlanco(input);
+        }
+    }
+
+    public static void ultimos4(String input, boolean esObligatorio) {
+        if (esObligatorio) {
+            verificarVacio(input);
+        }
+        if (input != null) {
+            verificaLargo(input, null, 4);
+            soloHayNumeros(input);
+        }
+    }
+
+    public static void referenciaTarjeta(String input, boolean esObligatorio) {
+        if (esObligatorio) {
+            verificarVacio(input);
+        }
+        if (input != null) {
+            verificaLargo(input, null, 20);
+            soloHayNumeros(input);
+        }
+    }
+
+    public static void nroTransaccion(String input, boolean esObligatorio) {
+        if (esObligatorio) {
+            verificarVacio(input);
+        }
+        if (input != null) {
+            verificaLargo(input, null, 16);
+            soloHayNumeros(input);
+        }
+    }
+
+    public static void validarPassword(char[] password) {
         if (password == null) {
             throw new NullPointerException("La contraseña es nula.");
         }
+
         if (password.length == 0) {
-            throw new NullPointerException("La contraseña no puede quedar vacía.");
+            throw new IllegalArgumentException("La contraseña no puede quedar vacía.");
         }
-        if (password.length > 20 && password.length < 6) {
-            throw new IllegalArgumentException("La contraseña no puede tener menos de 6 y más de 20 caracteres.");
+
+        if (password.length < 6 || password.length > 20) {
+            throw new IllegalArgumentException("La contraseña debe tener entre 6 y 20 caracteres.");
         }
+
         for (char c : password) {
             if (Character.isWhitespace(c)) {
-                throw new IllegalArgumentException("La contraseña no puede tener espacios en blanco.");
+                throw new IllegalArgumentException("La contraseña no puede contener espacios en blanco.");
             }
         }
     }

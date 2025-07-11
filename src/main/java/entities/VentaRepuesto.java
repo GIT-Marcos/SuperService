@@ -57,6 +57,12 @@ public class VentaRepuesto implements Serializable {
     @JoinColumn(name = "fk_venta")
     private List<Pago> pagosList = new ArrayList<>();
 
+    
+    public void asociarPago(Pago pago){
+        this.getPagosList().add(pago);
+        pago.setVentaRepuesto(this);
+    }
+    
     public VentaRepuesto() {
     }
 

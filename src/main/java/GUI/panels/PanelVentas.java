@@ -6,8 +6,6 @@ import entities.Usuario;
 import entities.VentaRepuesto;
 import enums.EstadoVentaRepuesto;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import services.VentaRepuestoServ;
+import util.ConversorUnidades;
 import util.GeneradorPDF;
 import util.GeneradorReportes;
 import util.VerificadorCampos;
@@ -44,8 +43,6 @@ public class PanelVentas extends javax.swing.JPanel {
         }
     };
 
-    private VerificadorCampos verificadorCampos = new VerificadorCampos();
-
     private GeneradorReportes gr = new GeneradorReportes();
 
     private VentaRepuestoServ ventaServ = new VentaRepuestoServ();
@@ -63,7 +60,7 @@ public class PanelVentas extends javax.swing.JPanel {
         setTabla();
 //        listaParaTabla = ventaServ.todasVentas();
         llenaTabla(listaParaTabla);
-        
+
         jcbOrdenar.setSelectedIndex(2);
         jcbTipoOrden.setSelectedIndex(1);
     }
@@ -84,6 +81,16 @@ public class PanelVentas extends javax.swing.JPanel {
         });
     }
 
+    private VentaRepuesto tomaVentaSeleccionadaDeTabla(int filaElegida) {
+        Long codVentaElegido = Long.valueOf(jTableVentas.getValueAt(filaElegida, 0).toString());
+        for (VentaRepuesto v : listaParaTabla) {
+            if (Objects.equals(v.getId(), codVentaElegido)) {
+                return v;
+            }
+        }
+        return null;
+    }
+
     private String tomaOrdenEligido() {
         int ordenarPor = jcbOrdenar.getSelectedIndex();
         //los valores q toma son el del atributo de Repuesto.class
@@ -96,6 +103,22 @@ public class PanelVentas extends javax.swing.JPanel {
                 return "fechaVenta";
             default:
                 return "id";
+        }
+    }
+
+    private EstadoVentaRepuesto tomaEstadoVenta() {
+        int seleccionEstadoVenta = jcbEstado.getSelectedIndex();
+        switch (seleccionEstadoVenta) {
+            case 0: //se eligió: cualquiera
+                return null;
+            case 1: //se eligió: pendiente
+                return EstadoVentaRepuesto.PENDIENTE_PAGO;
+            case 2: //se eligió: pagado
+                return EstadoVentaRepuesto.PAGADO;
+            case 3: //se eligió: cancelado
+                return EstadoVentaRepuesto.CANCELADO;
+            default:
+                return null;
         }
     }
 
@@ -511,20 +534,14 @@ public class PanelVentas extends javax.swing.JPanel {
     }//GEN-LAST:event_jButTodasVentasActionPerformed
 
     private void jButVerDetallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButVerDetallesActionPerformed
-        VentaRepuesto ventaParaDetalle = new VentaRepuesto();
+        VentaRepuesto ventaParaDetalle;
         int filaParaConsultar = jTableVentas.getSelectedRow();
         if (filaParaConsultar == -1) {
             JOptionPane.showMessageDialog(null, "No ha seleccionado una venta.", "DEBE SELECCIONAR UNA VENTA",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        Long codVentaElegido = Long.valueOf(jTableVentas.getValueAt(filaParaConsultar, 0).toString());
-        //TO-DO: MOJORAR ESTO
-        for (int i = 0; i < listaParaTabla.size(); i++) {
-            if (Objects.equals(listaParaTabla.get(i).getId(), codVentaElegido)) {
-                ventaParaDetalle = listaParaTabla.get(i);
-            }
-        }
+        ventaParaDetalle = tomaVentaSeleccionadaDeTabla(filaParaConsultar);
         JDialogVentaDetalles jdvd = new JDialogVentaDetalles(null, false, ventaParaDetalle);
         jdvd.setVisible(true);
 
@@ -537,61 +554,36 @@ public class PanelVentas extends javax.swing.JPanel {
 
     private void jButBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButBuscarActionPerformed
 //        jLabMostrando.setText("Mostrando: ");
-        EstadoVentaRepuesto estadoParaBuscar;
-        Long codVentaIngresado = null;
-        Date fechaMinima = null;
-        Date fechaMaxima = null;
-        if (jdcMinima.getDate() != null) {
-            fechaMinima = jdcMinima.getDate();
-        }
-        if (jdcMaxima.getDate() != null) {
-            fechaMaxima = jdcMaxima.getDate();
-        }
-
-        if (!jtfBuscar.getText().trim().isBlank() || !jtfBuscar.getText().trim().isEmpty()) {
-            String cod = jtfBuscar.getText().trim();
-            try {
-                verificadorCampos.verificaFormatoLong(cod, "de búsqueda");
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "HAY CAMPOS EN MAL FORMATO",
-                        JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            codVentaIngresado = Long.valueOf(cod);
-//            jLabMostrando.setText(jLabMostrando.getText().concat("& Código de venta: " + cod + " "));
-        }
-        BigDecimal montoMinimo = null;
-        BigDecimal montoMaximo = null;
-        if (!jtfMontoMinimo.getText().trim().isBlank() && !jtfMontoMinimo.getText().trim().isEmpty()) {
-            montoMinimo = BigDecimal.valueOf(Double.parseDouble(jtfMontoMinimo.getText().trim())).setScale(2, RoundingMode.HALF_UP);
-//            jLabMostrando.setText(jLabMostrando.getText().concat("& Monto Mínimo: " + montoMinimo + " "));
-        }
-        if (!jtfMontoMaximo.getText().trim().isBlank() && !jtfMontoMaximo.getText().trim().isEmpty()) {
-            montoMaximo = BigDecimal.valueOf(Double.parseDouble(jtfMontoMaximo.getText().trim())).setScale(2, RoundingMode.HALF_UP);
-//            jLabMostrando.setText(jLabMostrando.getText().concat("& Monto Máximo: " + montoMaximo + " "));
-        }
-        int seleccionEstadoVenta = jcbEstado.getSelectedIndex();
-        switch (seleccionEstadoVenta) {
-            case 0: //se eligió: cualquiera
-                estadoParaBuscar = null;
-                break;
-            case 1: //se eligió: pendiente
-                estadoParaBuscar = EstadoVentaRepuesto.PENDIENTE_PAGO;
-//                jLabMostrando.setText(jLabMostrando.getText().concat("& Estado: aceptadas "));
-                break;
-            case 2: //se eligió: pagado
-                estadoParaBuscar = EstadoVentaRepuesto.PAGADO;
-//                jLabMostrando.setText(jLabMostrando.getText().concat("& Estado: pagadas "));
-                break;
-            case 3: //se eligió: cancelado
-                estadoParaBuscar = EstadoVentaRepuesto.CANCELADO;
-//                jLabMostrando.setText(jLabMostrando.getText().concat("& Estado: canceladas "));
-                break;
-            default:
-                return;
-        }
+        String inputBuscar = jtfBuscar.getText().trim();
+        EstadoVentaRepuesto estadoParaBuscar = tomaEstadoVenta();
         String columnaParaOrdenamiento = tomaOrdenEligido();
         Integer tipoOrdenElegido = jcbTipoOrden.getSelectedIndex();
+        Date fechaMinima = jdcMinima.getDate();
+        Date fechaMaxima = jdcMaxima.getDate();
+        String inputMontoMinimo = jtfMontoMinimo.getText().trim();
+        String inputMontoMaximo = jtfMontoMaximo.getText().trim();
+
+        Long codVentaIngresado;
+        BigDecimal montoMinimo;
+        BigDecimal montoMaximo;
+
+        try {
+            VerificadorCampos.codFacturaCodBarra(inputBuscar, false);
+            codVentaIngresado = ConversorUnidades.longParaCodVenta(inputBuscar);
+            VerificadorCampos.dinero(inputMontoMinimo, false);
+            montoMinimo = ConversorUnidades.bdParaDinero(inputMontoMinimo);
+            VerificadorCampos.dinero(inputMontoMaximo, false);
+            montoMaximo = ConversorUnidades.bdParaDinero(inputMontoMaximo);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(null, nfe.getMessage(), "HAY CAMPOS EN MAL FORMATO",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(null, iae.getMessage(), "HAY CAMPOS EN MAL FORMATO",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         listaParaTabla = ventaServ.buscarVentas(codVentaIngresado, estadoParaBuscar, montoMinimo,
                 montoMaximo, columnaParaOrdenamiento, tipoOrdenElegido, fechaMinima, fechaMaxima);
         tabla.setRowCount(0);
@@ -600,7 +592,7 @@ public class PanelVentas extends javax.swing.JPanel {
     }//GEN-LAST:event_jButBuscarActionPerformed
 
     private void jButCancelarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButCancelarVentaActionPerformed
-        VentaRepuesto ventaParaCancelar = new VentaRepuesto();
+        VentaRepuesto ventaParaCancelar;
         String motivo;
         Usuario usuario = this.home.tomarUsuarioLogueado();
         int filaParaCancelar = jTableVentas.getSelectedRow();
@@ -609,19 +601,14 @@ public class PanelVentas extends javax.swing.JPanel {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        Long codVentaElegido = Long.valueOf(jTableVentas.getValueAt(filaParaCancelar, 0).toString());
-        //TO-DO: MOJORAR ESTO
-        for (int i = 0; i < listaParaTabla.size(); i++) {
-            if (Objects.equals(listaParaTabla.get(i).getId(), codVentaElegido)) {
-                ventaParaCancelar = listaParaTabla.get(i);
-            }
-        }
+        ventaParaCancelar = tomaVentaSeleccionadaDeTabla(filaParaCancelar);
+
         motivo = JOptionPane.showInputDialog(null, "Ingrese el motivo para la cancelación de la venta:");
         if (motivo == null) {
             return;
         }
         try {
-            verificadorCampos.verificarVacio(motivo, "motivo");
+            VerificadorCampos.inputTextoGenerico(motivo, 3, 50, true, true, null);
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "COMPO OBLIGATORIO", JOptionPane.WARNING_MESSAGE);
             return;
@@ -644,20 +631,14 @@ public class PanelVentas extends javax.swing.JPanel {
     }//GEN-LAST:event_jButCancelarVentaActionPerformed
 
     private void jButImprimirFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButImprimirFacturaActionPerformed
-        VentaRepuesto ventaParaImprimir = new VentaRepuesto();
+        VentaRepuesto ventaParaImprimir;
         int filaParaImprimir = jTableVentas.getSelectedRow();
         if (filaParaImprimir == -1) {
             JOptionPane.showMessageDialog(null, "No ha seleccionado una venta.", "DEBE SELECCIONAR UNA VENTA",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        Long codVentaElegido = Long.valueOf(jTableVentas.getValueAt(filaParaImprimir, 0).toString());
-        //TO-DO: MOJORAR ESTO
-        for (int i = 0; i < listaParaTabla.size(); i++) {
-            if (Objects.equals(listaParaTabla.get(i).getId(), codVentaElegido)) {
-                ventaParaImprimir = listaParaTabla.get(i);
-            }
-        }
+        ventaParaImprimir = tomaVentaSeleccionadaDeTabla(filaParaImprimir);
 
         JFileChooser fileChooser = new JFileChooser();
         if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
@@ -676,18 +657,14 @@ public class PanelVentas extends javax.swing.JPanel {
             return;
         }
         try {
-            verificadorCampos.verificarVacio(input, "año");
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
+            VerificadorCampos.inputTextoGenerico(input, null, 4, true, false, false);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(null, nfe.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
+            return;
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(null, iae.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        try {
-            verificadorCampos.verificaFormatoInteger(input, "año");
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
         JFileChooser fileChooser = new JFileChooser();
         if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             ruta = fileChooser.getSelectedFile().getAbsolutePath();
@@ -707,18 +684,14 @@ public class PanelVentas extends javax.swing.JPanel {
             return;
         }
         try {
-            verificadorCampos.verificarVacio(input, "año");
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
+            VerificadorCampos.inputTextoGenerico(input, null, 4, true, false, false);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(null, nfe.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
+            return;
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(null, iae.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        try {
-            verificadorCampos.verificaFormatoInteger(input, "año");
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
         JFileChooser fileChooser = new JFileChooser();
         if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             ruta = fileChooser.getSelectedFile().getAbsolutePath();

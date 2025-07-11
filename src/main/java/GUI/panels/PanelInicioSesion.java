@@ -134,10 +134,12 @@ public class PanelInicioSesion extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButAccederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButAccederActionPerformed
+        String nombreUsuario = jtfNombreUsuario.getText().trim();
+        String pass = jpfPassword.getPassword().toString();
         try {
-            verificadorCampos.verificarVacio(jtfNombreUsuario.getText().trim(), jLabNombreUsuario.getText());
+            VerificadorCampos.inputTextoGenerico(nombreUsuario, null, 20, true , true, null);
             //TO-DO: HACER ESTO BIEN POR EL AMOR DE DIOS
-            verificadorCampos.verificarVacio(jpfPassword.getPassword().toString(), jlabContrasenia.getText());
+            VerificadorCampos.inputTextoGenerico(pass, null, 20, true , true, null);
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
             return;

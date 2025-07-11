@@ -4,11 +4,10 @@ import GUI.panels.PanelDeposito;
 import entities.Repuesto;
 import entities.Stock;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.List;
 import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
 import services.RepuestoServ;
+import util.ConversorUnidades;
 import util.VerificadorCampos;
 
 /**
@@ -17,13 +16,7 @@ import util.VerificadorCampos;
  */
 public class JDialogEditarRepuesto extends javax.swing.JDialog {
 
-    private final VerificadorCampos verificadorCampos = new VerificadorCampos();
-
     private final RepuestoServ repuestoServ = new RepuestoServ();
-
-    private String codBarraCargaPantalla;
-
-    private Repuesto repuestoCargaPantalla;
 
     private PanelDeposito pdepo;
 
@@ -291,51 +284,7 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
-        //CONTROL DE VACÍOS
-        try {
-            verificadorCampos.verificarVacio(jtfCodBarra.getText().trim(), jLabel1.getText());
-            if (jtfMarca.isEnabled()) {
-                verificadorCampos.verificarVacio(jtfMarca.getText().trim(), jLabel2.getText());
-            }
-            verificadorCampos.verificarVacio(jtfDetalle.getText().trim(), jLabel3.getText());
-            verificadorCampos.verificarVacio(jtfPrecio.getText().trim(), jLabel4.getText());
-            verificadorCampos.verificarVacio(jtfCantidadStock.getText().trim(), jLabel5.getText());
-            verificadorCampos.verificarVacio(jtfStockMinimo.getText().trim(), jLabel10.getText());
-            if (jtfUbicacion.isEnabled()) {
-                verificadorCampos.verificarVacio(jtfUbicacion.getText().trim(), jLabel6.getText());
-            }
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "HAY CAMPOS OBLIGATORIOS VACÍOS",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        //CONTROL DE LARGOS
-        try {
-            verificadorCampos.verificaLargo(jtfCodBarra.getText().trim(), 25, jLabel1.getText());
-            verificadorCampos.verificaLargo(jtfMarca.getText().trim(), 100, jLabel2.getText());
-            verificadorCampos.verificaLargo(jtfDetalle.getText().trim(), 100, jLabel3.getText());
-            verificadorCampos.verificaLargo(jtfPrecio.getText().trim(), 15, jLabel4.getText());
-            verificadorCampos.verificaLargo(jtfCantidadStock.getText().trim(), 11, jLabel5.getText());
-            verificadorCampos.verificaLargo(jtfStockMinimo.getText().trim(), 11, jLabel10.getText());
-            verificadorCampos.verificaLargo(jtfUbicacion.getText().trim(), 100, jLabel6.getText());
-            verificadorCampos.verificaLargo(jtfLote.getText().trim(), 100, jLabel7.getText());
-            verificadorCampos.verificaLargo(jtfObservaciones.getText().trim(), 200, jLabel8.getText());
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(),
-                    "CAMPOS MUY LARGOS", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        //CONTROL DE FORMATOS
-        try {
-            verificadorCampos.verificaFormatoDouble(jtfPrecio.getText().trim(), jLabel4.getText());
-            verificadorCampos.verificaFormatoDouble(jtfCantidadStock.getText().trim(), jLabel5.getText());
-            verificadorCampos.verificaFormatoDouble(jtfStockMinimo.getText().trim(), jLabel10.getText());
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "HAY CAMPOS NUMÉRICOS EN MAL FORMATO",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
+        //toma de inputs
         String codBarra = jtfCodBarra.getText().trim();
         String marca;
         if (jtfMarca.isEnabled()) {
@@ -344,11 +293,9 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
             marca = (String) jcbMarcas.getSelectedItem();
         }
         String detalle = jtfDetalle.getText().trim();
-        BigDecimal precio = BigDecimal.valueOf(Double.parseDouble(jtfPrecio.getText().trim())).setScale(2, RoundingMode.HALF_UP);
-        Double inputCant = Double.valueOf(jtfCantidadStock.getText().trim());
-        Double cantidad = Math.round(inputCant * 100.0) / 100.0;
-        Double inputCantMin = Double.valueOf(jtfStockMinimo.getText().trim());
-        Double cantMinima = Math.round(inputCantMin * 100.0) / 100.0;
+        String inputPrecio = jtfPrecio.getText().trim();
+        String inputCantidadStock = jtfCantidadStock.getText().trim();
+        String inputCantStockMinima = jtfStockMinimo.getText().trim();
         String unidadMedida = (String) jcbUnidadMedida.getSelectedItem();
         String ubicacion;
         if (jtfUbicacion.isEnabled()) {
@@ -359,7 +306,39 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
         String lote = jtfLote.getText().trim();
         String observaciones = jtfObservaciones.getText().trim();
 
-        Stock stock = new Stock(this.repuesto.getStock().getId(), cantidad, cantMinima, unidadMedida, ubicacion, lote, observaciones, true);
+        BigDecimal precio;
+        Double cantidadStock;
+        Double cantStockMinima;
+
+        //verifiaciones y conversión
+        try {
+            VerificadorCampos.inputTextoGenerico(codBarra, null, 25, true, true, null);
+            if (jtfMarca.isEnabled()) {
+                VerificadorCampos.inputTextoGenerico(marca, null, 30, true, true, null);
+            }
+            VerificadorCampos.inputTextoGenerico(detalle, null, 40, true, true, null);
+            VerificadorCampos.dinero(inputPrecio, true);
+            precio = ConversorUnidades.bdParaDinero(inputPrecio);
+            VerificadorCampos.cantidadStock(inputCantidadStock, true);
+            cantidadStock = ConversorUnidades.double2Decimales(inputCantidadStock);
+            VerificadorCampos.cantidadStock(inputCantStockMinima, true);
+            cantStockMinima = ConversorUnidades.double2Decimales(inputCantStockMinima);
+            if (jtfUbicacion.isEnabled()) {
+                VerificadorCampos.inputTextoGenerico(ubicacion, null, 30, true, true, null);
+            }
+            VerificadorCampos.inputTextoGenerico(lote, null, 40, false, true, null);
+            VerificadorCampos.inputTextoGenerico(observaciones, null, 100, false, true, null);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(null, nfe.getMessage(), "ATENCIÓN",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(null, iae.getMessage(), "ATENCIÓN",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Stock stock = new Stock(this.repuesto.getStock().getId(), cantidadStock, cantStockMinima, unidadMedida, ubicacion, lote, observaciones, true);
         Repuesto repuestoMerge = new Repuesto(this.repuesto.getId(), codBarra, marca, detalle, precio, true, stock);
 
         //INICIO CONFIRMACIÓN
@@ -408,6 +387,7 @@ public class JDialogEditarRepuesto extends javax.swing.JDialog {
             jtfUbicacion.setEnabled(false);
         }
         jtfLote.setText(this.repuesto.getStock().getLote());
+        jtfObservaciones.setText(this.repuesto.getStock().getObservaciones());
     }
 
     private void jcbMarcasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jcbMarcasItemStateChanged

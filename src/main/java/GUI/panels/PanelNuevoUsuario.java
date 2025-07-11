@@ -135,14 +135,13 @@ public class PanelNuevoUsuario extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearUsuarioActionPerformed
-        String nombre = jtfNombre.getText().trim();
+        String nombreUsuario = jtfNombre.getText().trim();
         int rollegido = jcbRoles.getSelectedIndex();
-        char[] pass = jtfPassword.getPassword();
+        String pass = jtfPassword.getPassword().toString();
 //        char[] passconfirm = jtfConfirmPassword.getPassword();
         try {
-            verificadorCampos.verificarVacio(nombre, jLabel2.getText());
-            verificadorCampos.verificaLargo(nombre, 25, jLabel2.getText());
-            verificadorCampos.verificaPassword(pass);
+            VerificadorCampos.inputTextoGenerico(nombreUsuario, null, 20, true , true, null);
+            VerificadorCampos.inputTextoGenerico(pass, null, 20, true , true, null);
 //            verificadorCampos.verificaPassword(passconfirm);
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(inicio, e.getMessage(), "ERROR AL CREAR USUARIO",
@@ -161,13 +160,11 @@ public class PanelNuevoUsuario extends javax.swing.JPanel {
         }
         //TO-DO: implementar seguridad en la contraseña
         //MUY MALA PRÁCTICA PONER CONTRASEÑA EN STRING
-        Usuario usuario = new Usuario(null, nombre, Arrays.toString(pass),
+        Usuario usuario = new Usuario(null, nombreUsuario, pass,
                 PrivilegioUsuario.devuelvePrivPorNumero(rollegido));
 
         usuarioServ.cargarUsuario(usuario);
 
-        Arrays.fill(pass, '\0');
-//        Arrays.fill(passconfirm, '\0');
         JOptionPane.showMessageDialog(inicio, "Usuario creado correctamente.",
                 "CREACIÓN DE USUARIO", JOptionPane.INFORMATION_MESSAGE);
         inicio.mostrarPanel("panelInicioSesion");

@@ -24,7 +24,7 @@ public class PanelDeposito extends javax.swing.JPanel {
     private JFrameHome home;
 
     private final RepuestoServ repuestoServ = new RepuestoServ();
-    
+
     private GeneradorReportes genReportes = new GeneradorReportes();
 
     //constantes para tabla
@@ -43,8 +43,6 @@ public class PanelDeposito extends javax.swing.JPanel {
             return false; // ninguna celda editable
         }
     };
-
-    private final VerificadorCampos verificadorCampos = new VerificadorCampos();
 
     private List<Repuesto> listaParaTabla = new ArrayList<>();
 
@@ -582,9 +580,9 @@ public class PanelDeposito extends javax.swing.JPanel {
         String input = jtfBuscar.getText().trim();
         int seleccionComboBox = jComboBoxBuscar.getSelectedIndex();
         try {
-            verificadorCampos.verificarVacio(input, "Búsqueda");
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "HAY CAMPOS OBLIGATORIOS VACÍOS",
+            VerificadorCampos.inputTextoGenerico(input, null, 30, true, true, null);
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(null, iae.getMessage(), "HAY CAMPOS OBLIGATORIOS VACÍOS",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -680,34 +678,28 @@ public class PanelDeposito extends javax.swing.JPanel {
             return;
         }
         try {
-            verificadorCampos.verificarVacio(inputAnio, "año");
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
+            VerificadorCampos.inputTextoGenerico(inputAnio, null, 4, true, false, false);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(null, nfe.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
+            return;
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(null, iae.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        try {
-            verificadorCampos.verificaFormatoInteger(inputAnio, "año");
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+
         String inputMes = JOptionPane.showInputDialog(null, "Ingrese el número del mes (Ej: 7 para Julio):");
         if (inputMes == null) {
             return;
         }
         try {
-            verificadorCampos.verificarVacio(inputMes, "mes");
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
+            VerificadorCampos.inputTextoGenerico(inputAnio, null, 2, true, false, false);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(null, nfe.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
+            return;
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(null, iae.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        try {
-            verificadorCampos.verificaFormatoInteger(inputMes, "mes");
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR DE FORMATO", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
         JFileChooser fileChooser = new JFileChooser();
         if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             ruta = fileChooser.getSelectedFile().getAbsolutePath();
