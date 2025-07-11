@@ -9,6 +9,7 @@ import enums.MetodosPago;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import javax.swing.ButtonModel;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -16,6 +17,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import services.PagoServ;
 import services.StockServ;
 import services.VentaRepuestoServ;
+import util.ConversorUnidades;
+import util.VerificadorCampos;
 
 /**
  *
@@ -56,9 +59,7 @@ public class JDialogPago extends javax.swing.JDialog {
         this.pago.setId(null);
         this.pago.setActivo(Boolean.TRUE);
         this.pago.setFechaPago(LocalDate.now());
-        //TO-DO: PONER ESTO EN CLASE VENTA COMO DEBE SER
-        this.venta.getPagosList().add(this.pago);
-        this.pago.setVentaRepuesto(this.venta);
+        this.venta.asociarPago(this.pago);
         //asignación de nota
         this.nota = venta.getNotaRetiro();
 
@@ -510,24 +511,6 @@ public class JDialogPago extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButConfirmarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButConfirmarPagoActionPerformed
-        //TO-DO: MEJORAR ESTO POR DIOS Y VERIFICAR CAMPOS
-        BigDecimal montoPagar = BigDecimal.valueOf(Double.parseDouble(jtfMontoPagar.getText().trim())).setScale(2, RoundingMode.HALF_UP);
-        String dni = null;
-        String referencia = null;
-        String ultimos4 = null;
-        String marcaTarjeta = null;
-        String bancoTarjeta = null;
-        String nroTransaccion = null;
-        Integer dto = (Integer) jSpinner1.getValue();
-
-        //verificaciones
-        BigDecimal restaMontos = this.montoTotalPago.subtract(montoPagar);
-        if (restaMontos.compareTo(BigDecimal.ZERO) == -1) {
-            JOptionPane.showMessageDialog(null, "El monto que intenta pagar es mayor al que se debe pagar.",
-                    "PAGO", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
         //asinación de métodos de pago
         if (jrbCredito.isSelected()) {
             this.pago.setMetodosPago(MetodosPago.TARJETA_CREDITO);
@@ -538,7 +521,14 @@ public class JDialogPago extends javax.swing.JDialog {
         } else {
             this.pago.setMetodosPago(MetodosPago.TRANSFERENCIA);
         }
-
+        //        String dni = null;
+        String inputMontoPagar = jtfMontoPagar.getText().trim();
+        String referencia = jtfReferencia.getText().trim();
+        String ultimos4 = null;
+        String marcaTarjeta = null;
+        String bancoTarjeta = null;
+        String nroTransaccion = null;
+        Integer dto = (Integer) jSpinner1.getValue();
         if (this.pago.getMetodosPago() != MetodosPago.EFECTIVO) {
             marcaTarjeta = (String) jcbMarcaTarjeta.getSelectedItem();
             bancoTarjeta = (String) jcbBancoTarjeta.getSelectedItem();
@@ -548,6 +538,34 @@ public class JDialogPago extends javax.swing.JDialog {
                 nroTransaccion = jtfNroTransaccion.getText().trim();
             }
         }
+        BigDecimal montoPagar;
+
+        try {
+            VerificadorCampos.dinero(inputMontoPagar, true);
+            montoPagar = ConversorUnidades.bdParaDinero(inputMontoPagar);
+            //TO-DO: hacer descuento
+//            VerificadorCampos.inputTexto( (String) jSpinDto.getValue(), null, 2, false, false);
+            if (!this.pago.getMetodosPago().equals(MetodosPago.EFECTIVO)) {
+                VerificadorCampos.referenciaTarjeta(referencia, true);
+                VerificadorCampos.ultimos4(ultimos4, true);
+                if (this.pago.getMetodosPago().equals(MetodosPago.TRANSFERENCIA)) {
+                    VerificadorCampos.nroTransaccion(nroTransaccion, true);
+                }
+            }
+        } catch (NumberFormatException ne) {
+            JOptionPane.showMessageDialog(null, ne.getMessage(), "ATENCIÓN", JOptionPane.ERROR_MESSAGE);
+            return;
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(null, iae.getMessage(), "ATENCIÓN", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (montoPagar.compareTo(this.montoTotalPago) == 1) {
+            JOptionPane.showMessageDialog(null, "El monto que intenta pagar es mayor al que se debe pagar.",
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        BigDecimal restaMontos = this.montoTotalPago.subtract(montoPagar);
 
         this.pago.setDescuento(BigDecimal.valueOf(dto));
         this.pago.setMarcaTarjeta(marcaTarjeta);
@@ -555,7 +573,7 @@ public class JDialogPago extends javax.swing.JDialog {
         this.pago.setReferencia(referencia);
         this.pago.setUltimos4(ultimos4);
         this.pago.setMontoPagado(montoPagar);
-        //        this.pago.setNrotransaccion(nroTransaccion);
+//        this.pago.setNrotransaccion(nroTransaccion);
 
         venta.setMontoFaltante(restaMontos);
         //setea el estado EN EL QUE VA A QUEDAR la venta luego del pago

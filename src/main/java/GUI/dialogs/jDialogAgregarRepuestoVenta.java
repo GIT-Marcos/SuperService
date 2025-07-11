@@ -1,6 +1,7 @@
 package GUI.dialogs;
 
 import entities.Repuesto;
+import entities.Stock;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import services.RepuestoServ;
 import util.ColorRenderTables;
+import util.ConversorUnidades;
 import util.VerificadorCampos;
 
 /**
@@ -239,9 +241,9 @@ public class jDialogAgregarRepuestoVenta extends javax.swing.JDialog {
         boolean stockBajoCheckBox = jcbMostrarStockBajo.isSelected();
         int seleccionComboBox = jComboBoxBuscar.getSelectedIndex();
         try {
-            verificadorCampos.verificarVacio(input, "Búsqueda");
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "HAY CAMPOS OBLIGATORIOS VACÍOS",
+            VerificadorCampos.inputTextoGenerico(input, null, 30, true, true, null);
+        } catch (IllegalArgumentException iae) {
+            JOptionPane.showMessageDialog(null, iae.getMessage(), "HAY CAMPOS OBLIGATORIOS VACÍOS",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -253,47 +255,48 @@ public class jDialogAgregarRepuestoVenta extends javax.swing.JDialog {
     }//GEN-LAST:event_jButBuscarActionPerformed
 
     private void jButAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButAgregarActionPerformed
-        if (jTableRepuestos.getSelectedRow() == -1) {
+        Repuesto repuesto = null;
+        int filaSeleccionada = jTableRepuestos.getSelectedRow();
+        if (filaSeleccionada == -1) {
             JOptionPane.showMessageDialog(null, "No ha seleccionado un repuesto de la tabla.",
                     "DEBE SELECCIONAR UN REPUESTO",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        try {
-            verificadorCampos.verificarVacio(jtfCantidad.getText().trim(), jLabel4.getText());
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "HAY CAMPOS OBLIGATORIOS VACÍOS",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        try {
-            verificadorCampos.verificaLargo(jtfCantidad.getText().trim(), 12, jLabel4.getText());
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(),
-                    "CAMPOS MUY LARGOS", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        try {
-            verificadorCampos.verificaFormatoDouble(jtfCantidad.getText().trim(), jLabel4.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "HAY CAMPOS NUMÉRICOS EN MAL FORMATO",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        Double inputCant = Double.valueOf(jtfCantidad.getText().trim());
-        Double cantidad = Math.round(inputCant * 100.0) / 100.0;
         String codBarraSeleccionTabla = jTableRepuestos.getValueAt(
-                jTableRepuestos.getSelectedRow(), 0).toString();
+                filaSeleccionada, 0).toString();
         if (codBarraSeleccionTabla == null) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar un repuesto de la tabla"
                     + " para agregarlo a la venta.", "ATENCIÓN",
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-        Repuesto repuesto = repuestoServ.buscarPorCodBarraExacto(codBarraSeleccionTabla);
-        if (cantidad >= repuesto.getStock().getCantidad()) {
+
+        String inputStock = jtfCantidad.getText().trim();
+        Double cantidadStock;
+        try {
+            VerificadorCampos.cantidadStock(inputStock, true);
+            cantidadStock = ConversorUnidades.double2Decimales(inputStock);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(null, nfe.getMessage(), "ERROR AL INGRESAR STOCK PARA VENTA",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR AL INGRESAR STOCK PARA VENTA",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        for (Repuesto r : listaParaTabla) {
+            if (r.getCodBarra().equals(codBarraSeleccionTabla)) {
+                repuesto = r;
+                break;
+            }
+        }
+                
+        if (cantidadStock > repuesto.getStock().getCantidad()) {
             JOptionPane.showMessageDialog(null,
-                    "La cantidad que quiere vender es mayor o igual que el existente del repuesto",
+                    "La cantidad que quiere vender es mayor a el existente del repuesto.",
                     "ATENCIÓN", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -302,7 +305,7 @@ public class jDialogAgregarRepuestoVenta extends javax.swing.JDialog {
                     "El repuesto " + repuesto.getDetalle() + " ya ha sido agregado para la venta",
                     "ATENCIÓN", JOptionPane.WARNING_MESSAGE);
         } else {
-            jDialogNuevaVenta.recibeRepuesto(repuesto, cantidad);
+            jDialogNuevaVenta.recibeRepuesto(repuesto, cantidadStock);
             JOptionPane.showMessageDialog(null, "Repuesto agregado para venta correctamente.",
                     "VENTA DE REPUESTO", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
